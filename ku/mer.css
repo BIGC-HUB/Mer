@@ -1,0 +1,108 @@
+/* 全局 */
+body {
+    margin: 0 auto;
+    text-align: center;
+}
+/* 字体栈 */
+html,button,input,select,textarea,
+.pure-g [class *="pure-u"] {
+    color: #333;
+    font-size: 1.17em;
+    font-family: Roboto, 'Segoe UI', Arial, 'Microsoft Yahei', sans-serif;
+}
+.fa-lg {
+    font-size: 1.33333333em;
+    line-height: 0.75em;
+    vertical-align: -15%;
+}
+.fa-1x {
+    font-size: 1em;
+}
+/* logo */
+logo, #search-button, #more-button {
+    cursor: pointer;
+}
+logo {
+    display: block;
+    margin: 6.18% auto 2em;
+    width:  8em;
+    height: 8em;
+    line-height: 8em;
+    border: 1px solid #E6E7EC;
+    border-radius: 50%;
+}
+logo:hover {
+    background: #F5F6F9;
+}
+#logo {
+    font-size: 5.5em;
+    color: #037DD8;
+}
+/* search */
+#search-input, #search-button{
+    vertical-align: bottom;
+    font-size: 1.333333em;
+    padding: 8px;
+    outline: 0;
+}
+#search-input {
+    width: 61.8%;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border: 1px solid #C0C0C0;
+}
+#search-input:hover {
+    border-color: #999;
+}
+#search-input:focus {
+    border-color: #037DD8;
+}
+#search-button {
+    width: 3.9em;
+    border-top-left-radius: 0;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 0;
+    border: 1px solid #037DD8;
+    background: #037DD8;
+    color: white;
+}
+#search-button:hover {
+    box-shadow: 0 1px 4px #999;
+}
+/* more */
+.more {
+    display: none;
+}
+#more-ul, #more-button {
+    vertical-align: top;
+    font-size: 1.333333em;
+    padding: 8px;
+    outline: 0;
+}
+#more-ul {
+    display: inline-block;
+    text-align: left;
+    width: 61.8%;
+    margin: 0 auto;
+    list-style: none;
+    border: 1px solid #C0C0C0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-style: none;
+}
+#more-button {
+    width: 3.9em;
+    border: 1px solid transparent;
+    background: transparent;
+}
+/* 媒体查询 >= 768px */
+@media (min-width: 768px) {
+    #search-input, #more-ul {
+        width: 38.2%;
+    }
+}
