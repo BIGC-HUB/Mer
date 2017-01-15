@@ -18,10 +18,10 @@ html,button,input,select,textarea,
 .fa-1x {
     font-size: 1em;
 }
-/* logo */
-logo, #search-button, #more-button {
+logo, #search-button, #more-button, li {
     cursor: pointer;
 }
+/* logo */
 logo {
     display: block;
     margin: 6.18% auto 2em;
@@ -34,14 +34,14 @@ logo {
 logo:hover {
     background: #F5F6F9;
 }
-#logo {
+#search-logo {
     font-size: 5.5em;
     color: #037DD8;
 }
 /* search */
 #search-input, #search-button{
     vertical-align: bottom;
-    font-size: 1.333333em;
+    font-size: 25px;
     padding: 8px;
     outline: 0;
 }
@@ -73,12 +73,15 @@ logo:hover {
     box-shadow: 0 1px 4px #999;
 }
 /* more */
-.more {
-    display: none;
+li:hover {
+    background: #037DD8;
+    color: #fff;
+}
+.more-border {
+    border-color: #037DD8 !important;
 }
 #more-ul, #more-button {
     vertical-align: top;
-    font-size: 1.333333em;
     padding: 8px;
     outline: 0;
 }
@@ -88,18 +91,21 @@ logo:hover {
     width: 61.8%;
     margin: 0 auto;
     list-style: none;
-    border: 1px solid #C0C0C0;
+    border: 1px solid transparent;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 2px;
     border-top-style: none;
+    font-size: 21px;
 }
 #more-button {
     width: 3.9em;
     border: 1px solid transparent;
     background: transparent;
+    font-size: 25px;
 }
+
 /* 媒体查询 >= 768px */
 @media (min-width: 768px) {
     #search-input, #more-ul {
