@@ -25,10 +25,10 @@ var ckXian = function() {
 // star.json
 
 // 构建 html
-var __init__ = function() {
-    var mainHtml = `
+var __initMain__ = function() {
+    var html = `
         <div class="search">
-            <logo><i class="fa-5x iconfont icon-dahai"></i></logo>
+            <logo><i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
             <input id="search-input" type="text" maxlength="140"><button id="search-button">
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
             </button>
@@ -40,8 +40,38 @@ var __init__ = function() {
                 </button>
             </div>
         </div>`
-    $('#main').html(mainHtml)
+    $('#main').html(html)
 }()
+var __initEngine__ = function(engines, def) {
+    var kindHtml = ''
+    for (var cls in engines) {
+        kindHtml += `<tag>${cls}</tag>`
+    }
+    var engineHtml = ''
+    for (var key in engines[def]) {
+        var e = engines[def][key]
+        if (e.icon) {
+            engineHtml += `<engine data-cls="${def}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></engine>`
+        } else {
+            engineHtml += `<engine data-cls="${def}" data-key="${key}"><span style="color:${e.color}">${key}</span></engine>`
+        }
+    }
+    var html = `
+    <div class="kind">${kindHtml}</div>
+    <div class="show">${engineHtml}</div>`
+    $('#engine').html(html)
+}(Mer.engines, '综合')
+
+// 切换
+$('logo').on('click', function() {
+    $('#main').slideUp(618)
+    setTimeout("$('#engine').slideDown(618);$('#top').show()", 618)
+})
+$('#top').on('click', function() {
+    $('#top').hide()
+    $('#engine').slideUp(382)
+    setTimeout("$('#main').slideDown(382)", 382)
+})
 
 // 智能联想
 var moreHtml = ''
@@ -89,7 +119,15 @@ $('#search-input').on('focus', function() {
 
 // 搜索
 var Search = function(value) {
-    var url = 'http://www.sogou.com/web?ie={inputEncoding}&query=' + encodeURI(value)
+    var i = $('logo i')[0].dataset
+    var e = Mer.engines[i.cls][i.key]
+    var url = e.url
+    if (screen.width < 768) {
+        if (e.wap) {
+            url = e.wap
+        }
+    }
+    url += encodeURI(value)
     window.open(url)
 }
 $('#more-ul').on('mousedown', 'li', function() {
