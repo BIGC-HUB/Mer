@@ -20,6 +20,29 @@ var ckXian = function() {
     })
 }()
 
+// engine.json
+// tag.json
+// star.json
+
+// 构建 html
+var __init__ = function() {
+    var mainHtml = `
+        <div class="search">
+            <logo><i class="fa-5x iconfont icon-dahai"></i></logo>
+            <input id="search-input" type="text" maxlength="140"><button id="search-button">
+                <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="more">
+            <ul id="more-ul"></ul><div id="more-i">
+                <button id="more-button">
+                    <i class="fa-1x iconfont icon-down" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>`
+    $('#main').html(mainHtml)
+}()
+
 // 智能联想
 var moreHtml = ''
 var soGou = function(value) {
@@ -69,7 +92,6 @@ var Search = function(value) {
     var url = 'http://www.sogou.com/web?ie={inputEncoding}&query=' + encodeURI(value)
     window.open(url)
 }
-
 $('#more-ul').on('mousedown', 'li', function() {
     Search(event.target.innerText)
 })

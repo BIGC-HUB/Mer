@@ -3,12 +3,27 @@ body {
     margin: 0 auto;
     text-align: center;
 }
+li {
+    margin-bottom: 2px;
+    /* 禁止 换行 */
+    white-space: nowrap;
+    /* 隐藏 超出部分 */
+    overflow: hidden;
+    /* 省略号 替代 */
+    text-overflow: ellipsis;
+}
+li:hover {
+    background: #037DD8;
+    color: #FFF;
+}
 /* 字体栈 */
-html,button,input,select,textarea,
-.pure-g [class *="pure-u"] {
+html,button,input,select,textarea{
     color: #333;
     font-size: 1.17em;
     font-family: Roboto, 'Segoe UI', Arial, 'Microsoft Yahei', sans-serif;
+}
+logo,li,#search-button,#more-button,.fa-mini {
+    cursor: pointer;
 }
 .fa-lg {
     font-size: 1.33333333em;
@@ -18,9 +33,17 @@ html,button,input,select,textarea,
 .fa-1x {
     font-size: 1em;
 }
-logo, #search-button, #more-button, li {
-    cursor: pointer;
+.fa-5x {
+    font-size: 5.5em;
+    color: #037DD8;
 }
+.fa-mini {
+    display: block;
+    font-size: 2.8em;
+    margin-bottom: 4px;
+    color: #E6E7EC;
+}
+
 /* logo */
 logo {
     display: block;
@@ -34,10 +57,7 @@ logo {
 logo:hover {
     background: #F5F6F9;
 }
-#search-logo {
-    font-size: 5.5em;
-    color: #037DD8;
-}
+
 /* search */
 #search-input, #search-button{
     vertical-align: bottom;
@@ -72,10 +92,10 @@ logo:hover {
 #search-button:hover {
     box-shadow: 0 1px 4px #999;
 }
+
 /* more */
-li:hover {
-    background: #037DD8;
-    color: #fff;
+.more {
+    margin-bottom: 2px;
 }
 .more-border {
     border-color: #037DD8 !important;
@@ -104,6 +124,9 @@ li:hover {
     border: 1px solid transparent;
     background: transparent;
     font-size: 25px;
+}
+#more-i {
+    display: inline-block;
 }
 
 /* 媒体查询 >= 768px */
