@@ -12,7 +12,7 @@ li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-li:hover {
+.li-hover {
     background: #037DD8;
     color: #FFF;
 }
@@ -20,6 +20,7 @@ li:hover {
     color: transparent !important;
     border-color: transparent !important;
 }
+
 
 /* 字体栈 */
 html,button,input,select,textarea{
@@ -193,6 +194,9 @@ engine {
     margin: 0.5em;
     border-radius: 50%;
 }
+engine span, engine i {
+    pointer-events: none;
+}
 engine span {
     font-size: 1.2em;
 }
@@ -222,6 +226,9 @@ engine span {
         background: #F5F6F9;
     }
     engine span {
+        font-size: 1.5em;
+    }
+    logo span {
         font-size: 1.5em;
     }
 }
