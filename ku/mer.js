@@ -130,6 +130,8 @@ $('#search-input').on('focus', function() {
     if (moreHtml && event.target.value) {
         $('#more-ul').html(moreHtml)
         $('#more-ul').addClass('more-border')
+    } else {
+        $('#more-ul').html('')
     }
 })
 $('#search-input').on('keyup', function() {
@@ -237,11 +239,20 @@ var Mini = function(engines, def) {
     $('#more-i').append(miniHtml)
     $('style').append(styleHtml)
 }
-$('#more-button').on('mouseover', function() {
-    $('#more-button i').removeClass('transparent')
-})
+var Note = function(noteArr) {
+    var noteHtml = ''
+    for(var i = 0; i < noteArr.length; i++) {
+        var e =noteArr[i]
+        noteHtml += `<input data-id="${i}" type="text" maxlength="70" value="${e}">`
+    }
+    $('#more-ul').html(noteHtml)
+}
 $('#more-button').on('click', function() {
     Mini(Mer.engines, '综合')
+    Note(['记事本', '', '骚男'])
+})
+$('#more-button').on('mouseover', function() {
+    $('#more-button i').removeClass('transparent')
 })
 $('#more-i').on('click', 'i.fa-mini', function() {
     Engine(event.target)
