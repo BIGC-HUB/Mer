@@ -19,16 +19,29 @@ var ckXian = function() {
         }
     })
 }()
+// 大屏幕
+var bigScreen = false
+if (screen.width > 768) {
+    bigScreen = true
+}
 
-// engine.json
-// tag.json
-// star.json
+// data.json = engines | tags | stars
 
 // 构建 html
-var __initMain__ = function() {
+var __initTop__ = function() {
+    var html =
+        '<div class="top-center">' +
+            '<top id=""><i class="iconfont icon-login fa-lg"></i>登录</top>' +
+            '<top id="back">⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</top>' +
+            '<top id=""><i class="iconfont icon-stars fa-lg"></i>收藏</top>' +
+        '</div>'
+    $('#top').html(html)
+}()
+var __initMain__ = function(engines, def, key) {
+    var e = engines[def][key]
     var html = `
         <div class="search">
-            <logo><i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
+            <logo><i data-cls="${def}" data-key="${key}" style="color:${e.color};" class="fa-5x iconfont icon-dahai"></i></logo>
             <input id="search-input" type="text" maxlength="140"><button id="search-button">
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
             </button>
@@ -36,12 +49,12 @@ var __initMain__ = function() {
         <div class="more">
             <ul id="more-ul"></ul><div id="more-i">
                 <button id="more-button">
-                    <i class="fa-1x iconfont icon-down" aria-hidden="true"></i>
+                    <i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>
                 </button>
             </div>
         </div>`
     $('#main').html(html)
-}()
+}(Mer.engines, '综合', '')
 var __initEngine__ = function(engines, def) {
     var kindHtml = ''
     for (var cls in engines) {
@@ -62,16 +75,37 @@ var __initEngine__ = function(engines, def) {
     $('#engine').html(html)
 }(Mer.engines, '综合')
 
-// 切换
+// var __initMini__ = function(engines, def) {
+//     var miniHtml =`
+// `
+//     var styleHtml = ''
+//     for (var key in engines[def]) {
+//         var e = engines[def][key]
+//         // key '' 默认
+//         if (e.icon && key) {
+//             miniHtml += `<i class="fa-mini iconfont icon-${e.icon}"></i>`
+//             styleHtml += `.icon-${e.icon}:hover {color:${e.color}}`
+//         }
+//     }
+//     $('#more-i').html(miniHtml)
+//     $('style').append(styleHtml)
+// }(Mer.engines, '综合')
+// 顶部
 $('logo').on('click', function() {
     $('#main').slideUp(618)
     setTimeout("$('#engine').slideDown(618);$('#top').show()", 618)
 })
-$('#top').on('click', function() {
+$('#back').on('click', function() {
     $('#top').hide()
     $('#engine').slideUp(382)
     setTimeout("$('#main').slideDown(382)", 382)
 })
+
+// 迷你
+$('#more-button').on('mouseover', function() {
+    $('#more-button i').removeClass('transparent')
+})
+
 
 // 智能联想
 var moreHtml = ''
@@ -122,7 +156,7 @@ var Search = function(value) {
     var i = $('logo i')[0].dataset
     var e = Mer.engines[i.cls][i.key]
     var url = e.url
-    if (screen.width < 768) {
+    if (bigScreen) {
         if (e.wap) {
             url = e.wap
         }

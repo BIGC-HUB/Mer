@@ -1,7 +1,7 @@
 var Mer = {
     "engines": {
         "综合": {
-            "大海": {
+            "": {
                 "icon": "dahai",
                 "color": "#037DD8",
                 "wap": "https://wap.sogou.com/web/searchList.jsp?keyword=",
@@ -189,7 +189,7 @@ var Mer = {
                 "url": "http://pianyuan.net/search?q="
             },
             "哔哩哔哩": {
-                "color": "#f25d8e",
+                "color": "#F25D8E",
                 "wap": "http://www.bilibili.com/mobile/search.html?keyword=",
                 "url": "http://search.bilibili.com/all?keyword="
             }
