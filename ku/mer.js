@@ -19,15 +19,10 @@ var ckXian = function() {
         }
     })
 }()
-// 大屏幕
-var bigScreen = false
-if (screen.width > 768) {
-    bigScreen = true
-}
 
 // data.json = engines | tags | stars
 
-// 构建 html
+// 构建 Html
 var __initTop__ = function() {
     var html =
         '<div class="top-center">' +
@@ -75,21 +70,6 @@ var __initEngine__ = function(engines, def) {
     $('#engine').html(html)
 }(Mer.engines, '综合')
 
-// var __initMini__ = function(engines, def) {
-//     var miniHtml =`
-// `
-//     var styleHtml = ''
-//     for (var key in engines[def]) {
-//         var e = engines[def][key]
-//         // key '' 默认
-//         if (e.icon && key) {
-//             miniHtml += `<i class="fa-mini iconfont icon-${e.icon}"></i>`
-//             styleHtml += `.icon-${e.icon}:hover {color:${e.color}}`
-//         }
-//     }
-//     $('#more-i').html(miniHtml)
-//     $('style').append(styleHtml)
-// }(Mer.engines, '综合')
 // 顶部
 $('logo').on('click', function() {
     $('#main').slideUp(618)
@@ -102,12 +82,38 @@ $('#back').on('click', function() {
 })
 
 // 迷你
+var Mini = function(engines, def) {
+    $('.fa-mini').remove()
+    var miniHtml = ''
+    var styleHtml = ''
+    for (var key in engines[def]) {
+        var e = engines[def][key]
+        // key '' 默认
+        if (e.icon && key) {
+            miniHtml += `<i data-cls="${def}" data-key="${key}" class="fa-mini iconfont icon-${e.icon}"></i>`
+            styleHtml += `.icon-${e.icon}:hover {color:${e.color}}`
+        }
+    }
+    $('#more-i').append(miniHtml)
+    $('style').append(styleHtml)
+}
 $('#more-button').on('mouseover', function() {
     $('#more-button i').removeClass('transparent')
 })
+$('#more-button').on('click', function() {
+    Mini(Mer.engines, '综合')
+})
+$('#more-i').on('click', 'i.fa-mini', function() {
+    var i = event.target.dataset
+    var e = Mer.engines[i.cls][i.key]
+    var html = `<i data-cls="${i.cls}" data-key="${i.key}" style="color:${e.color};" class="fa-5x iconfont icon-${e.icon}"></i>`
+    $('logo').html(html)
+    var input = $('#search-input')[0]
+    input.placeholder = i.key
+    input.focus()
+})
 
-
-// 智能联想
+// 输入 - 智能联想
 var moreHtml = ''
 var soGou = function(value) {
     //组装 URL
@@ -133,19 +139,21 @@ var soGou = function(value) {
     //动态 JS脚本 cnblogs.com/woider/p/5805248.html
     $("#sug").html('<script src=' + sugurl + '></script>')
 }
-
 $('#search-input').on('keyup', function() {
     // 智能联想
     soGou(event.target.value)
 })
 $('#search-input').on('blur', function() {
+    event.target.placeholder = ''
     // 智能联想
     $('#more-ul').html('')
     $('#more-ul').removeClass('more-border')
 })
 $('#search-input').on('focus', function() {
+    $('.fa-mini').remove()
+    $('#more-button i').addClass('transparent')
     // 智能联想
-    if (moreHtml) {
+    if (moreHtml && event.target.value) {
         $('#more-ul').html(moreHtml)
         $('#more-ul').addClass('more-border')
     }
@@ -156,7 +164,7 @@ var Search = function(value) {
     var i = $('logo i')[0].dataset
     var e = Mer.engines[i.cls][i.key]
     var url = e.url
-    if (bigScreen) {
+    if (screen.width < 768) {
         if (e.wap) {
             url = e.wap
         }
@@ -166,4 +174,14 @@ var Search = function(value) {
 }
 $('#more-ul').on('mousedown', 'li', function() {
     Search(event.target.innerText)
+})
+$('#search-button').on('click', function() {
+    var value = $('#search-input')[0].value
+    if (value) {
+        Search(value)
+    } else {
+        var input = $('#search-input')[0]
+        input.placeholder = '随意门'
+        input.focus()
+    }
 })
