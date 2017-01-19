@@ -1,4 +1,4 @@
-var Mer = {
+var defUser = {
     "engines": {
         "综合": {
             "": {
@@ -195,5 +195,5 @@ var Mer = {
             }
         }
     },
-    "notes": "记事本"
+    "note": "记事本"
 }

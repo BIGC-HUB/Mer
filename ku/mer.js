@@ -20,9 +20,11 @@ var ckXian = function() {
     })
 }()
 
-// data.json = engines | tags | stars | notes
+// data.json = engines | stars | note
+var User = defUser
+var Mer = {}
 
-// 构建 Html
+// initHtml
 var __initTop__ = function() {
     var html =
         '<div class="top-center">' +
@@ -37,7 +39,7 @@ var __initMain__ = function(engines, def, key) {
     var html = `
         <div class="search">
             <logo><i data-cls="${def}" data-key="${key}" style="color:${e.color};" class="fa-5x iconfont icon-dahai"></i></logo>
-            <input id="search-input" type="text" maxlength="140"><button id="search-button">
+            <input id="search-input" type="text" maxlength="70"><button id="search-button">
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
             </button>
         </div>
@@ -49,7 +51,7 @@ var __initMain__ = function(engines, def, key) {
             </div>
         </div>`
     $('#main').html(html)
-}(Mer.engines, '综合', '')
+}(User.engines, '综合', '')
 var __initEngine__ = function(engines, def) {
     var kindHtml = ''
     for (var cls in engines) {
@@ -68,9 +70,9 @@ var __initEngine__ = function(engines, def) {
     <div class="kind">${kindHtml}</div>
     <div class="show">${showHtml}</div>`
     $('#engine').html(html)
-}(Mer.engines, '综合')
+}(User.engines, '综合')
 
-// 顶部
+// Top
 $('logo').on('click', function() {
     $('#main').slideUp(618)
     setTimeout("$('#engine').slideDown(618);$('#top').show()", 618)
@@ -82,10 +84,10 @@ $('#back').on('click', function() {
 })
 
 // 输入 - 智能联想
-var moreHtml = ''
-var now
+Mer.moreHtml = ''
+Mer.now = -1
 var soGou = function(value) {
-    now = -1
+    Mer.now = -1
     //组装 URL
     var sugurl = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
     //回调函数
@@ -97,8 +99,8 @@ var soGou = function(value) {
                 for (var i = 0; i < arr.length; i++) {
                     html += '<li data-id="' + i + '">' + arr[i] +'</li>'
                 }
-                moreHtml = html
-                $('#more-ul').html(moreHtml)
+                Mer.moreHtml = html
+                $('#more-ul').html(Mer.moreHtml)
                 $('#more-ul').addClass('more-border')
             } else {
                 $('#more-ul').html('')
@@ -110,6 +112,7 @@ var soGou = function(value) {
     $("#sug").html('<script src=' + sugurl + '></script>')
 }
 var UpDn = function(next) {
+    var now = Mer.now
     var all = $('#more-ul').children()
     var old = now
     now = (now + next + all.length) % all.length
@@ -127,8 +130,8 @@ $('#search-input').on('focus', function() {
     $('.fa-mini').remove()
     $('#more-button i').addClass('transparent')
     // 智能联想
-    if (moreHtml && event.target.value) {
-        $('#more-ul').html(moreHtml)
+    if (Mer.moreHtml && event.target.value) {
+        $('#more-ul').html(Mer.moreHtml)
         $('#more-ul').addClass('more-border')
     } else {
         $('#more-ul').html('')
@@ -151,19 +154,19 @@ $('#search-input').on('keydown', function() {
      }
 })
 $('#more-ul').on('mouseover', 'li', function() {
+    var now = Mer.now
     var old = now
     now = Number(event.target.dataset.id)
     var all = $('#more-ul').children()
-
     $(all[now]).addClass('li-hover')
     $(all[old]).removeClass('li-hover')
 })
 
-// 搜索
-var Search = function(value) {
+// Search
+Mer.Search = function(value) {
     var target = $('logo i')[0] || $('logo span')[0]
     var i = target.dataset
-    var e = Mer.engines[i.cls][i.key]
+    var e = User.engines[i.cls][i.key]
     var url = e.url
     if (screen.width < 768) {
         if (e.wap) {
@@ -174,12 +177,12 @@ var Search = function(value) {
     window.open(url)
 }
 $('#more-ul').on('mousedown', 'li', function() {
-    Search(event.target.innerText)
+    Mer.Search(event.target.innerText)
 })
 $('#search-button').on('click', function() {
     var value = $('#search-input')[0].value
     if (value) {
-        Search(value)
+        Mer.Search(value)
     } else {
         var input = $('#search-input')[0]
         input.placeholder = '随意门'
@@ -187,10 +190,10 @@ $('#search-button').on('click', function() {
     }
 })
 
-// 引擎
-var Engine = function(target) {
+// Engine
+Mer.Engine = function(target) {
     var e = target.dataset
-    var i = Mer.engines[e.cls][e.key]
+    var i = User.engines[e.cls][e.key]
     var input = $('#search-input')[0]
     var html
     if (i.icon) {
@@ -204,7 +207,7 @@ var Engine = function(target) {
     input.focus()
 }
 $('.kind').on('click', 'tag', function() {
-    var engines = Mer.engines
+    var engines = User.engines
     var cls = event.target.innerText
     var showHtml = ''
     for (var key in engines[cls]) {
@@ -219,12 +222,12 @@ $('.kind').on('click', 'tag', function() {
 })
 $('.show').on('click', 'engine', function() {
     // pointer-events: none; 事件穿透
-    Engine(event.target)
+    Mer.Engine(event.target)
     $('#back').click()
 })
 
-// 迷你
-var Mini = function(engines, def) {
+// More
+Mer.Mini = function(engines, def) {
     $('.fa-mini').remove()
     var miniHtml = ''
     var styleHtml = ''
@@ -239,18 +242,23 @@ var Mini = function(engines, def) {
     $('#more-i').append(miniHtml)
     $('style').append(styleHtml)
 }
-var Note = function(noteStr) {
-    var noteHtml = `<textarea>${noteStr}</textarea>`
-
-    $('#more-ul').html(noteHtml)
+Mer.Note = function(noteStr) {
+    $('#more-ul').html('<textarea id="more-note"></textarea>')
+    $('#more-note')[0].value = noteStr
 }
+$('#more-ul').on('focus', '#more-note',function() {
+    $('.fa-mini').fadeOut(618)
+})
+$('#more-ul').on('blur', '#more-note',function() {
+    User.note = event.target.value
+})
 $('#more-button').on('click', function() {
-    Mini(Mer.engines, '综合')
-    Note(Mer.notes)
+    Mer.Mini(User.engines, '综合')
+    Mer.Note(User.note)
 })
 $('#more-button').on('mouseover', function() {
     $('#more-button i').removeClass('transparent')
 })
-$('#more-i').on('click', 'i.fa-mini', function() {
-    Engine(event.target)
+$('#more-i').on('click', '.fa-mini', function() {
+    Mer.Engine(event.target)
 })
