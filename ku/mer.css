@@ -21,7 +21,6 @@ li {
     border-color: transparent !important;
 }
 
-
 /* 字体栈 */
 html,button,input,select,textarea{
     color: #333;
@@ -166,18 +165,19 @@ logo:hover {
 }
 
 /* note */
-#more-ul input {
-    text-align: center;
+#more-ul textarea {
     font-size: 1em;
     width: 100%;
-    text-overflow: ellipsis;
+    height: 15em;
+    resize: none;
     border-radius: 2px;
-    margin-bottom: 4px;
     outline: 0;
     border: 1px solid transparent;
+    overflow-y: hidden;
 }
-#more-ul input:focus {
-    background: #E6E7EC;
+#more-ul textarea:focus {
+    overflow: auto;
+    background: #F5F6F9;
     border: 1px solid #C0C0C0;
 }
 

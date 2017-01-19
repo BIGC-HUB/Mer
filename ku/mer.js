@@ -20,7 +20,7 @@ var ckXian = function() {
     })
 }()
 
-// data.json = engines | tags | stars
+// data.json = engines | tags | stars | notes
 
 // 构建 Html
 var __initTop__ = function() {
@@ -111,7 +111,7 @@ var soGou = function(value) {
 }
 var UpDn = function(next) {
     var all = $('#more-ul').children()
-    var old = Number(now)
+    var old = now
     now = (now + next + all.length) % all.length
     event.target.value = all[now].innerText
     $(all[now]).addClass('li-hover')
@@ -239,17 +239,14 @@ var Mini = function(engines, def) {
     $('#more-i').append(miniHtml)
     $('style').append(styleHtml)
 }
-var Note = function(noteArr) {
-    var noteHtml = ''
-    for(var i = 0; i < noteArr.length; i++) {
-        var e =noteArr[i]
-        noteHtml += `<input data-id="${i}" type="text" maxlength="70" value="${e}">`
-    }
+var Note = function(noteStr) {
+    var noteHtml = `<textarea>${noteStr}</textarea>`
+
     $('#more-ul').html(noteHtml)
 }
 $('#more-button').on('click', function() {
     Mini(Mer.engines, '综合')
-    Note(['记事本', '', '骚男'])
+    Note(Mer.notes)
 })
 $('#more-button').on('mouseover', function() {
     $('#more-button i').removeClass('transparent')

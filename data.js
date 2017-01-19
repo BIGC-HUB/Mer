@@ -194,5 +194,6 @@ var Mer = {
                 "url": "http://search.bilibili.com/all?keyword="
             }
         }
-    }
+    },
+    "notes": "记事本"
 }
