@@ -84,6 +84,9 @@ logo {
 logo:hover {
     background: #F5F6F9;
 }
+logo span {
+    font-size: 1.5em;
+}
 
 /* search */
 #search-input, #search-button{
@@ -244,9 +247,6 @@ engine span {
         background: #F5F6F9;
     }
     engine span {
-        font-size: 1.5em;
-    }
-    logo span {
         font-size: 1.5em;
     }
 }

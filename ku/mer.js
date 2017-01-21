@@ -20,32 +20,6 @@ var ckXian = function() {
     })
 }()
 
-var __delayPost__ = {
-    t: setTimeout('',0),
-    data: '',
-    post: function(sendData) {
-        sendData = {value:sendData}
-        $.ajax({
-            url: '/data/change',
-            type: 'POST',
-            data: sendData,
-            success: function(e) {
-                console.log(e.value)
-            },
-            error: function() {
-                log('error')
-            }
-        })
-    }
-}
-var delayPost = function(data, time) {
-    clearTimeout(__delayPost__.t)
-    __delayPost__.data = data
-    // keyup time 毫秒后请求
-    __delayPost__.t = setTimeout('__delayPost__.post(__delayPost__.data)', time)
-}
-
-
 // data.json = engines | stars | note
 var Mer = {}
 var User = null || defUser
@@ -112,8 +86,10 @@ $('#back').on('click', function() {
 // 输入 - 智能联想
 Mer.moreHtml = ''
 Mer.now = -1
+Mer.firstUp = true
 var soGou = function(value) {
     Mer.now = -1
+    Mer.firstUp = true
     //组装 URL
     var sugurl = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
     //回调函数
@@ -138,10 +114,15 @@ var soGou = function(value) {
     $("#sug").html('<script src=' + sugurl + '></script>')
 }
 var UpDn = function(next) {
-    var now = Mer.now
-    var all = $('#more-ul').children()
-    var old = now
-    now = (now + next + all.length) % all.length
+    if (Mer.firstUp && next === -1) {
+        next = 0
+        Mer.firstUp = false
+    }
+    var old = Mer.now
+    var all = $('#more-ul li')
+    var now = (old + next + all.length) % all.length
+
+    Mer.now = now
     event.target.value = all[now].innerText
     $(all[now]).addClass('li-hover')
     $(all[old]).removeClass('li-hover')
@@ -180,10 +161,11 @@ $('#search-input').on('keydown', function() {
      }
 })
 $('#more-ul').on('mouseover', 'li', function() {
-    var now = Mer.now
-    var old = now
-    now = Number(event.target.dataset.id)
-    var all = $('#more-ul').children()
+    var old = Mer.now
+    var all = $('#more-ul li')
+    var now = Number(event.target.dataset.id)
+
+    Mer.now = now
     $(all[now]).addClass('li-hover')
     $(all[old]).removeClass('li-hover')
 })
@@ -229,7 +211,7 @@ Mer.Engine = function(target) {
         input.placeholder = ''
     }
     $('logo').html(html)
-    // input.focus()
+    input.focus()
 }
 $('.kind').on('click', 'tag', function() {
     var engines = User.engines

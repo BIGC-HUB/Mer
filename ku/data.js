@@ -52,16 +52,15 @@ var defUser = {
         },
         "认知": {
             "有道词典": {
-                "icon": "youdao",
                 "color": "#e31333",
                 "url": "http://m.youdao.com/dict?q=",
             },
-            "公开课": {
+            "网易公开课": {
                 "color": "#206740",
                 "wap": "http://m.open.163.com/?=",
                 "url": "http://c.open.163.com/search/search.htm?query=",
             },
-            "世图": {
+            "世界图书馆": {
                 "color": "#00618e",
                 "url": "http://mx.wdl.org/zh/search/?q=",
             }
