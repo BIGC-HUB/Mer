@@ -20,9 +20,35 @@ var ckXian = function() {
     })
 }()
 
+var __delayPost__ = {
+    t: setTimeout('',0),
+    data: '',
+    post: function(sendData) {
+        sendData = {value:sendData}
+        $.ajax({
+            url: '/data/change',
+            type: 'POST',
+            data: sendData,
+            success: function(e) {
+                console.log(e.value)
+            },
+            error: function() {
+                log('error')
+            }
+        })
+    }
+}
+var delayPost = function(data, time) {
+    clearTimeout(__delayPost__.t)
+    __delayPost__.data = data
+    // keyup time 毫秒后请求
+    __delayPost__.t = setTimeout('__delayPost__.post(__delayPost__.data)', time)
+}
+
+
 // data.json = engines | stars | note
-var User = defUser
 var Mer = {}
+var User = null || defUser
 
 // initHtml
 var __initTop__ = function() {
@@ -185,7 +211,6 @@ $('#search-button').on('click', function() {
         Mer.Search(value)
     } else {
         var input = $('#search-input')[0]
-        input.placeholder = '随意门'
         input.focus()
     }
 })
@@ -204,7 +229,7 @@ Mer.Engine = function(target) {
         input.placeholder = ''
     }
     $('logo').html(html)
-    input.focus()
+    // input.focus()
 }
 $('.kind').on('click', 'tag', function() {
     var engines = User.engines
@@ -242,15 +267,17 @@ Mer.Mini = function(engines, def) {
     $('#more-i').append(miniHtml)
     $('style').append(styleHtml)
 }
-Mer.Note = function(noteStr) {
+Mer.Note = function(note) {
     $('#more-ul').html('<textarea id="more-note"></textarea>')
-    $('#more-note')[0].value = noteStr
+    $('#more-note')[0].value = localStorage.note || note
 }
 $('#more-ul').on('focus', '#more-note',function() {
     $('.fa-mini').fadeOut(618)
 })
 $('#more-ul').on('blur', '#more-note',function() {
-    User.note = event.target.value
+    var note = event.target.value
+    localStorage.note = note
+    User.note = note
 })
 $('#more-button').on('click', function() {
     Mer.Mini(User.engines, '综合')

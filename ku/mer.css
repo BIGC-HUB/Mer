@@ -3,18 +3,16 @@ body {
     margin: 0 auto;
     text-align: center;
 }
-li {
-    margin-bottom: 2px;
+logo,tag,engine,top,li,#search-button,#more-button,.fa-mini {
+    cursor: pointer;
+}
+engine,li {
     /* 禁止 换行 */
     white-space: nowrap;
     /* 隐藏 超出部分 */
     overflow: hidden;
     /* 省略号 替代 */
     text-overflow: ellipsis;
-}
-.li-hover {
-    background: #037DD8;
-    color: #FFF;
 }
 .transparent {
     color: transparent !important;
@@ -26,9 +24,6 @@ html,button,input,select,textarea{
     color: #333;
     font-size: 1.17em;
     font-family: Roboto, 'Segoe UI', Arial, 'Microsoft Yahei', sans-serif;
-}
-logo,tag,engine,top,li,#search-button,#more-button,.fa-mini {
-    cursor: pointer;
 }
 
 /* 字体大小 */
@@ -129,8 +124,15 @@ logo:hover {
 .more {
     margin-bottom: 2px;
 }
+.li-hover {
+    background: #037DD8;
+    color: #FFF;
+}
 .more-border {
     border-color: #037DD8 !important;
+}
+#more-ul li {
+    margin-bottom: 2px;
 }
 #more-ul, #more-button {
     vertical-align: top;
