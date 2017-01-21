@@ -27,12 +27,12 @@ var User = null || defUser
 // initHtml
 var __initTop__ = function() {
     var html =
-        '<top id=""><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top id="back">⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</top>' +
-        '<top id=""><i class="iconfont icon-stars fa-lg"></i>收藏</top>'
+        '<top id="top-user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
+        '<top id="top-back">⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</top>' +
+        '<top id="top-star"><i class="iconfont icon-stars fa-lg"></i>收藏</top>'
     $('#top').html(html)
 }()
-var __initMain__ = function(engines, def, key) {
+var __initMain = function(engines, def, key) {
     var e = engines[def][key]
     var html = `
         <div class="search">
@@ -50,7 +50,7 @@ var __initMain__ = function(engines, def, key) {
         </div>`
     $('#main').html(html)
 }(User.engines, '综合', '')
-var __initEngine__ = function(engines, def) {
+var __StarEngine = function(element, engines, def) {
     var kindHtml = ''
     for (var cls in engines) {
         kindHtml += `<tag>${cls}</tag>`
@@ -67,18 +67,30 @@ var __initEngine__ = function(engines, def) {
     var html = `
     <div class="kind">${kindHtml}</div>
     <div class="show">${showHtml}</div>`
-    $('#engine').html(html)
-}(User.engines, '综合')
+    element.html(html)
+}
+__StarEngine($('#engine'), User.engines, '综合')
+__StarEngine($('#star'), User.stars, '常用')
 
 // Top
 $('logo').on('click', function() {
     $('#main').slideUp(618)
     setTimeout("$('#engine').slideDown(618);$('#top').show()", 618)
 })
-$('#back').on('click', function() {
-    $('#top').hide()
-    $('#engine').slideUp(382)
+$('#top-back').on('click', function() {
+    $('#engine,#star,#top').slideUp(382)
     setTimeout("$('#main').slideDown(382)", 382)
+})
+$('#top-star').on('click', function() {
+    $('#star,#engine').animate({ height:'toggle' })
+    var element = $('#top-star')
+    var star   = '<i class="iconfont icon-stars fa-lg"></i>收藏'
+    var engine = '<i class="iconfont icon-down  fa-lg"></i>引擎'
+    if (element.html() === star) {
+        element.html(engine)
+    } else {
+        element.html(star)
+    }
 })
 
 // 输入 - 智能联想
@@ -195,42 +207,6 @@ $('#search-button').on('click', function() {
     }
 })
 
-// Engine
-Mer.Engine = function(target) {
-    var e = target.dataset
-    var i = User.engines[e.cls][e.key]
-    var input = $('#search-input')[0]
-    var html
-    if (i.icon) {
-        html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
-        input.placeholder = e.key
-    } else {
-        html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
-        input.placeholder = ''
-    }
-    $('logo').html(html)
-    input.focus()
-}
-$('.kind').on('click', 'tag', function() {
-    var engines = User.engines
-    var cls = event.target.innerText
-    var showHtml = ''
-    for (var key in engines[cls]) {
-        var e = engines[cls][key]
-        if (e.icon) {
-            showHtml += `<engine data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></engine>`
-        } else {
-            showHtml += `<engine data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></engine>`
-        }
-    }
-    $('.show').html(showHtml)
-})
-$('.show').on('click', 'engine', function() {
-    // pointer-events: none; 事件穿透
-    Mer.Engine(event.target)
-    $('#back').click()
-})
-
 // More
 Mer.Mini = function(engines, def) {
     $('.fa-mini').remove()
@@ -268,4 +244,51 @@ $('#more-button').on('mouseover', function() {
 })
 $('#more-i').on('click', '.fa-mini', function() {
     Mer.Engine(event.target)
+})
+
+// Star
+Mer.showHtml = function(engines) {
+    var cls = event.target.innerText
+    var showHtml = ''
+    for (var key in engines[cls]) {
+        var e = engines[cls][key]
+        if (e.icon) {
+            showHtml += `<engine data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></engine>`
+        } else {
+            showHtml += `<engine data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></engine>`
+        }
+    }
+    return showHtml
+}
+$('#star .kind').on('click', 'tag', function() {
+    $('#star .show').html( Mer.showHtml(User.stars) )
+})
+$('#star .show').on('click', 'engine', function() {
+    var e = event.target.dataset
+    var i = User.stars[e.cls][e.key]
+    window.open(i.url)
+})
+
+// Engine
+Mer.Engine = function() {
+    var e = event.target.dataset
+    var i = User.engines[e.cls][e.key]
+    var input = $('#search-input')[0]
+    var html
+    if (i.icon) {
+        html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
+        input.placeholder = e.key
+    } else {
+        html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
+        input.placeholder = ''
+    }
+    $('logo').html(html)
+    input.focus()
+}
+$('#engine .kind').on('click', 'tag', function() {
+    $('#engine .show').html( Mer.showHtml(User.engines) )
+})
+$('#engine .show').on('click', 'engine', function() {
+    Mer.Engine()
+    $('#top-back').click()
 })

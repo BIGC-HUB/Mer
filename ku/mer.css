@@ -56,7 +56,7 @@ html,button,input,select,textarea{
     width: 100%;
     height: 3em;
     z-index: 1;
-    color: #333;
+    color: #666;
 }
 top {
     display: inline-block;
@@ -182,10 +182,10 @@ logo span {
 }
 
 /* engine */
-#engine {
+#engine,#star {
     width: 95%;
-    margin: 0 auto;
     display: none;
+    margin: 0 auto;
 }
 .kind {
     margin: 4em auto 0;
@@ -209,6 +209,7 @@ engine {
     line-height: 5em;
     margin: 0.5em;
     border-radius: 50%;
+    color: #666;
 }
 engine span, engine i {
     pointer-events: none;
@@ -217,12 +218,14 @@ engine span {
     font-size: 1.2em;
 }
 
+/* star */
+
 /* 媒体查询 >= 768px */
 @media (min-width: 768px) {
     .fa-logo {
         font-size: 5.5em;
     }
-    #engine {
+    #engine,#star {
         width: 85%;
         margin: 0 auto;
     }
