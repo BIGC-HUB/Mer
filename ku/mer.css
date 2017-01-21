@@ -6,7 +6,7 @@ body {
 logo,tag,engine,top,li,#search-button,#more-button,.fa-mini {
     cursor: pointer;
 }
-engine,li {
+logo,tag,engine,top,li {
     /* 禁止 换行 */
     white-space: nowrap;
     /* 隐藏 超出部分 */
@@ -56,10 +56,7 @@ html,button,input,select,textarea{
     width: 100%;
     height: 3em;
     z-index: 1;
-}
-.top-center {
-    background: #FFF;
-    border-bottom: 1px solid #E6E7EC;
+    color: #333;
 }
 top {
     display: inline-block;
@@ -124,10 +121,8 @@ logo span {
 }
 
 /* more */
-.more {
-    margin-bottom: 2px;
-}
 .li-hover {
+    border-radius: 2px;
     background: #037DD8;
     color: #FFF;
 }
@@ -252,12 +247,10 @@ engine span {
 }
 /* 媒体查询 >= 1025px */
 @media (min-width: 1025px) {
-    .top-center {
+    #top {
         color: transparent;
-        border-color: transparent;
-    }
-    .top-center:hover {
-        color: #333;
-        border-color: #E6E7EC;
+}
+    #top:hover {
+        color: #666;
     }
 }

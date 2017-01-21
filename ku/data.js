@@ -194,5 +194,13 @@ var defUser = {
             }
         }
     },
+    "stars": {
+        "笔记": {
+            "Javascript 笔记": {
+                "color": "#FD6853",
+                "url": "https://www.zybuluo.com/iwangyang/note/519509"
+            }
+        }
+    },
     "note": "记事本"
 }

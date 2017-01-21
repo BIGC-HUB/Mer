@@ -27,11 +27,9 @@ var User = null || defUser
 // initHtml
 var __initTop__ = function() {
     var html =
-        '<div class="top-center">' +
-            '<top id=""><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-            '<top id="back">⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</top>' +
-            '<top id=""><i class="iconfont icon-stars fa-lg"></i>收藏</top>' +
-        '</div>'
+        '<top id=""><i class="iconfont icon-login fa-lg"></i>登录</top>' +
+        '<top id="back">⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</top>' +
+        '<top id=""><i class="iconfont icon-stars fa-lg"></i>收藏</top>'
     $('#top').html(html)
 }()
 var __initMain__ = function(engines, def, key) {
