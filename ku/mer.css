@@ -3,7 +3,7 @@ body {
     margin: 0 auto;
     text-align: center;
 }
-logo,tag,engine,top,li,#search-button,#more-button,.fa-mini {
+logo,tag,engine,book,top,li,#search-button,#more-button,.fa-mini {
     cursor: pointer;
 }
 logo,tag,engine,top,li {
@@ -65,7 +65,7 @@ top {
     line-height: 3em;
 }
 top:hover {
-    color: #037DD8;
+    background: #F5F6F9;
 }
 
 /* logo */
@@ -182,7 +182,7 @@ logo span {
 }
 
 /* engine */
-#engine,#star {
+#engine {
     width: 95%;
     display: none;
     margin: 0 auto;
@@ -200,7 +200,7 @@ tag {
     color: #666;
 }
 tag:hover {
-    color: #037DD8;
+    background: #F5F6F9;
 }
 engine {
     vertical-align: bottom;
@@ -219,7 +219,25 @@ engine span {
 }
 
 /* star */
+#star {
+    display: none;
+}
+book {
+    display: inline-block;
+    margin: 0 0.5em;
+    vertical-align: top;
+    font-size: 1.5em;
+    width: 1.5em;
+    height: 6.8em;
+    word-wrap: break-word;
+    letter-spacing: 0.5em;
 
+    overflow: hidden;
+    background: #F5F6F9;
+}
+book span, book i {
+    pointer-events: none;
+}
 /* 媒体查询 >= 768px */
 @media (min-width: 768px) {
     .fa-logo {
@@ -231,10 +249,6 @@ engine span {
     }
     #search-input, #more-ul {
         width: 38.2%;
-    }
-    tag:hover {
-        color: #333;
-        background: #F5F6F9;
     }
     engine {
         width: 8em;
@@ -252,7 +266,7 @@ engine span {
 @media (min-width: 1025px) {
     #top {
         color: transparent;
-}
+    }
     #top:hover {
         color: #666;
     }

@@ -200,13 +200,6 @@ var defUser = {
                 "color": "#F40A01",
                 "url": "http://music.163.com/#/user/home?id=36825881"
             },
-            "Js 笔记": {
-                "url": "https://www.zybuluo.com/iwangyang/note/519509"
-            },
-            "Python": {
-                "color": "rgb(57,152,214)",
-                "url": "https://www.zybuluo.com/iwangyang/note/519509"
-            },
             "500px": {
                 "url": "https://500px.com/popular"
             },
@@ -214,16 +207,27 @@ var defUser = {
                 "url": "https://www.zhihu.com/collections"
             }
         },
+        "笔记": {
+            "萧瓜Js": {
+                "url": "https://www.zybuluo.com/iwangyang/note/519509"
+            },
+            "小甲鱼Python": {
+                "color": "rgb(57,152,214)",
+                "url": "https://www.zybuluo.com/iwangyang/note/519509"
+            }
+        },
         "新闻": {
             "好奇心日报": {
-                "color": "rgb(255,208,0)",
                 "url": "http://www.qdaily.com/"
             },
             "澎湃新闻": {
-                "color": "black",
                 "url": "http://www.thepaper.cn/"
             }
         }
     },
-    "note": "记事本"
+    "note": "记事本",
+    "def": {
+        "engines": "综合",
+        "stars": "常用"
+    }
 }

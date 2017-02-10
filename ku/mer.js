@@ -50,7 +50,7 @@ var __initMain = function(engines, def, key) {
         </div>`
     $('#main').html(html)
 }(User.engines, '综合', '')
-var __StarEngine = function(element, engines, def) {
+var __StarEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
         kindHtml += `<tag>${cls}</tag>`
@@ -59,9 +59,9 @@ var __StarEngine = function(element, engines, def) {
     for (var key in engines[def]) {
         var e = engines[def][key]
         if (e.icon) {
-            showHtml += `<engine data-cls="${def}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></engine>`
+            showHtml += `<${tag} data-cls="${def}" data-key="${key}"> <i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i> </${tag}>`
         } else {
-            showHtml += `<engine data-cls="${def}" data-key="${key}"><span style="color:${e.color}">${key}</span></engine>`
+            showHtml += `<${tag} data-cls="${def}" data-key="${key}"> <span style="color:${e.color}">${key}</span> </${tag}>`
         }
     }
     var html = `
@@ -69,13 +69,15 @@ var __StarEngine = function(element, engines, def) {
     <div class="show">${showHtml}</div>`
     element.html(html)
 }
-__StarEngine($('#engine'), User.engines, '综合')
-__StarEngine($('#star'), User.stars, '常用')
+__StarEngine($('#engine'), User.engines, User.def.engines, 'engine')
+__StarEngine($('#star'), User.stars, User.def.stars, 'book')
 
 // Top
 $('logo').on('click', function() {
     $('#main').slideUp(618)
     setTimeout("$('#engine').slideDown(618);$('#top').show()", 618)
+    // 恢复Top
+    $('#top-star').html('<i class="iconfont icon-stars fa-lg"></i>收藏')
 })
 $('#top-back').on('click', function() {
     $('#engine,#star,#top').slideUp(382)
@@ -85,7 +87,7 @@ $('#top-star').on('click', function() {
     $('#star,#engine').animate({ height:'toggle' })
     var element = $('#top-star')
     var star   = '<i class="iconfont icon-stars fa-lg"></i>收藏'
-    var engine = '<i class="iconfont icon-down  fa-lg"></i>引擎'
+    var engine = '<i class="iconfont icon-engines  fa-lg"></i>引擎'
     if (element.html() === star) {
         element.html(engine)
     } else {
@@ -247,23 +249,23 @@ $('#more-i').on('click', '.fa-mini', function() {
 })
 
 // Star
-Mer.showHtml = function(engines) {
+Mer.showHtml = function(engines, tag) {
     var cls = event.target.innerText
     var showHtml = ''
     for (var key in engines[cls]) {
         var e = engines[cls][key]
         if (e.icon) {
-            showHtml += `<engine data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></engine>`
+            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
         } else {
-            showHtml += `<engine data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></engine>`
+            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
         }
     }
     return showHtml
 }
 $('#star .kind').on('click', 'tag', function() {
-    $('#star .show').html( Mer.showHtml(User.stars) )
+    $('#star .show').html( Mer.showHtml(User.stars, 'book') )
 })
-$('#star .show').on('click', 'engine', function() {
+$('#star .show').on('click', 'book', function() {
     var e = event.target.dataset
     var i = User.stars[e.cls][e.key]
     window.open(i.url)
@@ -286,7 +288,7 @@ Mer.Engine = function() {
     input.focus()
 }
 $('#engine .kind').on('click', 'tag', function() {
-    $('#engine .show').html( Mer.showHtml(User.engines) )
+    $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
 })
 $('#engine .show').on('click', 'engine', function() {
     Mer.Engine()
