@@ -205,15 +205,24 @@ var defUser = {
             },
             "知乎收藏夹": {
                 "url": "https://www.zhihu.com/collections"
+            },
+            "虚拟主机": {
+                "url": "http://myhostadmin.net"
             }
         },
-        "笔记": {
-            "萧瓜Js": {
+        "编程": {
+            "萧瓜笔记": {
                 "url": "https://www.zybuluo.com/iwangyang/note/519509"
             },
             "小甲鱼Python": {
                 "color": "rgb(57,152,214)",
                 "url": "https://www.zybuluo.com/iwangyang/note/519509"
+            },
+            "JsBeautifier": {
+                "url": "http://JSbeautifier.com"
+            },
+            "Pure": {
+                "url": "http://www.purecss.org"
             }
         },
         "新闻": {

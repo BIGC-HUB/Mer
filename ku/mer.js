@@ -27,9 +27,8 @@ var User = null || defUser
 // initHtml
 var __initTop__ = function() {
     var html =
-        '<top id="top-user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top id="top-back">⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</top>' +
-        '<top id="top-star"><i class="iconfont icon-stars fa-lg"></i>收藏</top>'
+        '<top class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
+        '<top class="star"><i class="iconfont icon-stars fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
 var __initMain = function(engines, def, key) {
@@ -48,7 +47,7 @@ var __initMain = function(engines, def, key) {
                 </button>
             </div>
         </div>`
-    $('#main').html(html)
+    $('#search').html(html)
 }(User.engines, '综合', '')
 var __StarEngine = function(element, engines, def, tag) {
     var kindHtml = ''
@@ -74,25 +73,18 @@ __StarEngine($('#star'), User.stars, User.def.stars, 'book')
 
 // Top
 $('logo').on('click', function() {
-    $('#main').slideUp(618)
-    setTimeout("$('#engine').slideDown(618);$('#top').show()", 618)
-    // 恢复Top
-    $('#top-star').html('<i class="iconfont icon-stars fa-lg"></i>收藏')
+    $('#search').slideUp(618)
+    setTimeout("$('#engine').slideDown(618)", 618)
 })
-$('#top-back').on('click', function() {
-    $('#engine,#star,#top').slideUp(382)
-    setTimeout("$('#main').slideDown(382)", 382)
+$('#top').on('click', '.back', function() {
+    event.target.className = 'star'
+    $('#engine,#star').hide()
+    $('#search').animate({ height:'show' })
 })
-$('#top-star').on('click', function() {
-    $('#star,#engine').animate({ height:'toggle' })
-    var element = $('#top-star')
-    var star   = '<i class="iconfont icon-stars fa-lg"></i>收藏'
-    var engine = '<i class="iconfont icon-engines  fa-lg"></i>引擎'
-    if (element.html() === star) {
-        element.html(engine)
-    } else {
-        element.html(star)
-    }
+$('#top').on('click', '.star', function() {
+    event.target.className = 'back'
+    $('#engine,#search').hide()
+    $('#star').animate({ height:'show' })
 })
 
 // 输入 - 智能联想
@@ -262,7 +254,7 @@ Mer.showHtml = function(engines, tag) {
     }
     return showHtml
 }
-$('#star .kind').on('click', 'tag', function() {
+$('#star .kind').on('click', 'tag' , function() {
     $('#star .show').html( Mer.showHtml(User.stars, 'book') )
 })
 $('#star .show').on('click', 'book', function() {
@@ -287,10 +279,11 @@ Mer.Engine = function() {
     $('logo').html(html)
     input.focus()
 }
-$('#engine .kind').on('click', 'tag', function() {
+$('#engine .kind').on('click', 'tag'   , function() {
     $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
 })
 $('#engine .show').on('click', 'engine', function() {
     Mer.Engine()
-    $('#top-back').click()
+    $('#engine,#star').hide()
+    $('#search').animate({ height:'show' })
 })
