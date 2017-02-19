@@ -173,7 +173,7 @@ var defUser = {
                 "url": "http://www.ximalaya.com/search/"
             },
         },
-        "电影": {
+        "视频": {
             "豆瓣电影": {
                 "name": "",
                 "color": "#2E963D",
@@ -194,7 +194,7 @@ var defUser = {
             }
         }
     },
-    "stars": {
+    "books": {
         "常用": {
             "网易云音乐": {
                 "color": "#F40A01",
@@ -205,9 +205,6 @@ var defUser = {
             },
             "知乎收藏夹": {
                 "url": "https://www.zhihu.com/collections"
-            },
-            "虚拟主机": {
-                "url": "http://myhostadmin.net"
             }
         },
         "编程": {
@@ -218,11 +215,14 @@ var defUser = {
                 "color": "rgb(57,152,214)",
                 "url": "https://www.zybuluo.com/iwangyang/note/519509"
             },
-            "JsBeautifier": {
-                "url": "http://JSbeautifier.com"
+            "Js美化": {
+                "url": "http://jsbeautifier.org"
             },
             "Pure": {
-                "url": "http://www.purecss.org"
+                "url": "https://purecss.io"
+            },
+            "虚拟主机": {
+                "url": "http://myhostadmin.net"
             }
         },
         "新闻": {
@@ -232,11 +232,19 @@ var defUser = {
             "澎湃新闻": {
                 "url": "http://www.thepaper.cn/"
             }
+        },
+        "软件": {
+            "谷歌浏览器": {
+                "url": "https://www.google.com/intl/zh-CN/chrome/browser/?standalone=1"
+            },
+            "蓝灯": {
+                "url": "https://github.com/getlantern/forum/issues/833"
+            }
         }
     },
     "note": "记事本",
     "def": {
         "engines": "综合",
-        "stars": "常用"
+        "books": "常用"
     }
 }

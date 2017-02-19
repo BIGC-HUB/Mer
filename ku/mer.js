@@ -20,7 +20,7 @@ var ckXian = function() {
     })
 }()
 
-// data.json = engines | stars | note
+// data.json = engines | books | note
 var Mer = {}
 var User = null || defUser
 
@@ -28,7 +28,7 @@ var User = null || defUser
 var __initTop__ = function() {
     var html =
         '<top class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top class="star"><i class="iconfont icon-stars fa-lg"></i>书架</top>'
+        '<top class="book"><i class="iconfont icon-stars fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
 var __initMain = function(engines, def, key) {
@@ -49,7 +49,7 @@ var __initMain = function(engines, def, key) {
         </div>`
     $('#search').html(html)
 }(User.engines, '综合', '')
-var __StarEngine = function(element, engines, def, tag) {
+var __BookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
         kindHtml += `<tag>${cls}</tag>`
@@ -68,23 +68,23 @@ var __StarEngine = function(element, engines, def, tag) {
     <div class="show">${showHtml}</div>`
     element.html(html)
 }
-__StarEngine($('#engine'), User.engines, User.def.engines, 'engine')
-__StarEngine($('#star'), User.stars, User.def.stars, 'book')
+__BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
+__BookEngine($('#book'), User.books, User.def.books, 'book')
 
 // Top
 $('logo').on('click', function() {
     $('#search').slideUp(618)
     setTimeout("$('#engine').slideDown(618)", 618)
 })
-$('#top').on('click', '.back', function() {
-    event.target.className = 'star'
-    $('#engine,#star').hide()
+$('#top').on('click', '.home', function() {
+    event.target.className = 'book'
+    $('#engine,#book').hide()
     $('#search').animate({ height:'show' })
 })
-$('#top').on('click', '.star', function() {
-    event.target.className = 'back'
+$('#top').on('click', '.book', function() {
+    event.target.className = 'home'
     $('#engine,#search').hide()
-    $('#star').animate({ height:'show' })
+    $('#book').animate({ height:'show' })
 })
 
 // 输入 - 智能联想
@@ -240,7 +240,7 @@ $('#more-i').on('click', '.fa-mini', function() {
     Mer.Engine(event.target)
 })
 
-// Star
+// Book
 Mer.showHtml = function(engines, tag) {
     var cls = event.target.innerText
     var showHtml = ''
@@ -254,12 +254,12 @@ Mer.showHtml = function(engines, tag) {
     }
     return showHtml
 }
-$('#star .kind').on('click', 'tag' , function() {
-    $('#star .show').html( Mer.showHtml(User.stars, 'book') )
+$('#book .kind').on('click', 'tag' , function() {
+    $('#book .show').html( Mer.showHtml(User.books, 'book') )
 })
-$('#star .show').on('click', 'book', function() {
+$('#book .show').on('click', 'book', function() {
     var e = event.target.dataset
-    var i = User.stars[e.cls][e.key]
+    var i = User.books[e.cls][e.key]
     window.open(i.url)
 })
 
@@ -284,6 +284,6 @@ $('#engine .kind').on('click', 'tag'   , function() {
 })
 $('#engine .show').on('click', 'engine', function() {
     Mer.Engine()
-    $('#engine,#star').hide()
+    $('#engine,#book').hide()
     $('#search').animate({ height:'show' })
 })
