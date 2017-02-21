@@ -30,10 +30,10 @@ var defUser = {
                 "wap": "http://weixin.sogou.com/weixinwap?type=2&query=",
                 "url": "http://weixin.sogou.com/weixin?type=2&query="
             },
-            "百度百科": {
+            "百度": {
                 "icon": "baidu",
                 "color": "#2319dc",
-                "url": "http://baike.baidu.com/item/"
+                "url": "https://www.baidu.com/s?wd="
             }
         },
         "编程": {
@@ -63,6 +63,10 @@ var defUser = {
             "世界图书馆": {
                 "color": "#00618e",
                 "url": "http://mx.wdl.org/zh/search/?q=",
+            },
+            "百度百科": {
+                "color": "#2319dc",
+                "url": "http://baike.baidu.com/item/"
             }
         },
         "设计": {

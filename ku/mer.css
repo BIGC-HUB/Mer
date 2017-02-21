@@ -102,10 +102,8 @@ logo span {
 }
 #search-input {
     width: 61.8%;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     border: 1px solid #C0C0C0;
 }
 #search-input:hover {
@@ -116,10 +114,8 @@ logo span {
 }
 #search-button {
     width: 3.9em;
-    border-top-left-radius: 0;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
     border: 1px solid #037DD8;
     background: #037DD8;
     color: white;
@@ -137,6 +133,9 @@ logo span {
 .more-border {
     border-color: #037DD8 !important;
 }
+.more-radius {
+    border-bottom-left-radius: 0 !important;
+}
 #more-ul li {
     margin-bottom: 2px;
 }
@@ -152,10 +151,8 @@ logo span {
     margin: 0 auto;
     list-style: none;
     border: 1px solid transparent;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 2px;
-    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
     border-top-style: none;
     font-size: 21px;
 }
@@ -178,24 +175,18 @@ logo span {
     width: 100%;
     height: 15em;
     resize: none;
-    border-radius: 2px;
-    outline: 0;
-    border: 1px solid transparent;
+    border-style: none;
     overflow-y: hidden;
 }
 #more-ul textarea:focus {
     overflow: auto;
     background: #F5F6F9;
-    border: 1px solid #C0C0C0;
+    outline-color: #C0C0C0;
 }
 
 /* engine */
-#engine {
-    width: 95%;
+#engine,#book,#login {
     display: none;
-    margin: 0 auto;
-}
-.kind {
     margin: 3em auto 0;
 }
 tag {
@@ -209,6 +200,7 @@ tag {
 }
 tag:hover {
     background: #F5F6F9;
+    outline: #E6E7EC solid thin;
 }
 engine {
     vertical-align: bottom;
@@ -227,9 +219,6 @@ engine span {
 }
 
 /* book */
-#book {
-    display: none;
-}
 book {
     display: inline-block;
     margin: 0 0.5em;
@@ -243,9 +232,33 @@ book {
 }
 book:hover {
     background: #F5F6F9;
+    outline: #E6E7EC solid thin;
 }
 book span, book i {
     pointer-events: none;
+}
+
+/* login */
+/*#login { display: block; }*/
+#login input {
+    display: block;
+    margin: 0 auto;
+    font-size: 25px;
+    padding: 8px;
+    outline: 0;
+}
+#login input:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: 1px solid #C0C0C0;
+}
+#login input:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid #C0C0C0;
+}
+#login input + input {
+    border-top-style: none !important;
 }
 
 /* 媒体查询 >= 768px */
@@ -255,7 +268,7 @@ book span, book i {
     }
     #engine,#star {
         width: 85%;
-        margin: 0 auto;
+        margin: 3em auto 0;
     }
     #search-input, #more-ul {
         width: 38.2%;
@@ -264,9 +277,11 @@ book span, book i {
         width: 8em;
         height: 8em;
         line-height: 8em;
+        border: 1px solid transparent;
     }
     engine:hover {
         background: #F5F6F9;
+        border: 1px solid #E6E7EC;
     }
     engine span, book {
         font-size: 1.5em;

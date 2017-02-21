@@ -40,8 +40,7 @@ var __initMain = function(engines, def, key) {
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
             </button>
         </div>
-        <div class="more">
-            <ul id="more-ul"></ul><div id="more-i">
+        <div class="more"><ul id="more-ul"></ul><div id="more-i">
                 <button id="more-button">
                     <i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>
                 </button>
@@ -108,9 +107,11 @@ var soGou = function(value) {
                 Mer.moreHtml = html
                 $('#more-ul').html(Mer.moreHtml)
                 $('#more-ul').addClass('more-border')
+                $('#search-input').addClass('more-radius')
             } else {
                 $('#more-ul').html('')
                 $('#more-ul').removeClass('more-border')
+                $('#search-input').removeClass('more-radius')
             }
         }
     }
@@ -136,6 +137,7 @@ $('#search-input').on('blur', function() {
     // 智能联想
     $('#more-ul').html('')
     $('#more-ul').removeClass('more-border')
+    $('#search-input').removeClass('more-radius')
 })
 $('#search-input').on('focus', function() {
     $('.fa-mini').remove()
@@ -144,6 +146,7 @@ $('#search-input').on('focus', function() {
     if (Mer.moreHtml && event.target.value) {
         $('#more-ul').html(Mer.moreHtml)
         $('#more-ul').addClass('more-border')
+        $('#search-input').addClass('more-radius')
     } else {
         $('#more-ul').html('')
     }
