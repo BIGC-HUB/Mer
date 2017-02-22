@@ -28,7 +28,7 @@ var User = null || defUser
 var __initTop__ = function() {
     var html =
         '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top data-id="book" class="book"><i class="iconfont icon-stars fa-lg"></i>书架</top>'
+        '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
 var __initMain = function(engines, def, key) {
@@ -85,23 +85,26 @@ var __Login = function() {
 
 // Top
 $('logo').on('click', function() {
-    $('#search').slideUp(618)
-    setTimeout("$('#engine').slideDown(618)", 618)
-})
-$('#top').on('click', '.home', function() {
-    event.target.className = event.target.dataset.id
-    $('#engine,#book,#login').hide()
-    $('#search').animate({ height:'show' })
+    $('#search').hide()
+    $('#engine').slideDown("slow")
 })
 $('#top').on('click', '.book', function() {
-    event.target.className = 'home'
-    $('#engine,#search,#login').hide()
-    $('#book').animate({ height:'show' })
+    if ($('#book').css('display') === 'none') {
+        $('#engine,#search,#login').hide()
+        $('#book').animate({ height:'show' })
+    } else {
+        $('#engine,#book,#login').hide()
+        $('#search').animate({ height:'show' })
+    }
 })
 $('#top').on('click', '.user', function() {
-    event.target.className = 'home'
-    $('#engine,#search,#book').hide()
-    $('#login').animate({ height:'show' })
+    if ($('#login').css('display') === 'none') {
+        $('#engine,#search,#book').hide()
+        $('#login').animate({ height:'show' })
+    } else {
+        $('#engine,#book,#login').hide()
+        $('#search').animate({ height:'show' })
+    }
 })
 
 // 输入 - 智能联想
@@ -282,8 +285,8 @@ $('#engine .kind').on('click', 'tag'   , function() {
 })
 $('#engine .show').on('click', 'engine', function() {
     Mer.Engine()
-    $('#engine,#book').hide()
-    $('#search').animate({ height:'show' })
+    $('#engine').hide()
+    $('#search').slideDown("slow")
 })
 
 // Book

@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1485051104954'); /* IE9*/
-  src: url('iconfont.eot?t=1485051104954#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1485051104954') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1485051104954') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1485051104954#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1487787598004'); /* IE9*/
+  src: url('iconfont.eot?t=1487787598004#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1487787598004') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1487787598004') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1487787598004#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -48,4 +48,6 @@
 .icon-star:before { content: "\e65a"; }
 
 .icon-login:before { content: "\e69b"; }
+
+.icon-books:before { content: "\e7e7"; }
 
