@@ -212,6 +212,9 @@ var defUser = {
             }
         },
         "编程": {
+            "Yarn": {
+                "url": "https://zhuanlan.zhihu.com/p/25320734"
+            },
             "萧瓜笔记": {
                 "url": "https://www.zybuluo.com/iwangyang/note/519509"
             },
@@ -227,7 +230,11 @@ var defUser = {
             },
             "虚拟主机": {
                 "url": "http://myhostadmin.net"
+            },
+            "哔哩招聘": {
+                "url": "http://www.bilibili.com/html/join-list.html#32"
             }
+
         },
         "新闻": {
             "好奇心日报": {

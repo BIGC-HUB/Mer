@@ -4,7 +4,7 @@ var log = function() {
     }
 var ckXian = function() {
     var body  = document.querySelector('body')
-    var style ='<style id="xm" media="screen"> * {outline: 1px red dashed} </style>'
+    var style ='<style id="xm" media="screen"> * {outline: 1px red dashed!important} </style>'
     var i = false
     body.addEventListener('keydown', function(event) {
         if (event.keyCode === 77 && event.ctrlKey) {
@@ -27,8 +27,8 @@ var User = null || defUser
 // initHtml
 var __initTop__ = function() {
     var html =
-        '<top class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top class="book"><i class="iconfont icon-stars fa-lg"></i>书架</top>'
+        '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
+        '<top data-id="book" class="book"><i class="iconfont icon-stars fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
 var __initMain = function(engines, def, key) {
@@ -69,6 +69,19 @@ var __BookEngine = function(element, engines, def, tag) {
 }
 __BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
 __BookEngine($('#book'), User.books, User.def.books, 'book')
+var __Login = function() {
+    var html = `
+    <div id="login-hint">
+        <i class="fa-logo iconfont icon-star"></i>
+        <div class="login-text">
+            请输入邮箱
+        </div>
+    </div>
+    <input id="login-name" type="text" placeholder="名字">
+    <input id="login-key"  type="password" placeholder="密码">
+    <button id="login-sign-up" type="button" name="button">注册</button><button id="login-log-in" type="button" name="button">登录</button>`
+    $('#login').html(html)
+}()
 
 // Top
 $('logo').on('click', function() {
@@ -76,14 +89,19 @@ $('logo').on('click', function() {
     setTimeout("$('#engine').slideDown(618)", 618)
 })
 $('#top').on('click', '.home', function() {
-    event.target.className = 'book'
-    $('#engine,#book').hide()
+    event.target.className = event.target.dataset.id
+    $('#engine,#book,#login').hide()
     $('#search').animate({ height:'show' })
 })
 $('#top').on('click', '.book', function() {
     event.target.className = 'home'
-    $('#engine,#search').hide()
+    $('#engine,#search,#login').hide()
     $('#book').animate({ height:'show' })
+})
+$('#top').on('click', '.user', function() {
+    event.target.className = 'home'
+    $('#engine,#search,#book').hide()
+    $('#login').animate({ height:'show' })
 })
 
 // 输入 - 智能联想
@@ -243,29 +261,6 @@ $('#more-i').on('click', '.fa-mini', function() {
     Mer.Engine(event.target)
 })
 
-// Book
-Mer.showHtml = function(engines, tag) {
-    var cls = event.target.innerText
-    var showHtml = ''
-    for (var key in engines[cls]) {
-        var e = engines[cls][key]
-        if (e.icon) {
-            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
-        } else {
-            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
-        }
-    }
-    return showHtml
-}
-$('#book .kind').on('click', 'tag' , function() {
-    $('#book .show').html( Mer.showHtml(User.books, 'book') )
-})
-$('#book .show').on('click', 'book', function() {
-    var e = event.target.dataset
-    var i = User.books[e.cls][e.key]
-    window.open(i.url)
-})
-
 // Engine
 Mer.Engine = function() {
     var e = event.target.dataset
@@ -289,4 +284,27 @@ $('#engine .show').on('click', 'engine', function() {
     Mer.Engine()
     $('#engine,#book').hide()
     $('#search').animate({ height:'show' })
+})
+
+// Book
+Mer.showHtml = function(engines, tag) {
+    var cls = event.target.innerText
+    var showHtml = ''
+    for (var key in engines[cls]) {
+        var e = engines[cls][key]
+        if (e.icon) {
+            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
+        } else {
+            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
+        }
+    }
+    return showHtml
+}
+$('#book .kind').on('click', 'tag' , function() {
+    $('#book .show').html( Mer.showHtml(User.books, 'book') )
+})
+$('#book .show').on('click', 'book', function() {
+    var e = event.target.dataset
+    var i = User.books[e.cls][e.key]
+    window.open(i.url)
 })
