@@ -71,11 +71,9 @@ __BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
 __BookEngine($('#book'), User.books, User.def.books, 'book')
 var __Login = function() {
     var html = `
-    <div id="login-hint">
-        <i class="fa-logo iconfont icon-star"></i>
-        <div class="login-text">
-            请输入邮箱
-        </div>
+    <i class="fa-logo iconfont icon-star"></i>
+    <div id="login-text">
+        请输入名字
     </div>
     <input id="login-name" type="text" placeholder="名字">
     <input id="login-key"  type="password" placeholder="密码">
@@ -310,4 +308,15 @@ $('#book .show').on('click', 'book', function() {
     var e = event.target.dataset
     var i = User.books[e.cls][e.key]
     window.open(i.url)
+})
+
+// Login
+$('#login-name').on('keyup', function() {
+    var str = ''
+    for (var i of event.target.value) {
+        if (i.search(/[\u4E00-\u9FA5|\u0800-\u4E00|\uAC00-\uD7FF|\d|\w|\-|_]/) == 0) {
+            str += i
+        }
+    }
+    event.target.value = str
 })

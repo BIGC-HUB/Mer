@@ -292,12 +292,14 @@ book span, book i {
 #login-log-in:hover {
     background-color: rgba(3, 125, 216, 0.95);
 }
-#login-hint {
-    margin: 0 auto 1em;
+#login i {
+    color: #037DD8;
+}
+#login-text {
     width: 70%;
+    margin: 0 auto 1em;
     padding: 8px;
     color: #037DD8;
-    border-radius: 4px;
 }
 
 /* 媒体查询 >= 768px */
@@ -325,7 +327,7 @@ book span, book i {
     engine span, book {
         font-size: 1.5em;
     }
-    #login input,#login-hint {
+    #login input,#login-text {
         width: 30%;
     }
     #login button {
