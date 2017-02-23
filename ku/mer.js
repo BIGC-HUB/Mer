@@ -70,14 +70,20 @@ var __BookEngine = function(element, engines, def, tag) {
 __BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
 __BookEngine($('#book'), User.books, User.def.books, 'book')
 var __Login = function() {
-    var html = `
-    <i class="fa-logo iconfont icon-star"></i>
-    <div id="login-text">
-        请输入名字
-    </div>
-    <input id="login-name" type="text" placeholder="名字">
-    <input id="login-key"  type="password" placeholder="密码">
-    <button id="login-sign-up" type="button" name="button">注册</button><button id="login-log-in" type="button" name="button">登录</button>`
+    var html = '<i class="blue fa-logo iconfont icon-star"></i>' +
+    '<div id="login-text">' +
+        '请输入名字' +
+    '</div>' +
+    '<span class="input-top-left"><i class="fa-lg iconfont icon-login"></i></span>' +
+    '<input id="login-name" type="text" placeholder="name">' +
+    '<span class="input-top-right"><i class="fa-lg iconfont icon-clearx"></i></span>' +
+    '<br>' +
+    '<span class="input-bottom-left"><i class="fa-lg iconfont icon-lock"></i></span>' +
+    '<input id="login-key"  type="password" placeholder="password">' +
+    '<span class="input-bottom-right"><i class="fa-lg iconfont icon-biyan"></i></span>' +
+    '<br>' +
+    '<button id="login-sign-up" type="button" name="button">注册</button>' +
+    '<button id="login-log-in"  type="button" name="button">登录</button>'
     $('#login').html(html)
 }()
 
@@ -311,12 +317,35 @@ $('#book .show').on('click', 'book', function() {
 })
 
 // Login
-$('#login-name').on('keyup', function() {
+$('#login-name').on('focus', function() {
+    $('#login-text').text('请输入名字')
+})
+$('#login-name').on('blur', function() {
+    // var i = String.fromCharCode(event.keyCode)
     var str = ''
+    var cuo = ''
     for (var i of event.target.value) {
-        if (i.search(/[\u4E00-\u9FA5|\u0800-\u4E00|\uAC00-\uD7FF|\d|\w|\-|_]/) == 0) {
+        if (i.search(/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF|\d|\w|\-|_]/) == 0) {
             str += i
+        } else {
+            cuo += i
         }
     }
     event.target.value = str
+    if (cuo) {
+        $('#login-text').text('字符＂' + cuo + '＂不可用')
+    } else {
+        if (str) {
+            $('#login-text').text('校验正确')
+        }
+    }
+})
+$('#login-key').on('focus', function() {
+    $('#login-text').text('请输入密码')
+})
+$('#login-key').on('blur', function() {
+    if (event.target.value) {
+        $('#login-text').text('点击登录')
+    }
+
 })
