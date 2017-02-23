@@ -160,9 +160,11 @@ var UpDn = function(next) {
 $('#search-input').on('blur', function() {
     event.target.placeholder = ''
     // 智能联想
-    $('#more-ul').html('')
-    $('#more-ul').removeClass('more-border')
-    $('#search-input').removeClass('more-radius')
+    if (screen.width > 768) {
+        $('#more-ul').html('')
+        $('#more-ul').removeClass('more-border')
+        $('#search-input').removeClass('more-radius')
+    }
 })
 $('#search-input').on('focus', function() {
     $('.fa-mini').remove()
@@ -258,6 +260,8 @@ $('#more-ul').on('blur', '#more-note',function() {
     User.note = note
 })
 $('#more-button').on('click', function() {
+    $('#more-ul').removeClass('more-border')
+    $('#search-input').removeClass('more-radius')
     Mer.Mini(User.engines, '综合')
     Mer.Note(User.note)
 })

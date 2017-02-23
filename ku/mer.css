@@ -284,6 +284,8 @@ book span, book i {
     border-left-style: none;
 }
 #login input {
+    -webkit-appearance: none;
+    border-radius: 0;
     margin: 0 auto;
     width: calc(70% - 45px);
     height: 28px;
