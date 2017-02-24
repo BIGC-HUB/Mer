@@ -59,7 +59,7 @@ html,button,input,select,textarea{
 }
 top {
     display: inline-block;
-    width: 33%;
+    width: 33.333333%;
     height: 3em;
     line-height: 3em;
 }
@@ -68,12 +68,6 @@ top:hover {
 }
 top i {
     pointer-events: none;
-}
-top:first-child {
-    float: left;
-}
-top:last-child {
-    float: right;
 }
 
 /* logo */
@@ -246,8 +240,24 @@ book span, book i {
 
 /* login */
 /*#login { display: block; }*/
-.blue {
-    color: #037DD8;
+inputbox {
+    display: block;
+    width: calc(70% + 14px);
+    margin: 0 auto;
+    border: 1px solid #CCD8E1;
+    border-radius: 0;
+    color: #8590A6;
+}
+inputbox + inputbox {
+    border-top-style: none;
+}
+inputbox:first-of-type {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+inputbox:last-of-type {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 #login-text {
     width: 70%;
@@ -255,51 +265,14 @@ book span, book i {
     padding: 8px;
     color: #037DD8;
 }
-.input-top-left,.input-top-right,.input-bottom-left,.input-bottom-right {
-    vertical-align: top;
-    display: inline-block;
-    width: 30px;
-    padding: 8px 0;
-    height: 28px;
-    line-height: 28px;
-    border: 1px solid #C0C0C0;
-    border-radius: 0;
-}
-.input-top-left {
-    border-top-left-radius: 5px;
-    border-right-style: none;
-}
-.input-top-right {
-    border-top-right-radius: 5px;
-    border-left-style: none;
-}
-.input-bottom-left {
-    border-bottom-left-radius: 5px;
-    border-top-style: none;
-    border-right-style: none;
-}
-.input-bottom-right {
-    border-bottom-right-radius: 5px;
-    border-top-style: none;
-    border-left-style: none;
-}
 #login input {
     -webkit-appearance: none;
     border-radius: 0;
     margin: 0 auto;
-    width: calc(70% - 45px);
-    height: 28px;
+    width: calc(100% - 60px);
     padding: 8px 0;
     outline: 0;
-    border-left-style: none;
-    border-right-style: none;
-}
-#login-name {
-    border: 1px solid #C0C0C0;
-}
-#login-key {
-    border: 1px solid #C0C0C0;
-    border-top-style: none;
+    border-style: none;
 }
 #login button {
     width: 35%;
@@ -311,8 +284,8 @@ book span, book i {
 #login-sign-up {
     margin-right: 8px;
     background-color: #FFF;
-    color: #8590a6;
-    border: 1px solid #ccd8e1;
+    color: #8590A6;
+    border: 1px solid #CCD8E1;
 }
 #login-sign-up:hover {
     background-color: rgba(207,216,230,.1);
@@ -352,15 +325,13 @@ book span, book i {
     engine span, book {
         font-size: 1.5em;
     }
-    .input-left {
-        right: 13%;
-    }
-    .input-right {
-        left: 13%;
+    inputbox {
+        width: calc(30% + 14px);
     }
     #login input,#login-hint {
-        width: calc(30% - 45px)
+        width: calc(100% - 60px);
     }
+
     #login button {
         width: 15%;
     }

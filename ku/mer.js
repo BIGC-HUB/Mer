@@ -28,6 +28,7 @@ var User = null || defUser
 var __initTop__ = function() {
     var html =
         '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
+        '<top class="home" ></top>' +
         '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
@@ -70,18 +71,20 @@ var __BookEngine = function(element, engines, def, tag) {
 __BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
 __BookEngine($('#book'), User.books, User.def.books, 'book')
 var __Login = function() {
-    var html = '<i class="blue fa-logo iconfont icon-star"></i>' +
+    var html = '<i class="fa-logo iconfont icon-star" style="color: #037DD8"></i>' +
     '<div id="login-text">' +
         '请输入名字' +
     '</div>' +
-    '<span class="input-top-left"><i class="fa-lg iconfont icon-login"></i></span>' +
-    '<input id="login-name" type="text" placeholder="name">' +
-    '<span class="input-top-right"><i class="fa-lg iconfont icon-clearx"></i></span>' +
-    '<br>' +
-    '<span class="input-bottom-left"><i class="fa-lg iconfont icon-lock"></i></span>' +
-    '<input id="login-key"  type="password" placeholder="password">' +
-    '<span class="input-bottom-right"><i class="fa-lg iconfont icon-biyan"></i></span>' +
-    '<br>' +
+    '<inputbox>' +
+        '<i class="fa-lg iconfont icon-login"></i>' +
+        '<input id="login-name" type="text" placeholder="名字">' +
+        '<i class="fa-lg iconfont icon-clearx"></i>' +
+    '</inputbox>' +
+    '<inputbox>' +
+        '<i class="fa-lg iconfont icon-lock"></i>' +
+        '<input id="login-key"  type="password" placeholder="密码">' +
+        '<i class="fa-lg iconfont icon-biyan"></i>' +
+    '</inputbox>' +
     '<button id="login-sign-up" type="button" name="button">注册</button>' +
     '<button id="login-log-in"  type="button" name="button">登录</button>'
     $('#login').html(html)
@@ -92,13 +95,18 @@ $('logo').on('click', function() {
     $('#search').hide()
     $('#engine').slideDown("slow")
 })
+$('#top').on('click', '.home', function() {
+    if ($('#search').css('display') === 'none') {
+        $('#engine,#book,#login').hide()
+        $('#search').animate({ height:'show' })
+    }
+})
 $('#top').on('click', '.book', function() {
     if ($('#book').css('display') === 'none') {
         $('#engine,#search,#login').hide()
         $('#book').animate({ height:'show' })
     } else {
-        $('#engine,#book,#login').hide()
-        $('#search').animate({ height:'show' })
+        $('#top .home').click()
     }
 })
 $('#top').on('click', '.user', function() {
@@ -106,8 +114,7 @@ $('#top').on('click', '.user', function() {
         $('#engine,#search,#book').hide()
         $('#login').animate({ height:'show' })
     } else {
-        $('#engine,#book,#login').hide()
-        $('#search').animate({ height:'show' })
+        $('#top .home').click()
     }
 })
 
