@@ -91,9 +91,6 @@ logo span {
 }
 
 /* search */
-#search {
-    margin: 0 auto 2px;
-}
 #search-input,#search-button{
     vertical-align: bottom;
     font-size: 25px;
@@ -141,7 +138,7 @@ logo span {
     border-bottom-left-radius: 0 !important;
 }
 #more-ul li {
-    margin-bottom: 2px;
+    margin: 1px;
 }
 #more-ul,#more-button {
     vertical-align: top;
