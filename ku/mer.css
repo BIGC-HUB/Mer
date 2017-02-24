@@ -3,6 +3,9 @@ body {
     margin: 0 auto;
     text-align: center;
 }
+input,button,textarea {
+    margin: 0 auto;
+}
 logo,tag,engine,book,top,li,button,.fa-mini {
     cursor: pointer;
 }
@@ -53,11 +56,11 @@ html,button,input,select,textarea{
     position: fixed;
     top: 0;
     width: 100%;
-    height: 3em;
     z-index: 1;
     color: transparent;
 }
 top {
+    vertical-align: top;
     display: inline-block;
     width: 33.333333%;
     height: 3em;
@@ -88,7 +91,10 @@ logo span {
 }
 
 /* search */
-#search-input, #search-button{
+#search {
+    margin: 0 auto 2px;
+}
+#search-input,#search-button{
     vertical-align: bottom;
     font-size: 25px;
     padding: 8px;
@@ -137,7 +143,7 @@ logo span {
 #more-ul li {
     margin-bottom: 2px;
 }
-#more-ul, #more-button {
+#more-ul,#more-button {
     vertical-align: top;
     padding: 8px;
     outline: 0;
@@ -268,7 +274,6 @@ inputbox:last-of-type {
 #login input {
     -webkit-appearance: none;
     border-radius: 0;
-    margin: 0 auto;
     width: calc(100% - 60px);
     padding: 8px 0;
     outline: 0;

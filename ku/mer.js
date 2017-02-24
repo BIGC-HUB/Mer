@@ -35,8 +35,8 @@ var __initTop__ = function() {
 var __initMain = function(engines, def, key) {
     var e = engines[def][key]
     var html = `
+        <logo><i data-cls="${def}" data-key="${key}" style="color:${e.color};" class="fa-5x iconfont icon-dahai"></i></logo>
         <div class="search">
-            <logo><i data-cls="${def}" data-key="${key}" style="color:${e.color};" class="fa-5x iconfont icon-dahai"></i></logo>
             <input id="search-input" type="text" maxlength="70"><button id="search-button">
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
             </button>
