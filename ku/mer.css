@@ -21,6 +21,9 @@ logo,tag,engine,top,li {
     color: transparent !important;
     border-color: transparent !important;
 }
+.theme {
+    color: #037DD8;
+}
 
 /* 字体栈 */
 html,button,input,select,textarea{
@@ -262,6 +265,7 @@ inputbox:last-of-type {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
 #login-text {
     width: 70%;
     margin: 0 auto 1em;

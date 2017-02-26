@@ -78,7 +78,7 @@ var __Login = function() {
     '<inputbox>' +
         '<i class="fa-lg iconfont icon-login"></i>' +
         '<input id="login-name" type="text" placeholder="名字">' +
-        '<i class="fa-lg iconfont icon-clearx"></i>' +
+        '<i class="transparent fa-lg iconfont icon-clearx"></i>' +
     '</inputbox>' +
     '<inputbox>' +
         '<i class="fa-lg iconfont icon-lock"></i>' +
@@ -117,7 +117,6 @@ $('#top').on('click', '.user', function() {
         $('#top .home').click()
     }
 })
-
 // 输入 - 智能联想
 Mer.moreHtml = ''
 Mer.now = -1
@@ -165,7 +164,6 @@ var UpDn = function(next) {
     $(all[old]).removeClass('li-hover')
 }
 $('#search-input').on('blur', function() {
-    event.target.placeholder = ''
     // 智能联想
     if (screen.width > 768) {
         $('#more-ul').html('')
@@ -329,34 +327,62 @@ $('#book .show').on('click', 'book', function() {
 
 // Login
 $('#login-name').on('focus', function() {
+    event.target.parentElement.classList.add('theme')
     $('#login-text').text('请输入名字')
 })
 $('#login-name').on('blur', function() {
-    // var i = String.fromCharCode(event.keyCode)
-    var str = ''
-    var cuo = ''
-    for (var i of event.target.value) {
-        if (i.search(/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF|\d|\w|\-|_]/) == 0) {
-            str += i
-        } else {
-            cuo += i
-        }
-    }
-    event.target.value = str
-    if (cuo) {
-        $('#login-text').text('字符＂' + cuo + '＂不可用')
+    event.target.parentElement.classList.remove('theme')
+})
+$('#login-name').on('keyup', function() {
+    if (event.target.value) {
+        $('#login-name ~ i').removeClass('transparent')
     } else {
-        if (str) {
-            $('#login-text').text('校验正确')
-        }
+        $('#login-name ~ i').addClass('transparent')
     }
 })
+$('#login-name').on('keydown', function() {
+    if (event.key.search(/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF]|[\d|\w|\-|_]/)) {
+        event.preventDefault()
+    }
+})
+$('#login-name ~ i').on('click', function() {
+    $('#login-name')[0].value = ''
+    $('#login-name ~ i').addClass('transparent')
+    $('#login-name').focus()
+})
 $('#login-key').on('focus', function() {
+    event.target.parentElement.classList.add('theme')
     $('#login-text').text('请输入密码')
 })
 $('#login-key').on('blur', function() {
-    if (event.target.value) {
-        $('#login-text').text('点击登录')
+    event.target.parentElement.classList.remove('theme')
+    $('#login-text').text('点击登录')
+})
+$('#login-key ~ i').on('click', function() {
+    var i = $(event.target)
+    var e = $('#login-key')[0]
+
+    if (e.type === 'text') {
+        e.type = 'password'
+        i.removeClass('icon-zhengyan')
+    } else {
+        e.type = 'text'
+        i.addClass('icon-zhengyan')
+    }
+    $('#login-key').focus()
+})
+$('#login-key').on('keydown', function() {
+    if (event.key === ' ') {
+        event.preventDefault()
+    }
+})
+$('#login-log-in').on('click', function() {
+    if (!$('#login-name').val()) {
+        $('#login-name').focus()
+    } else {
+        if (!$('#login-key').val()) {
+            $('#login-key').focus()
+        }
     }
 
 })
