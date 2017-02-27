@@ -69,7 +69,7 @@ var defUser = {
                 "url": "http://baike.baidu.com/item/"
             }
         },
-        "设计": {
+        "图片": {
             "花瓣": {
                 "icon": "huaban",
                 "color": "#DF4751",
