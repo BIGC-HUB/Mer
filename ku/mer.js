@@ -71,22 +71,38 @@ var __BookEngine = function(element, engines, def, tag) {
 __BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
 __BookEngine($('#book'), User.books, User.def.books, 'book')
 var __Login = function() {
-    var html = '<i class="fa-logo iconfont icon-star" style="color: #037DD8"></i>' +
+    var html = '<i class="theme fa-logo iconfont icon-star"></i>' +
     '<div id="login-text">' +
         '请输入名字' +
     '</div>' +
-    '<inputbox>' +
-        '<i class="fa-lg iconfont icon-login"></i>' +
-        '<input id="login-name" type="text" placeholder="名字">' +
-        '<i class="transparent fa-lg iconfont icon-clearx"></i>' +
-    '</inputbox>' +
-    '<inputbox>' +
-        '<i class="fa-lg iconfont icon-lock"></i>' +
-        '<input id="login-key"  type="password" placeholder="密码">' +
-        '<i class="fa-lg iconfont icon-biyan"></i>' +
-    '</inputbox>' +
-    '<button id="login-sign-up" type="button" name="button">注册</button>' +
-    '<button id="login-log-in"  type="button" name="button">登录</button>'
+    '<div id="login-denglu">' +
+        '<inputbox>' +
+            '<i class="fa-lg iconfont icon-login"></i>' +
+            '<input id="login-name" type="text" placeholder="名字">' +
+            '<i class="transparent fa-lg iconfont icon-clearx"></i>' +
+        '</inputbox>' +
+        '<inputbox>' +
+            '<i class="fa-lg iconfont icon-lock"></i>' +
+            '<input id="login-key"  type="password" placeholder="密码">' +
+            '<i class="fa-lg iconfont icon-biyan"></i>' +
+        '</inputbox>' +
+    '</div>' +
+    '<div id="login-zhuce">' +
+        '<inputbox>' +
+            '<i class="fa-lg iconfont icon-engines"></i>' +
+            '<input id="login-name" type="text" placeholder="手机">' +
+            '<i class="transparent fa-lg iconfont icon-clearx"></i>' +
+        '</inputbox>' +
+        '<div id="login-sms">' +
+            '<inputbox>' +
+                '<i class="fa-lg iconfont icon-engines"></i>' +
+                '<input id="login-name" type="text" placeholder="手机">' +
+                '<i class="transparent fa-lg iconfont icon-clearx"></i>' +
+            '</inputbox>' +
+        '</div>' +
+    '</div>' +
+    '<button id="login-btn-zhuce" type="button" name="button">注册</button>' +
+    '<button id="login-btn-denglu"  type="button" name="button">登录</button>'
     $('#login').html(html)
 }()
 
@@ -117,6 +133,7 @@ $('#top').on('click', '.user', function() {
         $('#top .home').click()
     }
 })
+
 // 输入 - 智能联想
 Mer.moreHtml = ''
 Mer.now = -1
@@ -326,12 +343,23 @@ $('#book .show').on('click', 'book', function() {
 })
 
 // Login
+$('#login-name,#login-key').on('blur', function() {
+    event.target.parentElement.classList.remove('theme')
+    var arr = [$('#login-name'), $('#login-key')]
+    var ok = true
+    for (var i of arr) {
+        if (!i.val()) {
+            ok = false
+            break
+        }
+    }
+    if (ok) {
+        $('#login-text').text('点击登录')
+    }
+})
 $('#login-name').on('focus', function() {
     event.target.parentElement.classList.add('theme')
     $('#login-text').text('请输入名字')
-})
-$('#login-name').on('blur', function() {
-    event.target.parentElement.classList.remove('theme')
 })
 $('#login-name').on('keyup', function() {
     if (event.target.value) {
@@ -350,18 +378,19 @@ $('#login-name ~ i').on('click', function() {
     $('#login-name ~ i').addClass('transparent')
     $('#login-name').focus()
 })
+
 $('#login-key').on('focus', function() {
     event.target.parentElement.classList.add('theme')
     $('#login-text').text('请输入密码')
 })
-$('#login-key').on('blur', function() {
-    event.target.parentElement.classList.remove('theme')
-    $('#login-text').text('点击登录')
+$('#login-key').on('keydown', function() {
+    if (event.key === ' ') {
+        event.preventDefault()
+    }
 })
 $('#login-key ~ i').on('click', function() {
     var i = $(event.target)
     var e = $('#login-key')[0]
-
     if (e.type === 'text') {
         e.type = 'password'
         i.removeClass('icon-zhengyan')
@@ -369,20 +398,13 @@ $('#login-key ~ i').on('click', function() {
         e.type = 'text'
         i.addClass('icon-zhengyan')
     }
-    $('#login-key').focus()
 })
-$('#login-key').on('keydown', function() {
-    if (event.key === ' ') {
-        event.preventDefault()
-    }
-})
-$('#login-log-in').on('click', function() {
-    if (!$('#login-name').val()) {
-        $('#login-name').focus()
-    } else {
-        if (!$('#login-key').val()) {
-            $('#login-key').focus()
-        }
-    }
 
+$('#login-btn-denglu').on('click', function() {
+    $('#login-zhuce').hide()
+    $('#login-denglu').animate({ height:'show' })
+})
+$('#login-btn-zhuce').on('click', function() {
+    $('#login-denglu').hide()
+    $('#login-zhuce').animate({ height:'show' })
 })
