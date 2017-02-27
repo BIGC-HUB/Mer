@@ -34,7 +34,7 @@ logo,tag,engine,top,li {
 html,button,input,select,textarea{
     color: #333;
     font-size: 1.17em;
-    font-family: Roboto, 'Segoe UI', Arial, 'Microsoft Yahei', sans-serif;
+    font-family: Roboto,Segoe UI,Arial,Microsoft Yahei,sans-serif;
 }
 
 /* 字体大小 */
@@ -208,11 +208,9 @@ tag {
     line-height: 4em;
     margin-bottom: 8px;
     color: #666;
-    border: 1px solid transparent;
 }
 tag:hover {
     background: #F5F6F9;
-    border-color: #9DA3A6;
 }
 engine {
     vertical-align: bottom;
@@ -272,17 +270,27 @@ inputbox:last-of-type {
     border-bottom-right-radius: 5px;
 }
 
+
 #login-text {
     width: 70%;
     margin: 0 auto 1em;
     padding: 8px;
     color: #037DD8;
 }
+#login i,#login span {
+    vertical-align: middle;
+    display: inline-block;
+    width: 30px;
+}
+#login i {
+    font-size: 1.33333333em;
+}
 #login input {
+    vertical-align: middle;
     -webkit-appearance: none;
     border-radius: 0;
     width: calc(100% - 60px);
-    padding: 8px 0 8px 2px;
+    padding: 8px 0;
     outline: 0;
     border-style: none;
 }
@@ -311,7 +319,8 @@ inputbox:last-of-type {
 #login-btn-denglu:hover {
     background-color: rgba(3, 125, 216, 0.95);
 }
-#login-zhuce,#login-sms {
+
+#login-zhuce {
     display: none;
 }
 
