@@ -9,9 +9,6 @@ input,button,textarea {
 logo,tag,engine,book,top,li,button,.fa-mini {
     cursor: pointer;
 }
-logo,engine,book,#login button {
-    font-weight: lighter;
-}
 logo,tag,engine,top,li {
     /* 禁止 换行 */
     white-space: nowrap;
@@ -34,7 +31,8 @@ logo,tag,engine,top,li {
 html,button,input,select,textarea{
     color: #333;
     font-size: 1.17em;
-    font-family: Roboto,Segoe UI,Arial,Microsoft Yahei,sans-serif;
+    font-family: Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
+    letter-spacing: 0.01em;
 }
 
 /* 字体大小 */
@@ -238,6 +236,7 @@ book {
     height: 7em;
     word-wrap: break-word;
     letter-spacing: 0.5em;
+    line-height: 1.41em;
     overflow: hidden;
 }
 book:hover {
@@ -270,14 +269,13 @@ inputbox:last-of-type {
     border-bottom-right-radius: 5px;
 }
 
-
 #login-text {
     width: 70%;
     margin: 0 auto 1em;
     padding: 8px;
     color: #037DD8;
 }
-#login i,#login span {
+#login i {
     vertical-align: middle;
     display: inline-block;
     width: 30px;
@@ -317,11 +315,20 @@ inputbox:last-of-type {
     border: 1px solid #037DD8;
 }
 #login-btn-denglu:hover {
-    background-color: rgba(3, 125, 216, 0.95);
+    background-color: #0070BA;
 }
 
 #login-zhuce {
     display: none;
+}
+#login-zhuce input {
+    width: 65%!important;
+}
+#login-zhuce span {
+    vertical-align: middle;
+    display: inline-block;
+    width: calc(35% - 31px);
+    border-left: 1px solid #9DA3A6;
 }
 
 /* 媒体查询 >= 768px */

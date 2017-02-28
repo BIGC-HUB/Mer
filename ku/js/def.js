@@ -125,7 +125,7 @@ var defUser = {
                 "wap": "https://m.mafengwo.cn/mdd/query.php?q=",
                 "url": "http://www.mafengwo.cn/group/s.php?q="
             },
-            "飞猪": {
+            "飞猪旅行": {
                 "color": "#3C3C3C",
                 "wap": "https://h5.m.taobao.com/trip/search/result/index.html?keyword=",
                 "url": "https://www.alitrip.com/kezhan/?="

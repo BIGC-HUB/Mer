@@ -17,9 +17,14 @@ var __Login = function() {
     '</div>' +
     '<div id="login-zhuce">' +
         '<inputbox>' +
-            '<i class="iconfont icon-login"></i>' +
+            '<i class="iconfont icon-shouji"></i>' +
             '<input id="login-phone" type="text" maxlength="11" placeholder="手机">' +
             '<span  id="login-phone-11">11</span>' +
+        '</inputbox>' +
+        '<inputbox>' +
+            '<i class="iconfont icon-sms"></i>' +
+            '<input id="login-sms" type="text" maxlength="4" placeholder="验证码">' +
+            '<span  id="login-sms-60">60</span>' +
         '</inputbox>' +
     '</div>' +
     '<button id="login-btn-zhuce" type="button" name="button">注册</button>' +
@@ -44,7 +49,7 @@ $('#login-name,#login-key').on('blur', function() {
 })
 $('#login-name').on('focus', function() {
     event.target.parentElement.classList.add('theme')
-    $('#login-text').text('请输入名字')
+    $('#login-text').text('名字 | 手机号')
 })
 $('#login-name').on('keyup', function() {
     if (event.target.value) {
@@ -68,7 +73,7 @@ $('#login-key').on('focus', function() {
     event.target.parentElement.classList.add('theme')
     $('#login-text').text('请输入密码')
 })
-$('#login-key').on('keydown', function() {
+$('#login-key, #login-sms').on('keydown', function() {
     if (/ /.test(event.key)) {
         event.preventDefault()
     }
@@ -109,16 +114,8 @@ $('#login-phone').on('blur', function() {
     if (num) {
         $('#login-phone-11').text(num)
     } else {
-        $('#login-phone-11').text('')
-        var sms =
-            '<inputbox id="login-sms-div">' +
-                '<span  style="width: 50%">短信验证</span>' +
-                '<input style="width: 50%;text-align: center" id="login-sms" type="text" maxlength="4" placeholder="验证码">' +
-            '</inputbox>'
+        $('#login-phone-11').text('>')
         $('#login-text').text('发送验证码')
-        if (!$('#login-sms').length) {
-            $('#login-zhuce').append(sms)
-        }
     }
 })
 $('#login-phone').on('keyup', function() {
@@ -126,9 +123,16 @@ $('#login-phone').on('keyup', function() {
     if (num) {
         $('#login-phone-11').text(num)
         $('#login-text').text('请输入手机')
-        $('#login-sms-div').remove()
     } else {
-        $('#login-phone-11').text('')
-        $('#login-text').text('发送验证码')
+        $('#login-phone-11').text('>')
     }
+})
+$('#login-sms').on('blur', function() {
+    var str = ''
+    for (var i of event.target.value) {
+        if (/\d/.test(i)) {
+            str += i
+        }
+    }
+    event.target.value = str
 })
