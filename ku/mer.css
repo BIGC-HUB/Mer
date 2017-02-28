@@ -3,9 +3,6 @@ body {
     margin: 0 auto;
     text-align: center;
 }
-input,button,textarea {
-    margin: 0 auto;
-}
 logo,tag,engine,book,top,li,button,.fa-mini {
     cursor: pointer;
 }
@@ -17,7 +14,6 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-
 .transparent {
     color: transparent !important;
     border-color: transparent !important;
@@ -26,13 +22,20 @@ logo,tag,engine,top,li {
     color: #037DD8;
 }
 
-
 /* 字体栈 */
 html,button,input,select,textarea{
     color: #333;
     font-size: 1.17em;
     font-family: Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
     letter-spacing: 0.01em;
+}
+
+/* Safari */
+input,button,textarea {
+    margin: 0 auto;
+}
+#login input::-webkit-input-placeholder {
+    line-height: 1.26em;
 }
 
 /* 字体大小 */
