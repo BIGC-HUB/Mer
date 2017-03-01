@@ -69,7 +69,7 @@ var __initLogo = function(def, logo) {
 var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
-        kindHtml += `<tag>${cls}</tag>`
+        kindHtml += `<tag data-cls="${cls}" contentEditable="false">${cls}</tag>`
     }
     var showHtml = ''
     for (var key in engines[def]) {
@@ -112,7 +112,7 @@ $('#top').on('click', '.book', function() {
 })
 $('#top').on('click', '.user', function() {
     if ($('#login').css('display') === 'none') {
-        $('#engine,#search,#book').hide()
+        $('#engine,#search,#book,#bottom').hide()
         $('#login').animate({ height:'show' })
     } else {
         $('#top .home').click()
@@ -123,7 +123,7 @@ $('#top').on('click', '.user', function() {
 Mer.moreHtml = ''
 Mer.now = -1
 Mer.firstUp = true
-var soGou = function(value) {
+Mer.soGou = function(value) {
     Mer.now = -1
     Mer.firstUp = true
     //组装 URL
@@ -151,7 +151,7 @@ var soGou = function(value) {
     //动态 JS脚本 cnblogs.com/woider/p/5805248.html
     $("#sug").html('<script src=' + sugurl + '></script>')
 }
-var UpDn = function(next) {
+Mer.UpDn = function(next) {
     if (Mer.firstUp && next === -1) {
         next = 0
         Mer.firstUp = false
@@ -189,11 +189,11 @@ $('#search-input').on('keyup', function() {
     if (event.keyCode === 13) {
         $('#search-button').click()
     } else if (event.keyCode === 38) {
-        UpDn( -1 )
+        Mer.UpDn( -1 )
     } else if (event.keyCode === 40) {
-        UpDn( +1 )
+        Mer.UpDn( +1 )
     } else {
-        soGou(event.target.value)
+        Mer.soGou(event.target.value)
     }
 })
 $('#search-input').on('keydown', function() {
@@ -295,7 +295,20 @@ Mer.Engine = function() {
     $('logo').html(html)
     input.focus()
 }
-$('#engine').on('click', 'tag'   , function() {
+Mer.tagBlur = function(engines) {
+    var old = event.target.dataset.cls
+    var now = event.target.innerText
+    if (old !== now) {
+        engines[now] = JSON.parse(JSON.stringify(engines[old]))
+        delete engines[old]
+        event.target.dataset.cls = now
+    }
+    $('#bottom').click()
+}
+$('#engine').on('blur' , 'tag', function() {
+    Mer.tagBlur(User.engines)
+})
+$('#engine').on('click', 'tag', function() {
     $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
 })
 $('#engine').on('click', 'engine', function() {
@@ -318,6 +331,9 @@ Mer.showHtml = function(engines, tag) {
     }
     return showHtml
 }
+$('#book').on('blur' , 'tag', function() {
+    Mer.tagBlur(User.books)
+})
 $('#book').on('click', 'tag' , function() {
     $('#book .show').html( Mer.showHtml(User.books, 'book') )
 })
@@ -330,5 +346,19 @@ $('#book').on('click', 'book', function() {
 __init__(User)
 
 $('#bottom').on('click', function() {
-    $(event.target).toggleClass('theme-hover')
+    if ($('#bottom').hasClass('theme-hover')) {
+        $('#bottom').removeClass('theme-hover')
+        $('tag').each(function(i, e) {
+            e.contentEditable = false
+        })
+        $('.addTBE').remove()
+    } else {
+        $('#bottom').addClass('theme-hover')
+        $('tag').each(function(i,e) {
+            e.contentEditable = true
+        })
+        $('#book .show').append('<book class="addTBE">　　＋　　</book>')
+        $('#engine .show').append('<engine class="addTBE"><i class="fa-logo iconfont icon-jia"></i></engine>')
+        $('.kind').append('<tag class="addTBE" contenteditable="true"><i class="fa-lg iconfont icon-jia"></i></tag>')
+    }
 })

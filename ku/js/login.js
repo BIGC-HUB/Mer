@@ -6,7 +6,7 @@ var html = '<div class="theme fa-logo iconfont icon-star"></div>' +
         '<inputbox>' +
             '<i class="iconfont icon-login"></i>' +
             '<input id="login-name" type="text" placeholder="名字" maxlength="16">' +
-            '<i class="transparent iconfont icon-clearx"></i>' +
+            '<i class="transparent iconfont icon-xclear"></i>' +
         '</inputbox>' +
         '<inputbox>' +
             '<i class="iconfont icon-lock"></i>' +
@@ -16,7 +16,7 @@ var html = '<div class="theme fa-logo iconfont icon-star"></div>' +
     '</div>' +
     '<div id="login-zhuce">' +
         '<inputbox>' +
-            '<i class="iconfont icon-shouji"></i>' +
+            '<i class="iconfont icon-phone"></i>' +
             '<input id="login-phone" type="text" maxlength="11" placeholder="手机">' +
             '<span  id="login-phone-11">11</span>' +
         '</inputbox>' +
@@ -109,7 +109,7 @@ $('#login-phone').on('blur', function() {
     if (num) {
         $('#login-phone-11').text(num)
     } else {
-        $('#login-phone-11').text('>')
+        $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
         $('#login-text').text('发送验证码')
     }
 })
@@ -119,7 +119,7 @@ $('#login-phone').on('keyup', function() {
         $('#login-phone-11').text(num)
         $('#login-text').text('请输入手机')
     } else {
-        $('#login-phone-11').text('>')
+        $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
     }
 })
 $('#login-sms').on('focus', function() {

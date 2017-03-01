@@ -14,6 +14,9 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
+#login-zhuce,#bottom {
+    display: none;
+}
 .transparent {
     color: transparent !important;
     border-color: transparent !important;
@@ -22,7 +25,7 @@ logo,tag,engine,top,li {
     color: #037DD8;
 }
 .theme-hover {
-    color: #666 !important;
+    color: #333 !important;
     background-color: #F5F6F9;
 }
 
@@ -85,16 +88,14 @@ top:hover {
     color: #666;
 }
 #bottom {
-    display: none;
-    margin: 3em auto 0;
+    position: fixed;
+    bottom: 0;
     width: 100%;
+    z-index: 1;
+    color: #F5F6F9;
+    margin: 3em auto 0;
     height: 2em;
     line-height: 2em;
-    color: transparent;
-}
-#bottom:hover {
-    color: #666;
-    background-color: #F5F6F9;
 }
 #bottom i,top i {
     pointer-events: none;
@@ -339,9 +340,6 @@ inputbox:last-of-type {
     background-color: #0070BA;
 }
 
-#login-zhuce {
-    display: none;
-}
 #login-zhuce input {
     width: 65%!important;
 }
