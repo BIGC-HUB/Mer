@@ -32,6 +32,10 @@ var __initTop = function() {
         '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
+var __initBottom = function() {
+    var html = '<i class="iconfont icon-safari fa-lg"></i>管理'
+    $('#bottom').html(html)
+}()
 var __initMain = function() {
     var html = `
         <logo><i data-cls="综合" data-key="" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
@@ -90,18 +94,18 @@ var __init__ = function(User) {
 // Top
 $('#search').on('click', 'logo',function() {
     $('#search').hide()
-    $('#engine').slideDown("slow")
+    $('#engine,#bottom').slideDown("slow")
 })
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
-        $('#engine,#book,#login').hide()
+        $('#engine,#book,#login,#bottom').hide()
         $('#search').animate({ height:'show' })
     }
 })
 $('#top').on('click', '.book', function() {
     if ($('#book').css('display') === 'none') {
         $('#engine,#search,#login').hide()
-        $('#book').animate({ height:'show' })
+        $('#book,#bottom').animate({ height:'show' })
     } else {
         $('#top .home').click()
     }
@@ -296,7 +300,7 @@ $('#engine').on('click', 'tag'   , function() {
 })
 $('#engine').on('click', 'engine', function() {
     Mer.Engine()
-    $('#engine').hide()
+    $('#engine,#bottom').hide()
     $('#search').slideDown("slow")
 })
 
@@ -324,3 +328,7 @@ $('#book').on('click', 'book', function() {
 })
 
 __init__(User)
+
+$('#bottom').on('click', function() {
+    $(event.target).toggleClass('theme-hover')
+})
