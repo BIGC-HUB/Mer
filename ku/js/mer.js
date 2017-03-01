@@ -25,17 +25,16 @@ var Mer = {}
 var User = null || defUser
 
 // initHtml
-var __initTop__ = function() {
+var __initTop = function() {
     var html =
         '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
         '<top class="home" ></top>' +
         '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
-var __initMain = function(engines, def, key) {
-    var e = engines[def][key]
+var __initMain = function() {
     var html = `
-        <logo><i data-cls="${def}" data-key="${key}" style="color:${e.color};" class="fa-5x iconfont icon-dahai"></i></logo>
+        <logo><i data-cls="综合" data-key="" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
         <div class="search">
             <input id="search-input" type="text" maxlength="70"><button id="search-button">
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
@@ -48,8 +47,22 @@ var __initMain = function(engines, def, key) {
             </div>
         </div>`
     $('#search').html(html)
-}(User.engines, '综合', '')
-var __BookEngine = function(element, engines, def, tag) {
+}()
+var __initLogo = function(def, logo) {
+    var i = User.engines[def][logo]
+    var e = {cls:def, key:logo}
+    var input = $('#search-input')[0]
+    var html
+    if (i.icon) {
+        html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
+        input.placeholder = e.key
+    } else {
+        html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
+        input.placeholder = ''
+    }
+    $('logo').html(html)
+}
+var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
         kindHtml += `<tag>${cls}</tag>`
@@ -68,11 +81,14 @@ var __BookEngine = function(element, engines, def, tag) {
     <div class="show">${showHtml}</div>`
     element.html(html)
 }
-__BookEngine($('#engine'), User.engines, User.def.engines, 'engine')
-__BookEngine($('#book'), User.books, User.def.books, 'book')
+var __init__ = function(User) {
+    __initLogo(User.def.engine, User.def.logo)
+    __initBookEngine($('#engine'), User.engines, User.def.engine, 'engine')
+    __initBookEngine($('#book'), User.books, User.def.book, 'book')
+}
 
 // Top
-$('logo').on('click', function() {
+$('#search').on('click', 'logo',function() {
     $('#search').hide()
     $('#engine').slideDown("slow")
 })
@@ -256,7 +272,7 @@ $('#more-button').on('mouseover', function() {
     $('#more-button i').removeClass('transparent')
 })
 $('#more-i').on('click', '.fa-mini', function() {
-    Mer.Engine(event.target)
+    Mer.Engine()
 })
 
 // Engine
@@ -275,10 +291,10 @@ Mer.Engine = function() {
     $('logo').html(html)
     input.focus()
 }
-$('#engine .kind').on('click', 'tag'   , function() {
+$('#engine').on('click', 'tag'   , function() {
     $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
 })
-$('#engine .show').on('click', 'engine', function() {
+$('#engine').on('click', 'engine', function() {
     Mer.Engine()
     $('#engine').hide()
     $('#search').slideDown("slow")
@@ -298,11 +314,13 @@ Mer.showHtml = function(engines, tag) {
     }
     return showHtml
 }
-$('#book .kind').on('click', 'tag' , function() {
+$('#book').on('click', 'tag' , function() {
     $('#book .show').html( Mer.showHtml(User.books, 'book') )
 })
-$('#book .show').on('click', 'book', function() {
+$('#book').on('click', 'book', function() {
     var e = event.target.dataset
     var i = User.books[e.cls][e.key]
     window.open(i.url)
 })
+
+__init__(User)

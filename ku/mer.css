@@ -50,14 +50,16 @@ input,button,textarea {
 .fa-5x {
     font-size: 5.5em;
 }
+.fa-logo {
+    font-size: 4.5em;
+}
 .fa-mini {
     display: block;
     font-size: 2.8em;
-    margin-bottom: 4px;
     color: #E6E7EC;
 }
-.fa-logo {
-    font-size: 4.5em;
+.fa-mini + .fa-mini {
+    margin-top: 4px;
 }
 
 /* top */

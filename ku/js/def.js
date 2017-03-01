@@ -1,4 +1,4 @@
-var defUser = JSON.parse(`{
+var defUser = {
     "engines": {
         "综合": {
             "": {
@@ -254,11 +254,12 @@ var defUser = JSON.parse(`{
     },
     "note": "记事本",
     "def": {
-        "engines": "综合",
-        "books": "常用"
+        "engine": "综合",
+        "book": "常用",
+        "logo": ""
     }
-}`)
+}
 
-$.get('ku/data/def.json', function(data){
-    console.log(data)
-})
+// $.get('ku/data/def.json', function(data){
+//     console.log(data)
+// })
