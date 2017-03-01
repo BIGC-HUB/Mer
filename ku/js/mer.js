@@ -28,7 +28,7 @@ var User = null || defUser
 var __initTop = function() {
     var html =
         '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top class="home" ></top>' +
+        '<top class="home"><i class="iconfont icon-down fa-lg"></i></top>' +
         '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
@@ -80,8 +80,12 @@ var __initBookEngine = function(element, engines, def, tag) {
             showHtml += `<${tag} data-cls="${def}" data-key="${key}"> <span style="color:${e.color}">${key}</span> </${tag}>`
         }
     }
+    var editHtml =
+        '<div class="new new-cls"><i class="fa-lg iconfont icon-jia"></i>新建分类</div>' +
+        '<div class="new new-one"><i class="fa-lg iconfont icon-jia"></i>添加项目</div>'
     var html = `
     <div class="kind">${kindHtml}</div>
+    <div class="edit">${editHtml}</div>
     <div class="show">${showHtml}</div>`
     element.html(html)
 }
@@ -348,17 +352,15 @@ __init__(User)
 $('#bottom').on('click', function() {
     if ($('#bottom').hasClass('theme-hover')) {
         $('#bottom').removeClass('theme-hover')
+        $('.edit').animate({ height:'hide' })
         $('tag').each(function(i, e) {
             e.contentEditable = false
         })
-        $('.addTBE').remove()
     } else {
         $('#bottom').addClass('theme-hover')
+        $('.edit').animate({ height:'show' })
         $('tag').each(function(i,e) {
             e.contentEditable = true
         })
-        $('#book .show').append('<book class="addTBE">　　＋　　</book>')
-        $('#engine .show').append('<engine class="addTBE"><i class="fa-logo iconfont icon-jia"></i></engine>')
-        $('.kind').append('<tag class="addTBE" contenteditable="true"><i class="fa-lg iconfont icon-jia"></i></tag>')
     }
 })

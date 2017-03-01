@@ -3,7 +3,7 @@ body {
     margin: 0 auto;
     text-align: center;
 }
-logo,tag,engine,book,top,li,button,#bottom,.fa-mini {
+logo,tag,engine,book,top,li,button,#bottom,.new,.fa-mini {
     cursor: pointer;
 }
 logo,tag,engine,top,li {
@@ -14,7 +14,7 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-#login-zhuce,#bottom {
+#login-zhuce,#bottom,.edit {
     display: none;
 }
 .transparent {
@@ -112,7 +112,7 @@ logo {
     border-radius: 50%;
 }
 logo:hover {
-    background: #F5F6F9;
+    background-color: #F5F6F9;
 }
 logo span {
     font-size: 1.5em;
@@ -146,7 +146,7 @@ logo span {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 4px;
     border: 1px solid #037DD8;
-    background: #037DD8;
+    background-color: #037DD8;
     color: white;
 }
 #search-button:hover {
@@ -156,7 +156,7 @@ logo span {
 /* more */
 .li-hover {
     border-radius: 2px;
-    background: #037DD8;
+    background-color: #037DD8;
     color: #FFF;
 }
 .more-border {
@@ -190,7 +190,7 @@ logo span {
 #more-button {
     width: 3.9em;
     border: 1px solid transparent;
-    background: transparent;
+    background-color: transparent;
     font-size: 25px;
 }
 #more-button i:hover {
@@ -211,7 +211,7 @@ logo span {
 }
 #more-ul textarea:focus {
     overflow: auto;
-    background: #F5F6F9;
+    background-color: #F5F6F9;
     outline-color: #C0C0C0;
 }
 
@@ -230,7 +230,7 @@ tag {
     color: #666;
 }
 tag:hover {
-    background: #F5F6F9;
+    background-color: #F5F6F9;
 }
 engine {
     vertical-align: bottom;
@@ -262,15 +262,41 @@ book {
     overflow: hidden;
 }
 book:hover {
-    background: #F5F6F9;
+    background-color: #F5F6F9;
     outline: #E6E7EC solid thin;
 }
 book span, book i {
     pointer-events: none;
 }
 
+/* new */
+.new {
+    display: inline-block;
+    width: 50%;
+    height: 2em;
+    line-height: 2em;
+    border-bottom: 1px solid #9DA3A6;
+}
+.new:hover {
+    color: #037DD8;
+}
+
 /* login */
 /*#login { display: block; }*/
+.btn-white {
+    background-color: #FFF;
+    color: #8590A6;
+    border: 1px solid #9DA3A6;
+}
+.btn-white:hover {
+    background-color: rgba(207,216,230,.1);
+}
+.btn-blue {
+    background-color: #037DD8;
+    color: white;
+    border: 1px solid #037DD8;
+}
+
 inputbox {
     display: block;
     width: calc(70% + 14px);
@@ -323,23 +349,10 @@ inputbox:last-of-type {
 }
 #login-btn-zhuce {
     margin-right: 8px;
-    background-color: #FFF;
-    color: #8590A6;
-    border: 1px solid #9DA3A6;
-}
-#login-btn-zhuce:hover {
-    background-color: rgba(207,216,230,.1);
 }
 #login-btn-denglu {
     margin-left: 8px;
-    background: #037DD8;
-    color: white;
-    border: 1px solid #037DD8;
 }
-#login-btn-denglu:hover {
-    background-color: #0070BA;
-}
-
 #login-zhuce input {
     width: 65%!important;
 }
@@ -369,7 +382,7 @@ inputbox:last-of-type {
         border: 1px solid transparent;
     }
     engine:hover {
-        background: #F5F6F9;
+        background-color: #F5F6F9;
         border: 1px solid #E6E7EC;
     }
     engine span, book {

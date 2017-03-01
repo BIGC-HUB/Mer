@@ -1,4 +1,4 @@
-var html = '<div class="theme fa-logo iconfont icon-star"></div>' +
+var html = '<div style="color: rgba(207,216,230,.1);" class="fa-logo iconfont icon-star"></div>' +
     '<div id="login-text">' +
         '请输入名字' +
     '</div>' +
@@ -26,8 +26,8 @@ var html = '<div class="theme fa-logo iconfont icon-star"></div>' +
             '<span  id="login-sms-60">60</span>' +
         '</inputbox>' +
     '</div>' +
-    '<button id="login-btn-zhuce" type="button" name="button">注册</button>' +
-    '<button id="login-btn-denglu"  type="button" name="button">登录</button>'
+    '<button class="btn-white" id="login-btn-zhuce" type="button">注册</button>' +
+    '<button class="btn-blue" id="login-btn-denglu"  type="button">登录</button>'
 $('#login').html(html)
 // 短信验证
 var sms = function() {
