@@ -1,5 +1,4 @@
-var __Login = function() {
-    var html = '<div class="theme fa-logo iconfont icon-star"></div>' +
+var html = '<div class="theme fa-logo iconfont icon-star"></div>' +
     '<div id="login-text">' +
         '请输入名字' +
     '</div>' +
@@ -29,12 +28,26 @@ var __Login = function() {
     '</div>' +
     '<button id="login-btn-zhuce" type="button" name="button">注册</button>' +
     '<button id="login-btn-denglu"  type="button" name="button">登录</button>'
-    $('#login').html(html)
-}()
+$('#login').html(html)
+// 短信验证
+var sms = function() {
+    return (parseInt(Math.random()*(10000-1000)+1000))
+}
 
 // Login
-$('#login-name,#login-key').on('blur', function() {
+$('#login input').on('focus', function() {
+    event.target.parentElement.classList.add('theme')
+})
+$('#login input').on('blur', function() {
     event.target.parentElement.classList.remove('theme')
+})
+$('#login input').on('keydown', function() {
+    if (/ /.test(event.key)) {
+        event.preventDefault()
+    }
+})
+
+$('#login-denglu input').on('blur', function() {
     var arr = [$('#login-name'), $('#login-key')]
     var ok = true
     for (var i of arr) {
@@ -48,8 +61,12 @@ $('#login-name,#login-key').on('blur', function() {
     }
 })
 $('#login-name').on('focus', function() {
-    event.target.parentElement.classList.add('theme')
     $('#login-text').text('名字 | 手机号')
+})
+$('#login-name').on('keydown', function() {
+    if (!/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF]|[\d|\w|\-|_]/.test(event.key)) {
+        event.preventDefault()
+    }
 })
 $('#login-name').on('keyup', function() {
     if (event.target.value) {
@@ -58,25 +75,14 @@ $('#login-name').on('keyup', function() {
         $('#login-name ~ i').addClass('transparent')
     }
 })
-$('#login-name').on('keydown', function() {
-    if (!/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF]|[\d|\w|\-|_]/.test(event.key)) {
-        event.preventDefault()
-    }
-})
 $('#login-name ~ i').on('click', function() {
     $('#login-name')[0].value = ''
     $('#login-name ~ i').addClass('transparent')
     $('#login-name').focus()
 })
-
 $('#login-key').on('focus', function() {
     event.target.parentElement.classList.add('theme')
     $('#login-text').text('请输入密码')
-})
-$('#login-key, #login-sms').on('keydown', function() {
-    if (/ /.test(event.key)) {
-        event.preventDefault()
-    }
 })
 $('#login-key ~ i').on('click', function() {
     var i = $(event.target)
@@ -88,17 +94,6 @@ $('#login-key ~ i').on('click', function() {
         e.type = 'text'
         i.addClass('icon-zhengyan')
     }
-})
-
-$('#login-btn-denglu').on('click', function() {
-    $('#login-zhuce').hide()
-    $('#login-denglu').animate({ height:'show' })
-    $('#login-text').text('请输入名字')
-})
-$('#login-btn-zhuce').on('click', function() {
-    $('#login-denglu').hide()
-    $('#login-text').text('请输入手机')
-    $('#login-zhuce').animate({ height:'show' })
 })
 
 $('#login-phone').on('blur', function() {
@@ -127,6 +122,9 @@ $('#login-phone').on('keyup', function() {
         $('#login-phone-11').text('>')
     }
 })
+$('#login-sms').on('focus', function() {
+    event.target.value = sms()
+})
 $('#login-sms').on('blur', function() {
     var str = ''
     for (var i of event.target.value) {
@@ -135,4 +133,15 @@ $('#login-sms').on('blur', function() {
         }
     }
     event.target.value = str
+})
+
+$('#login-btn-denglu').on('click', function() {
+    $('#login-zhuce').hide()
+    $('#login-denglu').animate({ height:'show' })
+    $('#login-text').text('请输入名字')
+})
+$('#login-btn-zhuce').on('click', function() {
+    $('#login-denglu').hide()
+    $('#login-text').text('请输入手机')
+    $('#login-zhuce').animate({ height:'show' })
 })
