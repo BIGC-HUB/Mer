@@ -265,9 +265,8 @@ book span, book i {
 .edit-btn {
     display: inline-block;
     width: 33%;
-    height: 2em;
-    line-height: 2em;
-    padding: 8px 0;
+    padding: 0.5em 0;
+    margin: 2px 0;
     border-top: 1px solid #9DA3A6;
     border-bottom: 1px solid #9DA3A6;
 }
