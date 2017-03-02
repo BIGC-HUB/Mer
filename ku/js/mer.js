@@ -28,7 +28,7 @@ var User = null || defUser
 var __initTop = function() {
     var html =
         '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top class="home"><i class="iconfont icon-down fa-lg"></i></top>' +
+        '<top class="home"></top>' +
         '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
@@ -309,16 +309,31 @@ Mer.tagBlur = function(engines) {
     }
     $('#bottom').click()
 }
+Mer.diff = 0
+$('#engine').on('mousedown', function() {
+    Mer.diff = event.timeStamp
+})
+$('#engine').on('mouseup', function() {
+    Mer.diff = event.timeStamp - Mer.diff
+})
 $('#engine').on('blur' , 'tag', function() {
     Mer.tagBlur(User.engines)
 })
 $('#engine').on('click', 'tag', function() {
-    $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
+    if (Mer.diff < 500) {
+        $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
+    } else {
+        $(event.target).remove()
+    }
 })
 $('#engine').on('click', 'engine', function() {
-    Mer.Engine()
-    $('#engine,#bottom').hide()
-    $('#search').slideDown("slow")
+    if (Mer.diff < 500) {
+        Mer.Engine()
+        $('#engine,#bottom').hide()
+        $('#search').slideDown("slow")
+    } else {
+        $(event.target).remove()
+    }
 })
 
 // Book
@@ -362,5 +377,13 @@ $('#bottom').on('click', function() {
         $('tag').each(function(i,e) {
             e.contentEditable = true
         })
+    }
+})
+$('body').on('mousedown', function() {
+    document.oncontextmenu = function() {
+        var name = event.target.localName
+        if (name == 'tag' || name == 'book' || name == 'engine') {
+            return false;
+        }
     }
 })

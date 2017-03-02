@@ -2,6 +2,9 @@
 body {
     margin: 0 auto;
     text-align: center;
+    user-select:none;
+    -webkit-user-select:none;
+    -moz-user-select:none;
 }
 logo,tag,engine,book,top,li,button,#bottom,.new,.fa-mini {
     cursor: pointer;
