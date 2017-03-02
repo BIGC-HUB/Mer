@@ -32,10 +32,6 @@ var __initTop = function() {
         '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
     $('#top').html(html)
 }()
-var __initBottom = function() {
-    var html = '<i class="iconfont icon-safari fa-lg"></i>管理'
-    $('#bottom').html(html)
-}()
 var __initMain = function() {
     var html = `
         <logo><i data-cls="综合" data-key="" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
@@ -69,7 +65,7 @@ var __initLogo = function(def, logo) {
 var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
-        kindHtml += `<tag data-cls="${cls}" contentEditable="false">${cls}</tag>`
+        kindHtml += `<tag data-cls="${cls}">${cls}</tag>`
     }
     var showHtml = ''
     for (var key in engines[def]) {
@@ -81,8 +77,9 @@ var __initBookEngine = function(element, engines, def, tag) {
         }
     }
     var editHtml =
-        '<div class="new new-cls"><i class="fa-lg iconfont icon-jia"></i>新建分类</div>' +
-        '<div class="new new-one"><i class="fa-lg iconfont icon-jia"></i>添加项目</div>'
+        '<div class="edit-btn"><i class="fa-lg iconfont icon-jia"></i>新建</div>' +
+        '<div class="edit-btn"><i class="fa-lg iconfont icon-go"></i>编辑</div>' +
+        '<div class="edit-btn"><i class="fa-lg iconfont icon-xclear"></i>删除</div>'
     var html = `
     <div class="kind">${kindHtml}</div>
     <div class="edit">${editHtml}</div>
@@ -98,25 +95,25 @@ var __init__ = function(User) {
 // Top
 $('#search').on('click', 'logo',function() {
     $('#search').hide()
-    $('#engine,#bottom').slideDown("slow")
+    $('#engine').slideDown("slow")
 })
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
-        $('#engine,#book,#login,#bottom').hide()
+        $('#engine,#book,#login').hide()
         $('#search').animate({ height:'show' })
     }
 })
 $('#top').on('click', '.book', function() {
     if ($('#book').css('display') === 'none') {
         $('#engine,#search,#login').hide()
-        $('#book,#bottom').animate({ height:'show' })
+        $('#book').animate({ height:'show' })
     } else {
         $('#top .home').click()
     }
 })
 $('#top').on('click', '.user', function() {
     if ($('#login').css('display') === 'none') {
-        $('#engine,#search,#book,#bottom').hide()
+        $('#engine,#search,#book').hide()
         $('#login').animate({ height:'show' })
     } else {
         $('#top .home').click()
@@ -299,40 +296,27 @@ Mer.Engine = function() {
     $('logo').html(html)
     input.focus()
 }
-Mer.tagBlur = function(engines) {
-    var old = event.target.dataset.cls
-    var now = event.target.innerText
-    if (old !== now) {
-        engines[now] = JSON.parse(JSON.stringify(engines[old]))
-        delete engines[old]
-        event.target.dataset.cls = now
-    }
-    $('#bottom').click()
-}
 Mer.diff = 0
-$('#engine').on('mousedown', function() {
+$('#engine').on('touchstart', function() {
     Mer.diff = event.timeStamp
 })
-$('#engine').on('mouseup', function() {
+$('#engine').on('touchend', function() {
     Mer.diff = event.timeStamp - Mer.diff
-})
-$('#engine').on('blur' , 'tag', function() {
-    Mer.tagBlur(User.engines)
 })
 $('#engine').on('click', 'tag', function() {
     if (Mer.diff < 500) {
-        $('#engine .show').html( Mer.showHtml(User.engines, 'engine') )
+        $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
     } else {
-        $(event.target).remove()
+        Mer.showEdit()
     }
 })
 $('#engine').on('click', 'engine', function() {
     if (Mer.diff < 500) {
         Mer.Engine()
-        $('#engine,#bottom').hide()
+        $('#engine').hide()
         $('#search').slideDown("slow")
     } else {
-        $(event.target).remove()
+        Mer.showEdit()
     }
 })
 
@@ -350,40 +334,53 @@ Mer.showHtml = function(engines, tag) {
     }
     return showHtml
 }
-$('#book').on('blur' , 'tag', function() {
-    Mer.tagBlur(User.books)
-})
 $('#book').on('click', 'tag' , function() {
-    $('#book .show').html( Mer.showHtml(User.books, 'book') )
-})
-$('#book').on('click', 'book', function() {
-    var e = event.target.dataset
-    var i = User.books[e.cls][e.key]
-    window.open(i.url)
-})
-
-__init__(User)
-
-$('#bottom').on('click', function() {
-    if ($('#bottom').hasClass('theme-hover')) {
-        $('#bottom').removeClass('theme-hover')
-        $('.edit').animate({ height:'hide' })
-        $('tag').each(function(i, e) {
-            e.contentEditable = false
-        })
+    if (Mer.diff < 500) {
+        $('#book .show').html( Mer.showHtml(User.books, 'book') )
     } else {
-        $('#bottom').addClass('theme-hover')
-        $('.edit').animate({ height:'show' })
-        $('tag').each(function(i,e) {
-            e.contentEditable = true
-        })
+        Mer.showEdit()
     }
 })
-$('body').on('mousedown', function() {
+$('#book').on('click', 'book', function() {
+    if (Mer.diff < 500) {
+        var e = event.target.dataset
+        var i = User.books[e.cls][e.key]
+        window.open(i.url)
+    } else {
+        Mer.showEdit()
+    }
+})
+
+// edit
+Mer.edit = {}
+Mer.showEdit = function() {
+    var e = $(event.target)
+    Mer.edit.element = e
+    Mer.edit.html = e.html()
+    e.addClass('edit-hover')
+    e.children().removeAttr('style')
+    $('.edit').animate({ height:'show' })
+    $('body').one('click', function(event) {
+        if ($(event.target).hasClass('edit-btn')) {
+            log('正在建设……')
+        } else {
+            $('.edit').animate({ height:'hide' })
+            Mer.edit.element.removeClass('edit-hover')
+            Mer.edit.element.html(Mer.edit.html)
+        }
+    })
+}
+
+$('#book,#engine').on('mousedown', function() {
     document.oncontextmenu = function() {
         var name = event.target.localName
         if (name == 'tag' || name == 'book' || name == 'engine') {
-            return false;
+            if ($('.edit').css('display') == 'none') {
+                Mer.showEdit()
+            }
         }
+        return false;
     }
 })
+
+__init__(User)
