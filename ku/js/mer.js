@@ -280,6 +280,41 @@ $('#more-i').on('click', '.fa-mini', function() {
     Mer.Engine()
 })
 
+// edit
+Mer.edit = {}
+Mer.showEdit = function() {
+    if ($('.edit').css('display') === 'none') {
+        var e = $(event.target)
+        Mer.edit.element = e
+        Mer.edit.html = e.html()
+        e.addClass('edit-hover')
+        e.children().removeAttr('style')
+        $('.edit').animate({ height:'show' })
+        setTimeout(function(){
+            $('body').one('click', function(event) {
+                if ($(event.target).hasClass('edit-btn')) {
+                    log('正在建设……')
+                } else {
+                    $('.edit').animate({ height:'hide' })
+                    Mer.edit.element.removeClass('edit-hover')
+                    Mer.edit.element.html(Mer.edit.html)
+                }
+            })
+        }, 500)
+    }
+}
+$('body').on('mouseup', function() {
+    document.oncontextmenu = function() {
+        var name = event.target.localName
+        if (name === 'tag' || name === 'book' || name === 'engine') {
+            if ($('.edit').css('display') === 'none') {
+                Mer.showEdit()
+            }
+        }
+        return false;
+    }
+})
+
 // Engine
 Mer.Engine = function() {
     var e = event.target.dataset
@@ -296,22 +331,22 @@ Mer.Engine = function() {
     $('logo').html(html)
     input.focus()
 }
-Mer.diff = 0
-$('#engine').on('touchstart', function() {
-    Mer.diff = event.timeStamp
+Mer.rest = 0
+$('body').on('touchstart', function() {
+    Mer.rest = parseInt(event.timeStamp)
 })
-$('#engine').on('touchend', function() {
-    Mer.diff = event.timeStamp - Mer.diff
+$('body').on('touchend', function() {
+    Mer.rest = parseInt(event.timeStamp) - Mer.rest
 })
 $('#engine').on('click', 'tag', function() {
-    if (Mer.diff < 500) {
+    if (Mer.rest < 500) {
         $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
     } else {
         Mer.showEdit()
     }
 })
 $('#engine').on('click', 'engine', function() {
-    if (Mer.diff < 500) {
+    if (Mer.rest < 500) {
         Mer.Engine()
         $('#engine').hide()
         $('#search').slideDown("slow")
@@ -335,51 +370,19 @@ Mer.showHtml = function(engines, tag) {
     return showHtml
 }
 $('#book').on('click', 'tag' , function() {
-    if (Mer.diff < 500) {
+    if (Mer.rest < 500) {
         $('#book .show').html( Mer.showHtml(User.books, 'book') )
     } else {
         Mer.showEdit()
     }
 })
 $('#book').on('click', 'book', function() {
-    if (Mer.diff < 500) {
+    if (Mer.rest < 500) {
         var e = event.target.dataset
         var i = User.books[e.cls][e.key]
         window.open(i.url)
     } else {
         Mer.showEdit()
-    }
-})
-
-// edit
-Mer.edit = {}
-Mer.showEdit = function() {
-    var e = $(event.target)
-    Mer.edit.element = e
-    Mer.edit.html = e.html()
-    e.addClass('edit-hover')
-    e.children().removeAttr('style')
-    $('.edit').animate({ height:'show' })
-    $('body').one('click', function(event) {
-        if ($(event.target).hasClass('edit-btn')) {
-            log('正在建设……')
-        } else {
-            $('.edit').animate({ height:'hide' })
-            Mer.edit.element.removeClass('edit-hover')
-            Mer.edit.element.html(Mer.edit.html)
-        }
-    })
-}
-
-$('#book,#engine').on('mousedown', function() {
-    document.oncontextmenu = function() {
-        var name = event.target.localName
-        if (name == 'tag' || name == 'book' || name == 'engine') {
-            if ($('.edit').css('display') == 'none') {
-                Mer.showEdit()
-            }
-        }
-        return false;
     }
 })
 

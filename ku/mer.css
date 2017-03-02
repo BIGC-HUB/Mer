@@ -223,9 +223,9 @@ tag:hover {
 engine {
     vertical-align: bottom;
     display: inline-block;
-    height: 5em;
-    line-height: 5em;
-    margin: 0.5em;
+    width: 6.5em;
+    height: 6.5em;
+    line-height: 6.5em;
     border-radius: 50%;
     color: #666;
 }
@@ -374,6 +374,7 @@ inputbox:last-of-type {
         width: 8em;
         height: 8em;
         line-height: 8em;
+        margin: 0.5em;
         border: 1px solid transparent;
     }
     engine:hover {
