@@ -1,5 +1,5 @@
 var html = '<div style="color: transparent" class="fa-logo iconfont icon-star"></div>' +
-    '<div id="login-text">' +
+    '<div class="text">' +
         '请输入名字' +
     '</div>' +
     '<div id="login-denglu">' +
@@ -57,11 +57,11 @@ $('#login-denglu input').on('blur', function() {
         }
     }
     if (ok) {
-        $('#login-text').text('点击登录')
+        $('#login .text').text('点击登录')
     }
 })
 $('#login-name').on('focus', function() {
-    $('#login-text').text('名字 | 手机号')
+    $('#login .text').text('名字 | 手机号')
 })
 $('#login-name').on('keydown', function() {
     if (!/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF]|[\d|\w|\-|_]/.test(event.key)) {
@@ -82,7 +82,7 @@ $('#login-name ~ i').on('click', function() {
 })
 $('#login-key').on('focus', function() {
     event.target.parentElement.classList.add('theme')
-    $('#login-text').text('请输入密码')
+    $('#login .text').text('请输入密码')
 })
 $('#login-key ~ i').on('click', function() {
     var i = $(event.target)
@@ -110,14 +110,14 @@ $('#login-phone').on('blur', function() {
         $('#login-phone-11').text(num)
     } else {
         $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
-        $('#login-text').text('发送验证码')
+        $('#login .text').text('发送验证码')
     }
 })
 $('#login-phone').on('keyup', function() {
     var num = (11 - $('#login-phone')[0].value.length)
     if (num) {
         $('#login-phone-11').text(num)
-        $('#login-text').text('请输入手机')
+        $('#login .text').text('请输入手机')
     } else {
         $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
     }
@@ -138,10 +138,10 @@ $('#login-sms').on('blur', function() {
 $('#login-btn-denglu').on('click', function() {
     $('#login-zhuce').hide()
     $('#login-denglu').animate({ height:'show' })
-    $('#login-text').text('请输入名字')
+    $('#login .text').text('请输入名字')
 })
 $('#login-btn-zhuce').on('click', function() {
     $('#login-denglu').hide()
-    $('#login-text').text('请输入手机')
+    $('#login .text').text('请输入手机')
     $('#login-zhuce').animate({ height:'show' })
 })

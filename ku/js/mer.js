@@ -34,7 +34,7 @@ var __initTop = function() {
 }()
 var __initMain = function() {
     var html = `
-        <logo><i data-cls="综合" data-key="" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
+        <logo><i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
         <div class="search">
             <input id="search-input" type="text" maxlength="70"><button id="search-button">
                 <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
@@ -55,7 +55,9 @@ var __initLogo = function(def, logo) {
     var html
     if (i.icon) {
         html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
-        input.placeholder = e.key
+        if (e.key != '大海') {
+            input.placeholder = e.key
+        }
     } else {
         html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
         input.placeholder = ''
@@ -65,7 +67,7 @@ var __initLogo = function(def, logo) {
 var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
-        kindHtml += `<tag data-cls="${cls}">${cls}</tag>`
+        kindHtml += `<tag data-kind="${tag}" data-cls="${cls}">${cls}</tag>`
     }
     var showHtml = ''
     for (var key in engines[def]) {
@@ -77,9 +79,9 @@ var __initBookEngine = function(element, engines, def, tag) {
         }
     }
     var editHtml =
-        '<div class="edit-btn"><i class="fa-lg iconfont icon-jia"></i>新建</div>' +
-        '<div class="edit-btn"><i class="fa-lg iconfont icon-go"></i>编辑</div>' +
-        '<div class="edit-btn"><i class="fa-lg iconfont icon-xclear"></i>删除</div>'
+        '<div data-btn="New"  class="edit-btn"><i class="fa-lg iconfont icon-jia"></i>新建</div>' +
+        '<div data-btn="Amend"class="edit-btn"><i class="fa-lg iconfont icon-go"></i>编辑</div>' +
+        '<div data-btn="Del"  class="edit-btn"><i class="fa-lg iconfont icon-xclear"></i>删除</div>'
     var html = `
     <div class="kind">${kindHtml}</div>
     <div class="edit">${editHtml}</div>
@@ -284,25 +286,52 @@ $('#more-i').on('click', '.fa-mini', function() {
 Mer.edit = {}
 Mer.showEdit = function() {
     if ($('.edit').css('display') === 'none') {
-        var e = $(event.target)
-        Mer.edit.element = e
-        Mer.edit.html = e.html()
-        e.addClass('edit-hover')
-        e.children().removeAttr('style')
+        var e = event.target
+        Mer.edit.element = $(e)
+        Mer.edit.html = $(e).html()
+        $(e).addClass('edit-hover')
+        $(e).children().removeAttr('style')
         $('.edit').animate({ height:'show' })
         setTimeout(function(){
-            $('body').one('click', function(event) {
+            $('body').one('click', function() {
                 if ($(event.target).hasClass('edit-btn')) {
-                    log('正在建设……')
+                    Mer['edit' + event.target.dataset.btn](e)
                 } else {
                     $('.edit').animate({ height:'hide' })
                     Mer.edit.element.removeClass('edit-hover')
                     Mer.edit.element.html(Mer.edit.html)
                 }
             })
-        }, 500)
+        }, 100)
     }
 }
+
+Mer.editNew = function(e) {
+    log(e)
+}
+Mer.editAmend = function(e) {
+    log(e)
+}
+Mer.editDel = function(e) {
+    var kind = e.dataset.kind || e.localName; kind += 's'
+    var cls = e.dataset.cls
+    var key = e.dataset.key
+    if (key) {
+        delete User[kind][cls][key]
+        e.remove()
+    } else {
+        if (Object.keys(User[kind][cls]).length) {
+            Mer.edit.element.removeClass('edit-hover')
+            Mer.edit.element.html(Mer.edit.html)
+            $('.show').html('<div class="text">提示：类不为空</div>')
+        } else {
+            delete User[kind][cls]
+            e.remove()
+        }
+    }
+    $('.edit').animate({ height:'hide' })
+}
+
 $('body').on('mouseup', function() {
     document.oncontextmenu = function() {
         var name = event.target.localName

@@ -6,6 +6,9 @@ body {
     -webkit-user-select:none;
     -moz-user-select:none;
 }
+span, i {
+    pointer-events: none;
+}
 logo,tag,engine,book,top,li,button,.edit,.fa-mini {
     cursor: pointer;
 }
@@ -31,6 +34,7 @@ logo,tag,engine,top,li {
     color: #333 !important;
     background-color: #F5F6F9;
 }
+
 
 /* 字体栈 */
 html,button,input,select,textarea{
@@ -229,9 +233,6 @@ engine {
     border-radius: 50%;
     color: #666;
 }
-engine span, engine i {
-    pointer-events: none;
-}
 engine span {
     font-size: 1.2em;
 }
@@ -252,9 +253,6 @@ book {
 book:hover {
     background-color: #F5F6F9;
     outline: #E6E7EC solid thin;
-}
-book span, book i {
-    pointer-events: none;
 }
 
 /* edit */
@@ -312,7 +310,7 @@ inputbox:last-of-type {
     border-bottom-right-radius: 5px;
 }
 
-#login-text {
+.text {
     width: 70%;
     margin: 0 auto 1em;
     padding: 8px;

@@ -1,7 +1,7 @@
 var defUser = {
     "engines": {
         "综合": {
-            "": {
+            "大海": {
                 "icon": "dahai",
                 "color": "#037DD8",
                 "wap": "https://wap.sogou.com/web/searchList.jsp?keyword=",
@@ -259,7 +259,7 @@ var defUser = {
     "def": {
         "engine": "综合",
         "book": "常用",
-        "logo": ""
+        "logo": "大海"
     }
 }
 
