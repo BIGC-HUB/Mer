@@ -1,4 +1,4 @@
-var html = '<div style="color: transparent" class="fa-logo iconfont icon-star"></div>' +
+var html =
     '<div class="text">' +
         '请输入名字' +
     '</div>' +

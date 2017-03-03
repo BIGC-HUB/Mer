@@ -20,7 +20,7 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-#login-zhuce,.edit {
+#engine,#book,#login,#login-zhuce,.edit {
     display: none;
 }
 .transparent {
@@ -34,7 +34,9 @@ logo,tag,engine,top,li {
     color: #333 !important;
     background-color: #F5F6F9;
 }
-
+#engine,#book {
+    margin: 3em auto 0;
+}
 
 /* 字体栈 */
 html,button,input,select,textarea{
@@ -74,6 +76,11 @@ input,button,textarea {
 }
 .fa-mini + .fa-mini {
     margin-top: 4px;
+}
+.text {
+    margin: 6.18% auto 1em;
+    padding: 8px;
+    color: #037DD8;
 }
 
 /* top */
@@ -210,10 +217,6 @@ logo span {
 }
 
 /* engine */
-#engine,#book,#login {
-    display: none;
-    margin: 3em auto 0;
-}
 tag {
     display: inline-block;
     width: 19%;
@@ -256,17 +259,23 @@ book:hover {
 }
 
 /* edit */
-.edit input {
-    width: calc(100% - 4em);
-    border-style: none;
-    outline: 0;
+.edit {
+    margin: 0.5em 0;
 }
-.edit inputbox {
-    width: 90%;
+.edit textarea {
+    overflow-y: hidden;
+    resize: vertical;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    border-radius: 0;
+    width: 95%;
+    margin: 0 auto 4px;
+    border-style: none;
+    border-bottom: 1px dashed #9DA3A6;
 }
 .edit span {
-    display: inline-block;
-    width: 4em;
+    display: block;
+    color: #8590A6;
 }
 .edit-hover {
     color: #FFF !important;
@@ -276,7 +285,6 @@ book:hover {
     display: inline-block;
     width: 33%;
     padding: 0.5em 0;
-    margin: 0.5em 0;
     border-top: 1px solid #9DA3A6;
     border-bottom: 1px solid #9DA3A6;
 }
@@ -321,12 +329,6 @@ inputbox:last-of-type {
     border-bottom-right-radius: 5px;
 }
 
-.text {
-    width: 70%;
-    margin: 0 auto 1em;
-    padding: 8px;
-    color: #037DD8;
-}
 #login inputbox {
     width: calc(70% + 14px);
 }
@@ -334,9 +336,7 @@ inputbox:last-of-type {
     vertical-align: middle;
     display: inline-block;
     width: 30px;
-}
-#login i {
-    font-size: 1.33333333em;
+    font-size: 1.333333em;
 }
 #login input {
     vertical-align: middle;
@@ -400,6 +400,9 @@ inputbox:last-of-type {
     }
     #login input,#login-hint {
         width: calc(100% - 60px);
+    }
+    .edit input {
+        width: 50%;
     }
     #login button {
         width: 15%;

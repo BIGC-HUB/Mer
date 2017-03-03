@@ -7,25 +7,25 @@ Mer.editAmend = function(e) {
     var key = e.dataset.key
     var kind = tag + 's'
     var html = ''
-    var transE = {color: '颜　色',url: 'ＰＣ端',wap: '移动端',icon: '图　标'}
-    var transB = {color: '颜　色',url: '链　接'}
+    var transE = {color: '颜　色',url: '网　址',wap: '移动端',icon: '图　标'}
+    var transB = {color: '颜　色',url: '网　址'}
     if (key) {
         var obj = User[kind][cls][key]
         var arry = Object.keys(obj)
         if (kind === 'engines') {
-            html += `<inputbox><span>引　擎</span><input type="text" value="${key}"></inputbox>`
+            html += `<span>名　字</span><textarea rows="1">${key}</textarea>`
             for (var i of arry) {
-                html += `<inputbox><span>${transE[i]}</span><input type="text" value="${obj[i]}"></inputbox>`
+                html += `<span>${transE[i]}</span><textarea rows="1">${obj[i]}</textarea>`
             }
         } else {
-            html += `<inputbox><span>书　签</span><input type="text" value="${key}"></inputbox>`
+            html += `<span>名　字</span><textarea rows="1">${key}</textarea>`
             for (var i of arry) {
-                html += `<inputbox><span>${transB[i]}</span><input type="text" value="${obj[i]}"></inputbox>`
+                html += `<span>${transB[i]}</span><textarea rows="1">${obj[i]}</textarea>`
             }
         }
 
     } else {
-        html += `<inputbox><span>标　签</span><input type="text" value="${cls}"></inputbox>`
+        html += `<span>标　签</span><textarea rows="1">${cls}</textarea>`
     }
     $('#' + tag + ' .edit').append(html)
 }
