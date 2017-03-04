@@ -7,7 +7,7 @@ Mer.editAmend = function(e) {
     var key = e.dataset.key
     var kind = tag + 's'
     var html = ''
-    var transE = {color: '颜　色',url: '网　址',wap: '移动端',icon: '图　标'}
+    var transE = {color: '颜　色',url: '网　址',wap: '手机端',icon: '图　标'}
     var transB = {color: '颜　色',url: '网　址'}
     if (key) {
         var obj = User[kind][cls][key]

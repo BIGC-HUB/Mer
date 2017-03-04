@@ -49,6 +49,7 @@ html,button,input,select,textarea{
 /* Safari */
 input,button,textarea {
     margin: 0 auto;
+    background-color: transparent;
 }
 #login input::-webkit-input-placeholder {
     line-height: 1.26em;
@@ -78,7 +79,7 @@ input,button,textarea {
     margin-top: 4px;
 }
 .text {
-    margin: 6.18% auto 1em;
+    margin: 1em auto;
     padding: 8px;
     color: #037DD8;
 }
@@ -200,6 +201,9 @@ logo span {
 #more-i {
     display: inline-block;
 }
+#more-i i {
+    pointer-events: auto;
+}
 
 /* note */
 #more-ul textarea {
@@ -263,10 +267,9 @@ book:hover {
     margin: 0.5em 0;
 }
 .edit textarea {
-    overflow-y: hidden;
-    resize: vertical;
-    vertical-align: middle;
-    -webkit-appearance: none;
+    text-align: center;
+    outline: 0;
+    resize: none;
     border-radius: 0;
     width: 95%;
     margin: 0 auto 4px;
@@ -293,6 +296,7 @@ book:hover {
 }
 .edit-btn:hover {
     color: #037DD8;
+    background-color: rgba(207,216,230,.1);
 }
 
 /* login */
@@ -302,31 +306,27 @@ book:hover {
     border: 1px solid #9DA3A6;
 }
 .btn-white:hover {
-    background-color: rgba(207,216,230,.1);
+    background-color: rgba(207,216,230,0.1);
 }
 .btn-blue {
     background-color: #037DD8;
     color: white;
     border: 1px solid #037DD8;
 }
-
+.btn-blue:hover {
+    background-color: rgba(3,125,216,0.9);
+}
 inputbox {
     display: block;
     margin: 0 auto;
-    border: 1px solid #9DA3A6;
     border-radius: 0;
+    border-style: none;
+    border-top: 1px dashed #9DA3A6;
+    border-bottom: 1px dashed #9DA3A6;
     color: #8590A6;
 }
 inputbox + inputbox {
     border-top-style: none;
-}
-inputbox:first-of-type {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-inputbox:last-of-type {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 #login inputbox {
@@ -337,6 +337,7 @@ inputbox:last-of-type {
     display: inline-block;
     width: 30px;
     font-size: 1.333333em;
+    pointer-events: auto;
 }
 #login input {
     vertical-align: middle;
@@ -375,11 +376,14 @@ inputbox:last-of-type {
     .fa-logo {
         font-size: 5.5em;
     }
-    #engine,#book {
-        width: 85%;
+    .edit textarea {
+        width: 50%;
     }
     #search-input, #more-ul {
         width: 38.2%;
+    }
+    #engine,#book {
+        width: 85%;
     }
     engine {
         width: 8em;
@@ -400,9 +404,6 @@ inputbox:last-of-type {
     }
     #login input,#login-hint {
         width: calc(100% - 60px);
-    }
-    .edit input {
-        width: 50%;
     }
     #login button {
         width: 15%;

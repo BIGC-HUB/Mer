@@ -248,8 +248,7 @@ Mer.Mini = function(engines, def) {
     var styleHtml = ''
     for (var key in engines[def]) {
         var e = engines[def][key]
-        // key '' 默认
-        if (e.icon && key) {
+        if (e.icon && key != '大海') {
             miniHtml += `<i data-cls="${def}" data-key="${key}" class="fa-mini iconfont icon-${e.icon}"></i>`
             styleHtml += `.icon-${e.icon}:hover {color:${e.color}}`
         }

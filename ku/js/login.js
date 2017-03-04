@@ -1,4 +1,4 @@
-var html =
+var html = '<div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon-star"></div>' +
     '<div class="text">' +
         '请输入名字' +
     '</div>' +
