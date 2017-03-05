@@ -282,35 +282,87 @@ $('#more-i').on('click', '.fa-mini', function() {
 })
 
 // edit
-Mer.edit = {}
-Mer.showEdit = function() {
-    if ($('.edit').css('display') === 'none') {
-        var e = event.target
-        Mer.edit.element = $(e)
-        Mer.edit.html = $(e).html()
-        $(e).addClass('edit-hover')
-        $(e).children().removeAttr('style')
-        $('.edit').animate({ height:'show' })
-        setTimeout(function(){
-            $('body').one('click', function() {
-                if ($(event.target).hasClass('edit-btn')) {
-                    Mer['edit' + event.target.dataset.btn](e)
-                } else {
-                    $('.edit').animate({ height:'hide' })
-                    Mer.edit.element.removeClass('edit-hover')
-                    Mer.edit.element.html(Mer.edit.html)
+Mer.edit = {
+    old: {},
+    Show: function() {
+        if ($('.edit').css('display') === 'none') {
+            var e = event.target
+            Mer.edit.old.element = $(e)
+            Mer.edit.old.html = $(e).html()
+            $(e).addClass('edit-hover')
+            $(e).children().removeAttr('style')
+            $('.edit').animate({ height:'show' })
+            setTimeout(function(){
+                $('body').one('click', function() {
+                    if ($(event.target).hasClass('edit-btn')) {
+                        Mer.edit[event.target.dataset.btn](e)
+                    } else {
+                        $('.edit').animate({ height:'hide' })
+                        Mer.edit.old.element.removeClass('edit-hover')
+                        Mer.edit.old.element.html(Mer.edit.old.html)
+                    }
+                })
+            }, 100)
+        }
+    },
+    New: function(e) {
+        log(e)
+    },
+    Amend: function(e) {
+        var tag = e.dataset.kind || e.localName
+        var cls = e.dataset.cls
+        var key = e.dataset.key
+        var kind = tag + 's'
+        var html = ''
+        var transE = {color: '颜　色',url: '网　址',wap: '手机端',icon: '图　标'}
+        var transB = {color: '颜　色',url: '网　址'}
+        if (key) {
+            var obj = User[kind][cls][key]
+            var arry = Object.keys(obj)
+            if (kind === 'engines') {
+                html += `<span>名　字</span><textarea rows="1">${key}</textarea>`
+                for (var i of arry) {
+                    html += `<span>${transE[i]}</span><textarea rows="1">${obj[i]}</textarea>`
                 }
-            })
-        }, 100)
+            } else {
+                html += `<span>名　字</span><textarea rows="1">${key}</textarea>`
+                for (var i of arry) {
+                    html += `<span>${transB[i]}</span><textarea rows="1">${obj[i]}</textarea>`
+                }
+            }
+
+        } else {
+            html += `<span>标　签</span><textarea rows="1">${cls}</textarea>`
+        }
+        $('#' + tag + ' .edit').append(html)
+    },
+    Del: function(e) {
+        var tag = e.dataset.kind || e.localName
+        var cls = e.dataset.cls
+        var key = e.dataset.key
+        var kind = tag + 's'
+        if (key) {
+            delete User[kind][cls][key]
+            e.remove()
+        } else {
+            if (Object.keys(User[kind][cls]).length) {
+                Mer.edit.old.element.removeClass('edit-hover')
+                Mer.edit.old.element.html(Mer.edit.old.html)
+                $('.show').html('<div class="text">提示：类不为空</div>')
+            } else {
+                delete User[kind][cls]
+                e.remove()
+            }
+        }
+        $('.edit').animate({ height:'hide' })
     }
 }
-
 $('body').on('mouseup', function() {
     document.oncontextmenu = function() {
         var name = event.target.localName
         if (name === 'tag' || name === 'book' || name === 'engine') {
             if ($('.edit').css('display') === 'none') {
-                Mer.showEdit()
+                Mer.edit.Show()
             }
         }
         return false;
@@ -344,7 +396,7 @@ $('#engine').on('click', 'tag', function() {
     if (Mer.rest < 500) {
         $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
     } else {
-        Mer.showEdit()
+        Mer.edit.Show()
     }
 })
 $('#engine').on('click', 'engine', function() {
@@ -353,7 +405,7 @@ $('#engine').on('click', 'engine', function() {
         $('#engine').hide()
         $('#search').slideDown("slow")
     } else {
-        Mer.showEdit()
+        Mer.edit.Show()
     }
 })
 
@@ -375,7 +427,7 @@ $('#book').on('click', 'tag' , function() {
     if (Mer.rest < 500) {
         $('#book .show').html( Mer.showHtml(User.books, 'book') )
     } else {
-        Mer.showEdit()
+        Mer.edit.Show()
     }
 })
 $('#book').on('click', 'book', function() {
@@ -384,7 +436,7 @@ $('#book').on('click', 'book', function() {
         var i = User.books[e.cls][e.key]
         window.open(i.url)
     } else {
-        Mer.showEdit()
+        Mer.edit.Show()
     }
 })
 
