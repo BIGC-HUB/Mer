@@ -64,6 +64,15 @@ var __initLogo = function(def, logo) {
     }
     $('logo').html(html)
 }
+var __initEdit = function() {
+    var html = `
+    <ul id="edit-ul">
+      <li data-btn="New"  ><i class="fa-lg iconfont icon-new"></i><span>新建</span></li>
+      <li data-btn="Amend"><i class="fa-lg iconfont icon-amend"></i><span>编辑</span></li>
+      <li data-btn="Del"  ><i class="fa-lg iconfont icon-del"></i><span>删除</span></li>
+    </ul><div id="edit-content"></div>`
+    $('#edit').html(html)
+}()
 var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
     for (var cls in engines) {
@@ -78,13 +87,8 @@ var __initBookEngine = function(element, engines, def, tag) {
             showHtml += `<${tag} data-cls="${def}" data-key="${key}"> <span style="color:${e.color}">${key}</span> </${tag}>`
         }
     }
-    var editHtml =
-        '<div data-btn="New"  class="edit-btn"><i class="fa-lg iconfont icon-jia"></i>新建</div>' +
-        '<div data-btn="Amend"class="edit-btn"><i class="fa-lg iconfont icon-go"></i>编辑</div>' +
-        '<div data-btn="Del"  class="edit-btn"><i class="fa-lg iconfont icon-xclear"></i>删除</div>'
     var html = `
     <div class="kind">${kindHtml}</div>
-    <div class="edit">${editHtml}</div>
     <div class="show">${showHtml}</div>`
     element.html(html)
 }
@@ -283,27 +287,24 @@ $('#more-i').on('click', '.fa-mini', function() {
 
 // edit
 Mer.edit = {
-    old: {},
     Show: function() {
-        if ($('.edit').css('display') === 'none') {
-            var e = event.target
-            Mer.edit.old.element = $(e)
-            Mer.edit.old.html = $(e).html()
-            $(e).addClass('edit-hover')
-            $(e).children().removeAttr('style')
-            $('.edit').animate({ height:'show' })
-            setTimeout(function(){
-                $('body').one('click', function() {
-                    if ($(event.target).hasClass('edit-btn')) {
-                        Mer.edit[event.target.dataset.btn](e)
-                    } else {
-                        $('.edit').animate({ height:'hide' })
-                        Mer.edit.old.element.removeClass('edit-hover')
-                        Mer.edit.old.element.html(Mer.edit.old.html)
-                    }
-                })
-            }, 100)
-        }
+        var e = event.target
+        $(e).addClass('edit-hover')
+        $('#edit-ul').css({
+            display:"block",
+            top: event.clientY + "px",
+            left: event.clientX + "px"
+        })
+        setTimeout(function(){
+            $('body').one('mousedown', function() {
+                if ($(event.target).hasClass('edit-btn')) {
+                    Mer.edit[event.target.dataset.btn](e)
+                } else {
+                    $(e).removeClass('edit-hover')
+                    $('#edit-ul').hide()
+                }
+            })
+        }, 100)
     },
     New: function(e) {
         log(e)
@@ -346,8 +347,6 @@ Mer.edit = {
             e.remove()
         } else {
             if (Object.keys(User[kind][cls]).length) {
-                Mer.edit.old.element.removeClass('edit-hover')
-                Mer.edit.old.element.html(Mer.edit.old.html)
                 $('.show').html('<div class="text">提示：类不为空</div>')
             } else {
                 delete User[kind][cls]
@@ -361,9 +360,7 @@ $('body').on('mouseup', function() {
     document.oncontextmenu = function() {
         var name = event.target.localName
         if (name === 'tag' || name === 'book' || name === 'engine') {
-            if ($('.edit').css('display') === 'none') {
-                Mer.edit.Show()
-            }
+            Mer.edit.Show()
         }
         return false;
     }

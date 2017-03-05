@@ -9,7 +9,7 @@ body {
 span, i {
     pointer-events: none;
 }
-logo,tag,engine,book,top,li,button,.edit,.fa-mini {
+logo,tag,engine,book,top,li,button,.fa-mini {
     cursor: pointer;
 }
 logo,tag,engine,top,li {
@@ -20,7 +20,7 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-#engine,#book,#login,#login-zhuce,.edit {
+#engine,#book,#login,#login-zhuce {
     display: none;
 }
 .transparent {
@@ -227,6 +227,7 @@ tag {
     font-size: 21px;
     padding: 1.5em 0;
     color: #666;
+    border: 1px solid transparent;
 }
 tag:hover {
     background-color: #F5F6F9;
@@ -239,6 +240,11 @@ engine {
     line-height: 6.5em;
     border-radius: 50%;
     color: #666;
+    border: 1px solid transparent;
+}
+engine:hover {
+    background-color: #F5F6F9;
+    border: 1px solid #E6E7EC;
 }
 engine span {
     font-size: 1.2em;
@@ -256,18 +262,40 @@ book {
     letter-spacing: 0.5em;
     line-height: 1.41em;
     overflow: hidden;
+    border: 1px solid transparent;
 }
 book:hover {
     background-color: #F5F6F9;
-    outline: #E6E7EC solid thin;
+    border-color: #E6E7EC;
 }
 
 /* edit */
-.edit {
-    margin: 0.5em 0;
+.edit-hover {
+    border-color: #E6E7EC !important;
+    background-color: transparent !important;
 }
-.edit textarea {
-    text-align: center;
+#edit-ul {
+    position:absolute;
+    display: none;
+    list-style: none;
+    padding: 8px;
+    text-align: left;
+    width: 8em;
+    line-height: 2em;
+    margin: 0 auto;
+    background-color: #FBFBFB;
+    box-shadow: 0 1px 4px #999;
+}
+#edit-ul i {
+    display: inline-block;
+    width: 30px;
+}
+#edit-ul li:hover {
+    color: #037DD8;
+    background-color: rgba(207,216,230,0.1);
+}
+
+#edit textarea {
     outline: 0;
     resize: none;
     border-radius: 0;
@@ -275,28 +303,6 @@ book:hover {
     margin: 0 auto 4px;
     border-style: none;
     border-bottom: 1px dashed #9DA3A6;
-}
-.edit span {
-    display: block;
-    color: #8590A6;
-}
-.edit-hover {
-    color: #FFF !important;
-    background: #037DD8 !important;
-}
-.edit-btn {
-    display: inline-block;
-    width: 33%;
-    padding: 0.5em 0;
-    border-top: 1px solid #9DA3A6;
-    border-bottom: 1px solid #9DA3A6;
-}
-.edit-btn + .edit-btn {
-    border-left: 1px solid #9DA3A6;
-}
-.edit-btn:hover {
-    color: #037DD8;
-    background-color: rgba(207,216,230,.1);
 }
 
 /* login */
@@ -376,9 +382,6 @@ inputbox + inputbox {
     .fa-logo {
         font-size: 5.5em;
     }
-    .edit textarea {
-        width: 50%;
-    }
     #search-input, #more-ul {
         width: 38.2%;
     }
@@ -390,11 +393,6 @@ inputbox + inputbox {
         height: 8em;
         line-height: 8em;
         margin: 0.5em;
-        border: 1px solid transparent;
-    }
-    engine:hover {
-        background-color: #F5F6F9;
-        border: 1px solid #E6E7EC;
     }
     engine span, book {
         font-size: 1.5em;
