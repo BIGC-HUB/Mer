@@ -285,15 +285,83 @@ $('#more-i').on('click', '.fa-mini', function() {
     Mer.Engine()
 })
 
-// edit
+// Engine
+Mer.Engine = function() {
+    var e = event.target.dataset
+    var i = User.engines[e.cls][e.key]
+    var input = $('#search-input')[0]
+    var html
+    if (i.icon) {
+        html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
+        input.placeholder = e.key
+    } else {
+        html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
+        input.placeholder = ''
+    }
+    $('logo').html(html)
+    input.focus()
+}
+$('#engine').on('click', 'tag', function() {
+    if (Mer.rest.short) {
+        $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
+    } else {
+        Mer.edit.Show()
+    }
+})
+$('#engine').on('click', 'engine', function() {
+    if (Mer.rest.short) {
+        Mer.Engine()
+        $('#engine').hide()
+        $('#search').slideDown("slow")
+    } else {
+        Mer.edit.Show()
+    }
+})
+
+// Book
+Mer.showHtml = function(engines, tag) {
+    var cls = event.target.innerText
+    var showHtml = ''
+    for (var key in engines[cls]) {
+        var e = engines[cls][key]
+        if (e.icon) {
+            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
+        } else {
+            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
+        }
+    }
+    return showHtml
+}
+$('#book').on('click', 'tag' , function() {
+    if (Mer.rest.short) {
+        $('#book .show').html( Mer.showHtml(User.books, 'book') )
+    } else {
+        Mer.edit.Show()
+    }
+})
+$('#book').on('click', 'book', function() {
+    if (Mer.rest.short) {
+        var e = event.target.dataset
+        var i = User.books[e.cls][e.key]
+        window.open(i.url)
+    } else {
+        Mer.edit.Show()
+    }
+})
+
+// Edit
 Mer.edit = {
     Show: function() {
+        var x = event.clientX
+        if (window.document.body.offsetWidth - x < 125) {
+            x -= 125
+        }
         var e = event.target
         $(e).addClass('edit-hover')
         $('#edit-ul').css({
-            display:"block",
+            display: "block",
             top: event.clientY + "px",
-            left: event.clientX + "px"
+            left: x + "px"
         })
         setTimeout(function(){
             $('body').one('mousedown', function() {
@@ -356,6 +424,21 @@ Mer.edit = {
         $('.edit').animate({ height:'hide' })
     }
 }
+Mer.rest = {
+    time: 0,
+    short: true
+}
+$('body').on('touchstart', function() {
+    Mer.rest.time = parseInt(event.timeStamp)
+})
+$('body').on('touchend', function() {
+    var time = parseInt(event.timeStamp) - Mer.rest.time
+    if (time < 300) {
+        Mer.rest.short = true
+    } else {
+        Mer.rest.short = false
+    }
+})
 $('body').on('mouseup', function() {
     document.oncontextmenu = function() {
         var name = event.target.localName
@@ -363,77 +446,6 @@ $('body').on('mouseup', function() {
             Mer.edit.Show()
         }
         return false;
-    }
-})
-
-// Engine
-Mer.Engine = function() {
-    var e = event.target.dataset
-    var i = User.engines[e.cls][e.key]
-    var input = $('#search-input')[0]
-    var html
-    if (i.icon) {
-        html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
-        input.placeholder = e.key
-    } else {
-        html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
-        input.placeholder = ''
-    }
-    $('logo').html(html)
-    input.focus()
-}
-Mer.rest = 0
-$('body').on('touchstart', function() {
-    Mer.rest = parseInt(event.timeStamp)
-})
-$('body').on('touchend', function() {
-    Mer.rest = parseInt(event.timeStamp) - Mer.rest
-})
-$('#engine').on('click', 'tag', function() {
-    if (Mer.rest < 500) {
-        $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
-    } else {
-        Mer.edit.Show()
-    }
-})
-$('#engine').on('click', 'engine', function() {
-    if (Mer.rest < 500) {
-        Mer.Engine()
-        $('#engine').hide()
-        $('#search').slideDown("slow")
-    } else {
-        Mer.edit.Show()
-    }
-})
-
-// Book
-Mer.showHtml = function(engines, tag) {
-    var cls = event.target.innerText
-    var showHtml = ''
-    for (var key in engines[cls]) {
-        var e = engines[cls][key]
-        if (e.icon) {
-            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
-        } else {
-            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
-        }
-    }
-    return showHtml
-}
-$('#book').on('click', 'tag' , function() {
-    if (Mer.rest < 500) {
-        $('#book .show').html( Mer.showHtml(User.books, 'book') )
-    } else {
-        Mer.edit.Show()
-    }
-})
-$('#book').on('click', 'book', function() {
-    if (Mer.rest < 500) {
-        var e = event.target.dataset
-        var i = User.books[e.cls][e.key]
-        window.open(i.url)
-    } else {
-        Mer.edit.Show()
     }
 })
 
