@@ -405,6 +405,37 @@ Mer.edit = {
     },
     new: function(e) {
         Mer.edit.hide(e)
+        $('#engine,#book').hide()
+        var tag = e.dataset.kind || e.localName
+        var key = e.dataset.key
+        var name = e.dataset.cls
+        var kind = tag + 's'
+        $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().show()
+        $('#edit-cont-color').parent().addClass('half')
+        if (key) { //.show
+            var i = User[kind][name][key]
+            if (i.icon) { // engine
+                $('#edit-cont .text').text('新建丨搜索引擎')
+                $('#edit-cont-wap').val('')
+                $('#edit-cont-icon').val('')
+            } else { // book
+                $('#edit-cont .text').text('新建丨书签')
+                $('#edit-cont-icon,#edit-cont-wap').parent().hide()
+                $('#edit-cont-color').parent().removeClass('half')
+            }
+            $('#edit-cont-color').val('')
+            $('#edit-cont-url').val('')
+            $('#edit-cont-name').val('')
+        } else { //.kind
+            $('#edit-cont .text').text('新建丨分类')
+            $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
+            $('#edit-cont-name').val('')
+            $('#edit-cont-name').css('color', '')
+        }
+        $('#edit-cont-no')[0].dataset.tag = tag
+        Mer.edit.cont()
+        $('#edit-cont-yes').removeClass('amend')
+        $('#edit-cont-yes').addClass('new')
     },
     amend: function(e) {
         Mer.edit.hide(e)
@@ -434,8 +465,11 @@ Mer.edit = {
             $('#edit-cont .text').text('编辑丨分类')
             $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
             $('#edit-cont-name').val(name)
+            $('#edit-cont-name').css('color', '')
         }
         $('#edit-cont-no')[0].dataset.tag = tag
+        $('#edit-cont-yes').addClass('amend')
+        $('#edit-cont-yes').removeClass('new')
         Mer.edit.cont()
     },
     del: function(e) {
@@ -498,26 +532,62 @@ $('#edit-cont-no').on('click', function() {
     $('#edit-cont').hide()
     $('#' + $('#edit-cont-no')[0].dataset.tag).show()
 })
-$('#edit-cont-yes').on('click', function() {
+$('#edit-cont').on('click', '.amend', function() {
+    // 修改数据
     var e = Mer.edit.at
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
     var name = e.dataset.cls
     var kind = tag + 's'
-    if (key) { //.show
-        var i = User[kind][name][key]
-        if (i.icon) { // engine
-
-        } else { // book
-
+    var newName = $('#edit-cont-name').val()
+    var newUrl  = $('#edit-cont-url').val()
+    // 表单验证
+    if (!newName) {
+        $('#edit-cont .text').text('名字不能为空')
+        $('#edit-cont-name').focus()
+    } else {
+        // 数据存储
+        if (key) { //.show
+            if (!newUrl) {
+                $('#edit-cont .text').text('网址不能为空')
+                $('#edit-cont-url').focus()
+            } else {
+                var i = User[kind][name][key]
+                if (i.icon) { // 引擎
+                    $(e).children().removeClass('icon-' + i.icon)
+                    i.icon = $('#edit-cont-icon').val()
+                    i.color = $('#edit-cont-color').css('color')
+                    i.wap = $('#edit-cont-wap').val()
+                    i.url = $('#edit-cont-url').val()
+                    $(e).children().addClass('icon-' + i.icon)
+                } else { // 书签
+                    i.color = $('#edit-cont-color').css('color')
+                    i.url = $('#edit-cont-url').val()
+                }
+                if (key !== newName) {
+                    User[kind][name][newName] = JSON.parse(JSON.stringify( User[kind][name][key] ))
+                    delete User[kind][name][key]
+                    e.dataset.key = newName
+                    if ($(e).children()[0].localName === 'span') {
+                        $(e).children().text(newName)
+                    }
+                }
+                $(e).children().css('color', i.color)
+                $('#edit-cont-no').click()
+            }
+        } else { //.kind
+            if (name !== newName) {
+                User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
+                delete User[kind][name]
+                e.innerText = newName
+                e.dataset.cls = newName
+            }
+            $('#edit-cont-no').click()
         }
-    } else { //.kind
-        var newName = $('#edit-cont-name').val()
-        User[kind][newName] = JSON.parse( JSON.stringify(User[kind][name]) )
-        delete User[kind][name]
-        e.innerText = newName
-        e.dataset.cls = newName
     }
+})
+$('#edit-cont').on('click', '.new', function() {
+    log('未完成 - 新建')
     $('#edit-cont-no').click()
 })
 
