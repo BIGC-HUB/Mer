@@ -20,7 +20,7 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-#engine,#book,#login,#login-zhuce {
+#engine,#book,#login,#edit-cont,#login-zhuce {
     display: none;
 }
 .transparent {
@@ -34,7 +34,7 @@ logo,tag,engine,top,li {
     color: #333 !important;
     background-color: #F5F6F9;
 }
-#engine,#book {
+#engine,#book,#edit {
     margin: 3em auto 0;
 }
 
@@ -317,12 +317,13 @@ book:hover {
     border-style: none;
 }
 #edit-cont button {
-    width: 30%;
+    width: 35%;
     padding: 6px 0;
-    margin: 1em 4px 0;
+    margin: .5em 4px;
     border-radius: 4px;
     outline-style: none;
 }
+
 /* login */
 .btn-white {
     background-color: #FFF;
@@ -417,6 +418,7 @@ inputbox input {
     engine span, book {
         font-size: 1.5em;
     }
+
     #login button {
         width: 15%;
     }
@@ -427,6 +429,10 @@ inputbox input {
         width: calc(20% - 2px);
     }
     #edit-cont inputbox {
-        width: 60%;
+        width: 64%;
+    }
+    #edit-cont .half {
+        display: inline-block;
+        width: 32%;
     }
 }

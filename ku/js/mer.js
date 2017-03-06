@@ -106,13 +106,13 @@ $('#search').on('click', 'logo',function() {
 })
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
-        $('#engine,#book,#login').hide()
+        $('#engine,#book,#login,#edit-cont').hide()
         $('#search').animate({ height:'show' })
     }
 })
 $('#top').on('click', '.book', function() {
     if ($('#book').css('display') === 'none') {
-        $('#engine,#search,#login').hide()
+        $('#engine,#search,#login,#edit-cont').hide()
         $('#book').animate({ height:'show' })
     } else {
         $('#top .home').click()
@@ -120,7 +120,7 @@ $('#top').on('click', '.book', function() {
 })
 $('#top').on('click', '.user', function() {
     if ($('#login').css('display') === 'none') {
-        $('#engine,#search,#book').hide()
+        $('#engine,#search,#book,#edit-cont').hide()
         $('#login').animate({ height:'show' })
     } else {
         $('#top .home').click()
@@ -354,16 +354,18 @@ $('#book').on('click', 'book', function() {
 Mer.edit = {
     cont: function() {
         $('#edit-cont').show()
-        $('#edit-cont textarea').each( function(i,e) {
+        $('#edit-cont textarea').each( function( i, e ) {
             var dif = e.scrollHeight
             e.value += '\n'
-            var dif = e.scrollHeight - dif
+            dif = e.scrollHeight - dif
             var arr = e.value.split('')
             arr.splice(-1, 1)
             e.value = arr.join('')
+            log(e.scrollHeight)
             e.rows = parseInt(e.scrollHeight / dif)
             e.dataset.dif = dif
         })
+
     },
     show: function() {
         var x = event.clientX
@@ -406,16 +408,19 @@ Mer.edit = {
         var key = e.dataset.key
         var kind = tag + 's'
         var html = ''
-        Mer.edit.cont()
         if (key) {
             var i = User[kind][cls][key]
             $('#edit-cont-name').val(key)
             $('#edit-cont-url').val(i.url)
+            $('#edit-cont-color').val(i.color)
+            $('#edit-cont-icon').val(i.icon)
+            $('#edit-cont-wap').val(i.wap)
             log(key, i)
         } else {
             $('#edit-cont-name').val(cls)
             log(kind,cls)
         }
+        Mer.edit.cont()
     },
     del: function(e) {
         Mer.edit.hide(e)
@@ -459,10 +464,6 @@ $('body').on('mouseup', function() {
         }
         return false;
     }
-})
-
-$('textarea').on('focus', function() {
-
 })
 $('textarea').on('input', function() {
     var e = event.target
