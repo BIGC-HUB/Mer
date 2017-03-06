@@ -1,4 +1,4 @@
-var defUser = {
+const defUser = {
     "engines": {
         "综合": {
             "大海": {

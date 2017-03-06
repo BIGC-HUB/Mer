@@ -12,11 +12,20 @@
     <body>
         <div id="sug"></div>
         <div id="top"></div>
-        <div id="search"></div>
+        <div id="search" style="display: none"></div>
         <div id="book"></div>
         <div id="engine"></div>
         <div id="login"></div>
-        <div id="edit"></div>
+        <div id="edit">
+            <div id="edit-cont">
+                <div class="text">添加引擎</div>
+                <inputbox><span>名字</span><input id="edit-cont-name"></inputbox>
+                <inputbox><span>网址</span><textarea rows="1"></textarea></inputbox>
+                <!-- <inputbox><i class="iconfont icon-login"></i><input placeholder="颜色"  ><i class="iconfont icon-xclear"></i></inputbox>
+                <inputbox><i class="iconfont icon-login"></i><input placeholder="图标"  ><i class="iconfont icon-xclear"></i></inputbox>
+                <inputbox><i class="iconfont icon-login"></i><input placeholder="移动端"><i class="iconfont icon-xclear"></i></inputbox> -->
+            </div>
+        </div>
 
         <!-- JS -->
         <script src="ku/jquery.js"></script>

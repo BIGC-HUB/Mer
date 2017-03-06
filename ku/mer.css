@@ -283,9 +283,9 @@ book:hover {
     width: 110px;
     line-height: 2.5em;
     margin: 0 auto;
-    background-color: #FBFBFB;
+    background-color: #F5F6F9;
     box-shadow: 0 1px 4px #999;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 #edit-ul i {
     display: inline-block;
@@ -295,17 +295,29 @@ book:hover {
     color: #037DD8;
     background-color: rgba(207,216,230,0.1);
 }
-
-#edit textarea {
-    outline: 0;
-    resize: none;
-    border-radius: 0;
-    width: 95%;
-    margin: 0 auto 4px;
-    border-style: none;
-    border-bottom: 1px dashed #9DA3A6;
+#edit-cont i {
+    font-size: 1.333333em;
 }
-
+#edit-cont span {
+    display: inline-block;
+    width: 60px;
+    vertical-align: middle;
+}
+#edit-cont textarea {
+    overflow-y: hidden;
+    resize: none;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    border-radius: 0;
+    height: auto;
+    width: calc(100% - 60px);
+    padding: 8px 0;
+    outline: 0;
+    font-size: 21px;
+    border-style: none;
+}
+#edit-cont inputbox {
+}
 /* login */
 .btn-white {
     background-color: #FFF;
@@ -335,18 +347,13 @@ inputbox {
 inputbox + inputbox {
     border-top-style: none;
 }
-
-#login inputbox {
-    width: calc(70% + 14px);
-}
-#login i {
+inputbox i {
     vertical-align: middle;
     display: inline-block;
     width: 30px;
-    font-size: 1.333333em;
     pointer-events: auto;
 }
-#login input {
+inputbox input {
     vertical-align: middle;
     -webkit-appearance: none;
     border-radius: 0;
@@ -354,6 +361,13 @@ inputbox + inputbox {
     padding: 8px 0;
     outline: 0;
     border-style: none;
+}
+
+#login inputbox {
+    width: calc(70% + 14px);
+}
+#login i {
+    font-size: 1.333333em;
 }
 #login button {
     width: 35%;
@@ -401,10 +415,10 @@ inputbox + inputbox {
     #login inputbox {
         width: calc(30% + 14px);
     }
-    #login input,#login-hint {
-        width: calc(100% - 60px);
-    }
     #login button {
         width: 15%;
+    }
+    #edit-cont inputbox {
+        width: 70%;
     }
 }

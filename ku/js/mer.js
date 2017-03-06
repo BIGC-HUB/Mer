@@ -67,11 +67,12 @@ var __initLogo = function(def, logo) {
 var __initEdit = function() {
     var html = `
     <ul id="edit-ul">
-      <li data-btn="New"  ><i class="fa-lg iconfont icon-new"></i><span>新建</span></li>
-      <li data-btn="Amend"><i class="fa-lg iconfont icon-amend"></i><span>编辑</span></li>
-      <li data-btn="Del"  ><i class="fa-lg iconfont icon-del"></i><span>删除</span></li>
-    </ul><div id="edit-content"></div>`
-    $('#edit').html(html)
+      <li data-btn="new"   class="edit"><i class="fa-lg iconfont icon-new"></i><span>新建</span></li>
+      <li data-btn="amend" class="edit"><i class="fa-lg iconfont icon-amend"></i><span>编辑</span></li>
+      <li data-btn="del"   class="edit"><i class="fa-lg iconfont icon-del"></i><span>删除</span></li>
+    </ul>`
+    $('#edit').append(html)
+    // $('#edit').html(html)
 }()
 var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
@@ -98,7 +99,7 @@ var __init__ = function(User) {
     __initBookEngine($('#book'), User.books, User.def.book, 'book')
 }
 
-// Top
+// Top ！
 $('#search').on('click', 'logo',function() {
     $('#search').hide()
     $('#engine').slideDown("slow")
@@ -305,7 +306,7 @@ $('#engine').on('click', 'tag', function() {
     if (Mer.rest.short) {
         $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
     } else {
-        Mer.edit.Show()
+        Mer.edit.show()
     }
 })
 $('#engine').on('click', 'engine', function() {
@@ -314,7 +315,7 @@ $('#engine').on('click', 'engine', function() {
         $('#engine').hide()
         $('#search').slideDown("slow")
     } else {
-        Mer.edit.Show()
+        Mer.edit.show()
     }
 })
 
@@ -336,7 +337,7 @@ $('#book').on('click', 'tag' , function() {
     if (Mer.rest.short) {
         $('#book .show').html( Mer.showHtml(User.books, 'book') )
     } else {
-        Mer.edit.Show()
+        Mer.edit.show()
     }
 })
 $('#book').on('click', 'book', function() {
@@ -345,13 +346,13 @@ $('#book').on('click', 'book', function() {
         var i = User.books[e.cls][e.key]
         window.open(i.url)
     } else {
-        Mer.edit.Show()
+        Mer.edit.show()
     }
 })
 
 // Edit
 Mer.edit = {
-    Show: function() {
+    show: function() {
         var x = event.clientX
         if (window.document.body.offsetWidth - x < 125) {
             x -= 125
@@ -365,8 +366,10 @@ Mer.edit = {
         })
         setTimeout(function(){
             $('body').one('mousedown', function() {
-                if ($(event.target).hasClass('edit-btn')) {
-                    Mer.edit[event.target.dataset.btn](e)
+                var edit = event.target.classList.contains('edit')
+                var key  = event.target.dataset.btn
+                if (edit) {
+                    Mer.edit[key](e)
                 } else {
                     $(e).removeClass('edit-hover')
                     $('#edit-ul').hide()
@@ -374,38 +377,31 @@ Mer.edit = {
             })
         }, 100)
     },
-    New: function(e) {
+    hide: function(e) {
+        $(e).removeClass('edit-hover')
+        $('#edit-ul').hide()
+    },
+    new: function(e) {
+        Mer.edit.hide(e)
         log(e)
     },
-    Amend: function(e) {
+    amend: function(e) {
+        Mer.edit.hide(e)
+        $('#engine,#book').hide()
         var tag = e.dataset.kind || e.localName
         var cls = e.dataset.cls
         var key = e.dataset.key
         var kind = tag + 's'
         var html = ''
-        var transE = {color: '颜　色',url: '网　址',wap: '手机端',icon: '图　标'}
-        var transB = {color: '颜　色',url: '网　址'}
         if (key) {
-            var obj = User[kind][cls][key]
-            var arry = Object.keys(obj)
-            if (kind === 'engines') {
-                html += `<span>名　字</span><textarea rows="1">${key}</textarea>`
-                for (var i of arry) {
-                    html += `<span>${transE[i]}</span><textarea rows="1">${obj[i]}</textarea>`
-                }
-            } else {
-                html += `<span>名　字</span><textarea rows="1">${key}</textarea>`
-                for (var i of arry) {
-                    html += `<span>${transB[i]}</span><textarea rows="1">${obj[i]}</textarea>`
-                }
-            }
-
+            log(key, User[kind][cls][key])
         } else {
-            html += `<span>标　签</span><textarea rows="1">${cls}</textarea>`
+            log(kind,cls)
         }
-        $('#' + tag + ' .edit').append(html)
+        $('#edit-cont').show()
     },
-    Del: function(e) {
+    del: function(e) {
+        Mer.edit.hide(e)
         var tag = e.dataset.kind || e.localName
         var cls = e.dataset.cls
         var key = e.dataset.key
@@ -421,7 +417,6 @@ Mer.edit = {
                 e.remove()
             }
         }
-        $('.edit').animate({ height:'hide' })
     }
 }
 Mer.rest = {
@@ -443,10 +438,29 @@ $('body').on('mouseup', function() {
     document.oncontextmenu = function() {
         var name = event.target.localName
         if (name === 'tag' || name === 'book' || name === 'engine') {
-            Mer.edit.Show()
+            Mer.edit.show()
         }
         return false;
     }
 })
 
+$('textarea').each( function(i, e) {
+    var dif = e.scrollHeight
+    e.value += '\n'
+    var dif = e.scrollHeight - dif
+    var arr = e.value.split('')
+    arr.splice(-1, 1)
+    e.value = arr.join('')
+    e.rows = parseInt(e.scrollHeight / dif)
+    e.dataset.dif = dif
+})
+$('textarea').on('input', function() {
+    var e = event.target
+    e.value = e.value.replace(/\n| /g,'')
+    if (e.value) {
+        e.rows = parseInt(e.scrollHeight / e.dataset.dif)
+    } else {
+        e.rows = 1
+    }
+})
 __init__(User)
