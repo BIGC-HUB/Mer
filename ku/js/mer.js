@@ -65,14 +65,22 @@ var __initLogo = function(def, logo) {
     $('logo').html(html)
 }
 var __initEdit = function() {
-    var html = `
-    <ul id="edit-ul">
-      <li data-btn="new"   class="edit"><i class="fa-lg iconfont icon-new"></i><span>新建</span></li>
-      <li data-btn="amend" class="edit"><i class="fa-lg iconfont icon-amend"></i><span>编辑</span></li>
-      <li data-btn="del"   class="edit"><i class="fa-lg iconfont icon-del"></i><span>删除</span></li>
-    </ul>`
-    $('#edit').append(html)
-    // $('#edit').html(html)
+    var html =
+    '<ul id="edit-ul">' +
+      '<li data-btn="new"   class="edit"><i class="fa-lg iconfont icon-new"></i><span>新建</span></li>' +
+      '<li data-btn="amend" class="edit"><i class="fa-lg iconfont icon-amend"></i><span>编辑</span></li>' +
+      '<li data-btn="del"   class="edit"><i class="fa-lg iconfont icon-del"></i><span>删除</span></li>' +
+    '</ul><div id="edit-cont">' +
+        '<div class="text">编辑引擎</div>' +
+        '<inputbox><span>名字</span><input id="edit-cont-name"></inputbox>' +
+        '<inputbox><span>网址</span><textarea id="edit-cont-url" rows="1"></textarea></inputbox>' +
+        '<inputbox class="half"><span>颜色</span><input id="edit-cont-color"></inputbox>' +
+        '<inputbox class="half"><span>图标</span><input id="edit-cont-icon"></inputbox>' +
+        '<inputbox><span>Wap</span><textarea id="edit-cont-wap" rows="1"></textarea></inputbox>' +
+        '<button id="edit-cont-yes" class="btn-blue" type="button">确定</button>' +
+        '<button id="edit-cont-no" class="btn-white" type="button">取消</button>' +
+    '</div>'
+    $('#edit').html(html)
 }()
 var __initBookEngine = function(element, engines, def, tag) {
     var kindHtml = ''
@@ -361,11 +369,9 @@ Mer.edit = {
             var arr = e.value.split('')
             arr.splice(-1, 1)
             e.value = arr.join('')
-            log(e.scrollHeight)
             e.rows = parseInt(e.scrollHeight / dif)
             e.dataset.dif = dif
         })
-
     },
     show: function() {
         var x = event.clientX
@@ -373,6 +379,7 @@ Mer.edit = {
             x -= 125
         }
         var e = event.target
+        Mer.edit.at = e
         $(e).addClass('edit-hover')
         $('#edit-ul').css({
             display: "block",
@@ -398,28 +405,37 @@ Mer.edit = {
     },
     new: function(e) {
         Mer.edit.hide(e)
-        log(e)
     },
     amend: function(e) {
         Mer.edit.hide(e)
         $('#engine,#book').hide()
         var tag = e.dataset.kind || e.localName
-        var cls = e.dataset.cls
         var key = e.dataset.key
+        var name = e.dataset.cls
         var kind = tag + 's'
-        var html = ''
-        if (key) {
-            var i = User[kind][cls][key]
-            $('#edit-cont-name').val(key)
-            $('#edit-cont-url').val(i.url)
+        $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().show()
+        $('#edit-cont-color').parent().addClass('half')
+        if (key) { //.show
+            var i = User[kind][name][key]
+            if (i.icon) { // engine
+                $('#edit-cont .text').text('编辑丨搜索引擎')
+                $('#edit-cont-wap').val(i.wap)
+                $('#edit-cont-icon').val(i.icon)
+            } else { // book
+                $('#edit-cont .text').text('编辑丨书签')
+                $('#edit-cont-icon,#edit-cont-wap').parent().hide()
+                $('#edit-cont-color').parent().removeClass('half')
+            }
             $('#edit-cont-color').val(i.color)
-            $('#edit-cont-icon').val(i.icon)
-            $('#edit-cont-wap').val(i.wap)
-            log(key, i)
-        } else {
-            $('#edit-cont-name').val(cls)
-            log(kind,cls)
+            $('#edit-cont-color,#edit-cont-name').css('color', i.color)
+            $('#edit-cont-url').val(i.url)
+            $('#edit-cont-name').val(key)
+        } else { //.kind
+            $('#edit-cont .text').text('编辑丨分类')
+            $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
+            $('#edit-cont-name').val(name)
         }
+        $('#edit-cont-no')[0].dataset.tag = tag
         Mer.edit.cont()
     },
     del: function(e) {
@@ -439,7 +455,8 @@ Mer.edit = {
                 e.remove()
             }
         }
-    }
+    },
+    at: {}
 }
 Mer.rest = {
     time: 0,
@@ -461,8 +478,8 @@ $('body').on('mouseup', function() {
         var name = event.target.localName
         if (name === 'tag' || name === 'book' || name === 'engine') {
             Mer.edit.show()
+            return false;
         }
-        return false;
     }
 })
 $('textarea').on('input', function() {
@@ -474,4 +491,34 @@ $('textarea').on('input', function() {
         e.rows = 1
     }
 })
+$('#edit-cont-color').on('blur', function() {
+    event.target.style.color = event.target.value
+})
+$('#edit-cont-no').on('click', function() {
+    $('#edit-cont').hide()
+    $('#' + $('#edit-cont-no')[0].dataset.tag).show()
+})
+$('#edit-cont-yes').on('click', function() {
+    var e = Mer.edit.at
+    var tag = e.dataset.kind || e.localName
+    var key = e.dataset.key
+    var name = e.dataset.cls
+    var kind = tag + 's'
+    if (key) { //.show
+        var i = User[kind][name][key]
+        if (i.icon) { // engine
+
+        } else { // book
+
+        }
+    } else { //.kind
+        var newName = $('#edit-cont-name').val()
+        User[kind][newName] = JSON.parse( JSON.stringify(User[kind][name]) )
+        delete User[kind][name]
+        e.innerText = newName
+        e.dataset.cls = newName
+    }
+    $('#edit-cont-no').click()
+})
+
 __init__(User)

@@ -317,11 +317,14 @@ book:hover {
     border-style: none;
 }
 #edit-cont button {
-    width: 35%;
     padding: 6px 0;
-    margin: .5em 4px;
-    border-radius: 4px;
+    margin: 1em auto;
     outline-style: none;
+    width: 50%;
+}
+#edit-cont .half {
+    display: inline-block;
+    width: 100%;
 }
 
 /* login */
@@ -432,7 +435,6 @@ inputbox input {
         width: 64%;
     }
     #edit-cont .half {
-        display: inline-block;
         width: 32%;
     }
 }
