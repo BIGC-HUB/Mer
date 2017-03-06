@@ -316,7 +316,12 @@ book:hover {
     font-size: 21px;
     border-style: none;
 }
-#edit-cont inputbox {
+#edit-cont button {
+    width: 30%;
+    padding: 6px 0;
+    margin: 1em 4px 0;
+    border-radius: 4px;
+    outline-style: none;
 }
 /* login */
 .btn-white {
@@ -412,13 +417,16 @@ inputbox input {
     engine span, book {
         font-size: 1.5em;
     }
-    #login inputbox {
-        width: calc(30% + 14px);
-    }
     #login button {
         width: 15%;
     }
+    #login inputbox {
+        width: calc(30% + 14px);
+    }
+    #edit-cont button {
+        width: calc(20% - 2px);
+    }
     #edit-cont inputbox {
-        width: 70%;
+        width: 60%;
     }
 }

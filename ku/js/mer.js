@@ -352,6 +352,19 @@ $('#book').on('click', 'book', function() {
 
 // Edit
 Mer.edit = {
+    cont: function() {
+        $('#edit-cont').show()
+        $('#edit-cont textarea').each( function(i,e) {
+            var dif = e.scrollHeight
+            e.value += '\n'
+            var dif = e.scrollHeight - dif
+            var arr = e.value.split('')
+            arr.splice(-1, 1)
+            e.value = arr.join('')
+            e.rows = parseInt(e.scrollHeight / dif)
+            e.dataset.dif = dif
+        })
+    },
     show: function() {
         var x = event.clientX
         if (window.document.body.offsetWidth - x < 125) {
@@ -393,12 +406,16 @@ Mer.edit = {
         var key = e.dataset.key
         var kind = tag + 's'
         var html = ''
+        Mer.edit.cont()
         if (key) {
-            log(key, User[kind][cls][key])
+            var i = User[kind][cls][key]
+            $('#edit-cont-name').val(key)
+            $('#edit-cont-url').val(i.url)
+            log(key, i)
         } else {
+            $('#edit-cont-name').val(cls)
             log(kind,cls)
         }
-        $('#edit-cont').show()
     },
     del: function(e) {
         Mer.edit.hide(e)
@@ -444,15 +461,8 @@ $('body').on('mouseup', function() {
     }
 })
 
-$('textarea').each( function(i, e) {
-    var dif = e.scrollHeight
-    e.value += '\n'
-    var dif = e.scrollHeight - dif
-    var arr = e.value.split('')
-    arr.splice(-1, 1)
-    e.value = arr.join('')
-    e.rows = parseInt(e.scrollHeight / dif)
-    e.dataset.dif = dif
+$('textarea').on('focus', function() {
+
 })
 $('textarea').on('input', function() {
     var e = event.target
