@@ -278,22 +278,24 @@ book:hover {
     position:absolute;
     display: none;
     list-style: none;
-    padding: 8px;
+    padding: 8px 0;
     text-align: left;
-    width: 110px;
+    width: 160px;
     line-height: 2.5em;
     margin: 0 auto;
-    background-color: #F5F6F9;
-    box-shadow: 0 1px 4px #999;
-    border-radius: 10px;
+    border-radius: 2px;
+    background-color: #FFF;
+    box-shadow: 0 1px 4px 0 rgba(15,32,65,.2);
 }
 #edit-ul i {
     display: inline-block;
     width: 30px;
 }
+#edit-ul li {
+    padding: 0 0 0 30px;
+}
 #edit-ul li:hover {
-    color: #037DD8;
-    background-color: rgba(207,216,230,0.1);
+    background-color: rgba(59,147,255,.06);
 }
 #edit-cont i {
     font-size: 1.333333em;

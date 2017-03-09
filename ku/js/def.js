@@ -316,9 +316,10 @@ const defUser = {
     },
     "note": "记事本",
     "def": {
-        "engine": "综合",
-        "book": "常用",
-        "logo": "大海"
+        "logo": {
+            "cls": "综合",
+            "key": "大海"
+        }
     }
 }
 
