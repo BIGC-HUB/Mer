@@ -307,32 +307,29 @@ book:hover {
     font-size: 1.333333em;
 }
 #edit-cont span {
+    vertical-align: top;
     display: inline-block;
-    width: 60px;
-    vertical-align: middle;
+    width: 4em;
+    margin: 0 auto;
+    padding: 4px;
+    color: #037DD8;
+    border: 1px solid transparent;
+}
+#edit-cont input, #edit-cont textarea {
+    display: inline-block;
+    font-size: 1em;
+    width: calc(90% - 4em);
+    border: 1px solid transparent;
+    padding: 4px;
 }
 #edit-cont textarea {
-    overflow-y: hidden;
     resize: none;
-    vertical-align: middle;
     -webkit-appearance: none;
-    border-radius: 0;
     height: auto;
-    width: calc(100% - 60px);
-    padding: 8px 0;
-    outline: 0;
-    font-size: 21px;
-    border-style: none;
 }
-#edit-cont button {
-    padding: 6px 0;
-    margin: 1em auto;
-    outline-style: none;
-    width: 50%;
-}
-#edit-cont .half {
-    display: inline-block;
-    width: 100%;
+
+#edit-cont-url {
+    margin-bottom: 1.5em;
 }
 
 /* login */
@@ -436,13 +433,7 @@ inputbox input {
     #login inputbox {
         width: calc(30% + 14px);
     }
-    #edit-cont button {
-        width: calc(20% - 2px);
-    }
-    #edit-cont inputbox {
-        width: 64%;
-    }
-    #edit-cont .half {
-        width: 32%;
+    #edit-cont input, #edit-cont textarea {
+        width: calc(60% - 4em);
     }
 }
