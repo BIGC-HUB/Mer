@@ -254,15 +254,20 @@ engine span {
 book {
     vertical-align: top;
     display: inline-block;
-    margin: 0.5em;
+
     font-size: 1.2em;
     width: 1.2em;
     height: 7em;
+    margin: 0.5em 0.1em;
+    padding: 0 0.4em;
+
     word-wrap: break-word;
     letter-spacing: 0.5em;
     line-height: 1.41em;
     overflow: hidden;
+
     border: 1px solid transparent;
+    border-radius: 2px;
 }
 book:hover {
     background-color: #F5F6F9;

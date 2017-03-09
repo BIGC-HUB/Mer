@@ -77,15 +77,7 @@ var __initBookEngine = function(tag) {
         }
         tagHtml += `<tag data-kind="${tag}" data-cls="${cls}">${cls}</tag>`
     }
-    var showHtml = ''
-    for (var key in User[kind][def]) {
-        var e = User[kind][def][key]
-        if (e.icon) {
-            showHtml += `<${tag} data-cls="${def}" data-key="${key}"> <i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i> </${tag}>`
-        } else {
-            showHtml += `<${tag} data-cls="${def}" data-key="${key}"> <span style="color:${e.color}">${key}</span> </${tag}>`
-        }
-    }
+    var showHtml = Mer.showHtml(tag, def)
     var html = `
     <div class="kind">${tagHtml}</div>
     <div class="show">${showHtml}</div>`
@@ -126,50 +118,52 @@ $('#top').on('click', '.user', function() {
 })
 
 // 输入 - 智能联想
-Mer.moreHtml = ''
-Mer.now = -1
-Mer.firstUp = true
-Mer.soGou = function(value) {
-    Mer.now = -1
-    Mer.firstUp = true
-    //组装 URL
-    var sugurl = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
-    //回调函数
-    window.sogou = {
-        sug: function(json) {
-            var arr = json[1]
-            if (arr.length) {
-                var html = ''
-                for (var i = 0; i < arr.length; i++) {
-                    html += '<li data-id="' + i + '">' + arr[i] +'</li>'
+Mer.ai = {
+    moreHtml: '',
+    now: -1,
+    firstUp: true,
+    soGou: function(value) {
+        Mer.ai.now = -1
+        Mer.ai.firstUp = true
+        //组装 URL
+        var sugurl = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
+        //回调函数
+        window.sogou = {
+            sug: function(json) {
+                var arr = json[1]
+                if (arr.length) {
+                    var html = ''
+                    for (var i = 0; i < arr.length; i++) {
+                        html += '<li data-id="' + i + '">' + arr[i] +'</li>'
+                    }
+                    Mer.ai.moreHtml = html
+                    $('#more-ul').html(Mer.ai.moreHtml)
+                    $('#more-ul').addClass('more-border')
+                    $('#search-input').addClass('more-radius')
+                } else {
+                    $('#more-ul').html('')
+                    $('#more-ul').removeClass('more-border')
+                    $('#search-input').removeClass('more-radius')
                 }
-                Mer.moreHtml = html
-                $('#more-ul').html(Mer.moreHtml)
-                $('#more-ul').addClass('more-border')
-                $('#search-input').addClass('more-radius')
-            } else {
-                $('#more-ul').html('')
-                $('#more-ul').removeClass('more-border')
-                $('#search-input').removeClass('more-radius')
             }
         }
-    }
-    //动态 JS脚本 cnblogs.com/woider/p/5805248.html
-    $("#sug").html('<script src=' + sugurl + '></script>')
-}
-Mer.UpDn = function(next) {
-    if (Mer.firstUp && next === -1) {
-        next = 0
-        Mer.firstUp = false
-    }
-    var old = Mer.now
-    var all = $('#more-ul li')
-    var now = (old + next + all.length) % all.length
+        //动态 JS脚本 cnblogs.com/woider/p/5805248.html
+        $("#sug").html('<script src=' + sugurl + '></script>')
+    },
+    UpDn: function(next) {
+        if (Mer.ai.firstUp && next === -1) {
+            next = 0
+            Mer.ai.firstUp = false
+        }
+        var old = Mer.ai.now
+        var all = $('#more-ul li')
+        var now = (old + next + all.length) % all.length
 
-    Mer.now = now
-    event.target.value = all[now].innerText
-    $(all[now]).addClass('li-hover')
-    $(all[old]).removeClass('li-hover')
+        Mer.ai.now = now
+        event.target.value = all[now].innerText
+        $(all[now]).addClass('li-hover')
+        $(all[old]).removeClass('li-hover')
+    }
 }
 $('#search-input').on('blur', function() {
     // 智能联想
@@ -183,8 +177,8 @@ $('#search-input').on('focus', function() {
     $('.fa-mini').remove()
     $('#more-button i').addClass('transparent')
     // 智能联想
-    if (Mer.moreHtml && event.target.value) {
-        $('#more-ul').html(Mer.moreHtml)
+    if (Mer.ai.moreHtml && event.target.value) {
+        $('#more-ul').html(Mer.ai.moreHtml)
         $('#more-ul').addClass('more-border')
         $('#search-input').addClass('more-radius')
     } else {
@@ -195,11 +189,11 @@ $('#search-input').on('keyup', function() {
     if (event.keyCode === 13) {
         $('#search-button').click()
     } else if (event.keyCode === 38) {
-        Mer.UpDn( -1 )
+        Mer.ai.UpDn( -1 )
     } else if (event.keyCode === 40) {
-        Mer.UpDn( +1 )
+        Mer.ai.UpDn( +1 )
     } else {
-        Mer.soGou(event.target.value)
+        Mer.ai.soGou(event.target.value)
     }
 })
 $('#search-input').on('keydown', function() {
@@ -208,11 +202,11 @@ $('#search-input').on('keydown', function() {
      }
 })
 $('#more-ul').on('mouseover', 'li', function() {
-    var old = Mer.now
+    var old = Mer.ai.now
     var all = $('#more-ul li')
     var now = Number(event.target.dataset.id)
 
-    Mer.now = now
+    Mer.ai.now = now
     $(all[now]).addClass('li-hover')
     $(all[old]).removeClass('li-hover')
 })
@@ -302,9 +296,7 @@ Mer.Engine = function() {
 }
 $('#engine').on('click', 'tag', function() {
     if (Mer.rest.short) {
-        $('#engine .show').html(Mer.showHtml(User.engines, 'engine'))
-    } else {
-        Mer.edit.show()
+        $('#engine .show').html(Mer.showHtml('engine'))
     }
 })
 $('#engine').on('click', 'engine', function() {
@@ -312,30 +304,27 @@ $('#engine').on('click', 'engine', function() {
         Mer.Engine()
         $('#engine').hide()
         $('#search').slideDown("slow")
-    } else {
-        Mer.edit.show()
     }
 })
 
 // Book
-Mer.showHtml = function(engines, tag) {
-    var cls = event.target.innerText
-    var showHtml = ''
-    for (var key in engines[cls]) {
-        var e = engines[cls][key]
+Mer.showHtml = function(tag, def) {
+    var kind = User[tag + 's']
+    var cls = def || event.target.innerText
+    var html = ''
+    for (var key in kind[cls]) {
+        var e = kind[cls][key]
         if (e.icon) {
-            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
+            html += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
         } else {
-            showHtml += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
+            html += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
         }
     }
-    return showHtml
+    return html
 }
 $('#book').on('click', 'tag' , function() {
     if (Mer.rest.short) {
-        $('#book .show').html( Mer.showHtml(User.books, 'book') )
-    } else {
-        Mer.edit.show()
+        $('#book .show').html(Mer.showHtml('book'))
     }
 })
 $('#book').on('click', 'book', function() {
@@ -343,8 +332,6 @@ $('#book').on('click', 'book', function() {
         var e = event.target.dataset
         var i = User.books[e.cls][e.key]
         window.open(i.url)
-    } else {
-        Mer.edit.show()
     }
 })
 
