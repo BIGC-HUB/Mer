@@ -1,45 +1,32 @@
 var __initEdit = function() {
     var html =
     '<ul id="edit-ul"></ul><div id="edit-cont">' +
-        '<div class="text">编辑引擎</div>' +
-        '<div><span>名　字</span><input id="edit-cont-name"></div>' +
-        '<div><span>网　址</span><textarea id="edit-cont-url" rows="1"></textarea></div>' +
-        '<div><span>颜　色</span><input id="edit-cont-color"></div>' +
-        '<div><span>图　标</span><input id="edit-cont-icon"></div>' +
-        '<div><span>移动端</span><textarea id="edit-cont-wap" rows="1"></textarea></div>' +
-        '<button id="edit-cont-yes" type="button">确定</button>' +
-        '<button id="edit-cont-no"  type="button">取消</button>' +
-    '</div>'
+        '<div class="text"></div><hr>' +
+        '<div class="val"><span>名　字</span><input id="edit-cont-name"></div>' +
+        '<div class="val"><span>网　址</span><textarea id="edit-cont-url" rows="1"></textarea></div>' +
+        '<div class="val half"><span>颜　色</span><input id="edit-cont-color"></div>' +
+        '<div class="val half"><span>图　标</span><input id="edit-cont-icon"></div>' +
+        '<div class="val"><span>移动端</span><textarea id="edit-cont-wap" rows="1"></textarea></div><hr>' +
+        '<button id="edit-cont-yes" class="btn btn-white"><i class="fa-lg iconfont icon-yes"></i>确定</button>' +
+        '<button id="edit-cont-no"  class="btn btn-white"><i class="fa-lg iconfont icon-no"></i>返回</button>' +
+        '<button id="edit-cont-del" class="btn btn-white"><i class="fa-lg iconfont icon-del"></i>删除</button>'
     $('#edit').html(html)
 }()
 
 // Edit
 Mer.edit = {
-    textarea: function() {
-        $('#edit-cont').show()
-        $('#edit-cont textarea').each( function( i, e ) {
-            var dif = e.scrollHeight
-            e.value += '\n'
-            dif = e.scrollHeight - dif
-            var arr = e.value.split('')
-            arr.splice(-1, 1)
-            e.value = arr.join('')
-            e.rows = parseInt(e.scrollHeight / dif)
-            e.dataset.dif = dif
-        })
-    },
     show: function(html) {
+        Mer.edit.at = event.target
+        var e = event.target
         if (html) {
             $('#edit-ul').html(html)
         } else {
-            return null
+            return false
         }
         var x = event.clientX
         if (window.document.body.offsetWidth - x < 160) {
             x = window.document.body.offsetWidth - 165
         }
-        var e = event.target
-        Mer.edit.at = e
         $(e).addClass('edit-hover')
         $('#edit-ul').css({
             display: "block",
@@ -127,6 +114,21 @@ $('#edit-cont textarea').on('input', function() {
         e.rows = 1
     }
 })
+$('#edit-cont textarea').on('focus', function() {
+    var e = event.target
+    var dif = e.scrollHeight
+    e.value += '\n'
+    dif = e.scrollHeight - dif
+    var arr = e.value.split('')
+    arr.splice(-1, 1)
+    e.value = arr.join('')
+    e.rows = parseInt(e.scrollHeight / dif)
+    e.dataset.dif = dif
+})
+$('#edit-cont textarea').on('blur', function() {
+    event.target.rows = 1
+})
+
 $('#edit-cont-color').on('blur', function() {
     event.target.style.color = event.target.value
 })
@@ -152,44 +154,41 @@ $('body').on('click', function() {
 
 // 增删改查
 Mer.edit.new = function(e) {
-    // 空白新建
     Mer.edit.hide(e)
     $('#engine,#book').hide()
+    $('#edit-cont .val').show()
+     // 空白处
     if (e.localName === 'div') {
-
-    } else {
-
-        var tag = e.dataset.kind || e.localName
-        var key = e.dataset.key
-        var name = e.dataset.cls
-        var kind = tag + 's'
-        $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().show()
-        if (key) { //.show
-            var i = User[kind][name][key]
-            if (i.icon) { // engine
-                $('#edit-cont .text').text('添加丨引擎')
-                $('#edit-cont-wap').val('')
-
-                $('#edit-cont-icon').val('')
-            } else { // book
-                $('#edit-cont .text').text('添加丨书签')
-                $('#edit-cont-icon,#edit-cont-wap').parent().hide()
-            }
-            $('#edit-cont-color').val('')
-            $('#edit-cont-url').val('')
-            $('#edit-cont-name').val('')
-        } else { //.kind
-            $('#edit-cont .text').text('添加丨分类')
-            $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
-            $('#edit-cont-name').val('')
-        }
-        $('#edit-cont-no')[0].dataset.tag = tag
-        Mer.edit.textarea()
-        $('#edit-cont-yes').removeClass('amend')
-        $('#edit-cont-yes').addClass('new')
+        var e = e.children[0]
     }
+    var tag = e.dataset.kind || e.localName
+    var key = e.dataset.key
+    var name = e.dataset.cls
+    var kind = tag + 's'
+    if (key) { //.show
+        var i = User[kind][name][key]
+        if (i.icon) { // engine
+            $('#edit-cont .text').text('添加丨引擎')
+            $('#edit-cont-wap').val('')
+            $('#edit-cont-icon').val('')
+            $('#edit-cont-color').parent().addClass('half')
+        } else { // book
+            $('#edit-cont .text').text('添加丨书签')
+            $('#edit-cont-icon,#edit-cont-wap').parent().hide()
+            $('#edit-cont-color').parent().removeClass('half')
+        }
+        $('#edit-cont-color').val('')
+        $('#edit-cont-url').val('')
+        $('#edit-cont-name').val('')
+    } else { //.kind
+        $('#edit-cont .text').text('添加丨分类')
+        $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
+        $('#edit-cont-name').val('')
+    }
+    $('#edit-cont-no')[0].dataset.tag = tag
+    $('#edit-cont-yes')[0].dataset.btn = 'new'
+    $('#edit-cont').show()
 }
-
 Mer.edit.amend =  function(e) {
     Mer.edit.hide(e)
     $('#engine,#book').hide()
@@ -197,16 +196,18 @@ Mer.edit.amend =  function(e) {
     var key = e.dataset.key
     var name = e.dataset.cls
     var kind = tag + 's'
-    $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().show()
+    $('#edit-cont .val').show()
     if (key) { //.show
         var i = User[kind][name][key]
         if (i.icon !== undefined) { // engine
             $('#edit-cont .text').text('编辑丨引擎')
             $('#edit-cont-wap').val(i.wap)
             $('#edit-cont-icon').val(i.icon)
+            $('#edit-cont-color').parent().addClass('half')
         } else { // book
             $('#edit-cont .text').text('编辑丨书签')
-            $('#edit-cont-icon,#edit-cont-wap').parent().hide()
+            $('#edit-cont-icon, #edit-cont-wap').parent().hide()
+            $('#edit-cont-color').parent().removeClass('half')
         }
         $('#edit-cont-color').val(i.color)
         $('#edit-cont-color').css('color', i.color)
@@ -218,11 +219,9 @@ Mer.edit.amend =  function(e) {
         $('#edit-cont-name').val(name)
     }
     $('#edit-cont-no')[0].dataset.tag = tag
-    $('#edit-cont-yes').addClass('amend')
-    $('#edit-cont-yes').removeClass('new')
-    Mer.edit.textarea()
+    $('#edit-cont-yes')[0].dataset.btn = 'amend'
+    $('#edit-cont').show()
 }
-
 Mer.edit.del = function(e) {
     Mer.edit.hide(e)
     var tag = e.dataset.kind || e.localName
@@ -241,15 +240,22 @@ Mer.edit.del = function(e) {
         }
     }
 }
-
 Mer.edit.move = function(e) {
     Mer.edit.hide(e)
 }
 
 // 增删改查 - 提交
-$('#edit-cont').on('click', '.amend', function() {
-    // 修改数据
-    var e = Mer.edit.at
+Mer.send = {
+    repeat: function(arr, name) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] === name) {
+                return false
+            }
+        }
+        return true
+    }
+}
+Mer.send.amend = function(e) {
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
     var name = e.dataset.cls
@@ -267,42 +273,114 @@ $('#edit-cont').on('click', '.amend', function() {
                 $('#edit-cont .text').text('网址不能为空')
                 $('#edit-cont-url').focus()
             } else {
-                var i = User[kind][name][key]
-                if (i.icon) { // 引擎
-                    $(e).children().removeClass('icon-' + i.icon)
+                var i = {}
+                if (User[kind][name][key].icon !== undefined) { // engine
                     i.icon = $('#edit-cont-icon').val()
                     i.color = $('#edit-cont-color').css('color')
                     i.wap = $('#edit-cont-wap').val()
                     i.url = $('#edit-cont-url').val()
-                    $(e).children().addClass('icon-' + i.icon)
-                } else { // 书签
+                } else { // book
                     i.color = $('#edit-cont-color').css('color')
                     i.url = $('#edit-cont-url').val()
                 }
-                if (key !== newName) {
+                var bool = Mer.send.repeat(Object.keys(User[kind][name]), newName)
+                if (bool) {
                     User[kind][name][newName] = JSON.parse(JSON.stringify( User[kind][name][key] ))
                     delete User[kind][name][key]
-                    e.dataset.key = newName
-                    if ($(e).children()[0].localName === 'span') {
-                        $(e).children().text(newName)
-                    }
+                    // 没有重复才可以删除
+                    $(e.parentElement).html(Mer.showHtml(tag, name))
+                    $('#edit-cont-no').click()
+                } else if (key == newName) {
+                    User[kind][name][newName] = i
+                    // 直接修改
+                    $(e.parentElement).html(Mer.showHtml(tag, name))
+                    $('#edit-cont-no').click()
+                } else {
+                    $('#edit-cont .text').text('名字不能重复')
+                    $('#edit-cont-name').focus()
                 }
-                $(e).children().css('color', i.color)
-                $('#edit-cont-no').click()
+
             }
         } else { //.kind
-            if (name !== newName) {
+            var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
+            if (bool) {
                 User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
                 delete User[kind][name]
                 e.innerText = newName
                 e.dataset.cls = newName
+                $('#edit-cont-no').click()
+            } else {
+                $('#edit-cont .text').text('名字不能重复')
+                $('#edit-cont-name').focus()
             }
-            $('#edit-cont-no').click()
+
         }
     }
-})
+}
+Mer.send.new = function(e) {
+    if (e.localName === 'div') {
+        e = e.children[0]
+    }
+    var tag = e.dataset.kind || e.localName
+    var key = e.dataset.key
+    var name = e.dataset.cls
+    var kind = tag + 's'
+    var newName = $('#edit-cont-name').val()
+    var newUrl  = $('#edit-cont-url').val()
+    // 表单验证
+    if (!newName) {
+        $('#edit-cont .text').text('名字不能为空')
+        $('#edit-cont-name').focus()
+    } else {
+        // 数据存储
+        if (key) { //.show
+            if (!newUrl) {
+                $('#edit-cont .text').text('网址不能为空')
+                $('#edit-cont-url').focus()
+            } else {
+                var i = {}
+                var showhtml = ''
+                if (User[kind][name][key].icon) { // engine
+                    i.icon = $('#edit-cont-icon').val()
+                    i.color = $('#edit-cont-color').css('color')
+                    i.wap = $('#edit-cont-wap').val()
+                    i.url = $('#edit-cont-url').val()
+                    if (i.icon) {
+                        showhtml = `<${tag} data-cls="${name}" data-key="${newName}"><i style="color:${i.color}" class="fa-logo iconfont icon-${i.icon}"></i></${tag}>`
+                    } else {
+                        showhtml = `<${tag} data-cls="${name}" data-key="${newName}"><span style="color:${i.color}">${newName}</span></${tag}>`
+                    }
+                } else { // book
+                    i.color = $('#edit-cont-color').css('color')
+                    i.url = $('#edit-cont-url').val()
+                }
+                var bool = Mer.send.repeat(Object.keys(User[kind][name]), newName)
+                if (bool) {
+                    $(e.parentElement).append(showhtml)
+                    User[kind][name][newName] = i
+                    $('#edit-cont-no').click()
+                } else {
+                    $('#edit-cont .text').text('名字不能重复')
+                    $('#edit-cont-name').focus()
+                }
 
-$('#edit-cont').on('click', '.new', function() {
-    log('未完成 - 添加')
-    $('#edit-cont-no').click()
+            }
+        } else { //.kind
+            var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
+            if (bool) {
+                // User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
+                // delete User[kind][name]
+                // e.innerText = newName
+                // e.dataset.cls = newName
+                // $('#edit-cont-no').click()
+            } else {
+                $('#edit-cont .text').text('名字不能重复')
+                $('#edit-cont-name').focus()
+            }
+
+        }
+    }
+}
+$('#edit-cont-yes').on('click', function() {
+    Mer.send[event.target.dataset.btn](Mer.edit.at)
 })

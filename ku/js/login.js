@@ -26,8 +26,8 @@ var html = '<div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon
             '<span  id="login-sms-60">60</span>' +
         '</inputbox>' +
     '</div>' +
-    '<button class="btn-white" id="login-btn-zhuce" type="button">注册</button>' +
-    '<button class="btn-blue" id="login-btn-denglu"  type="button">登录</button>'
+    '<button class="btn btn-white" id="login-btn-zhuce"  type="button">注册</button>' +
+    '<button class="btn btn-blue"  id="login-btn-denglu" type="button">登录</button>'
 $('#login').html(html)
 // 短信验证
 var sms = function() {
