@@ -106,6 +106,18 @@ Mer.rest = {
         return html
     }
 }
+$('body').on('touchstart', function() {
+    Mer.rest.time = parseInt(event.timeStamp)
+})
+$('body').on('touchend', function() {
+    var time = parseInt(event.timeStamp) - Mer.rest.time
+    if (time < 300) {
+        Mer.rest.short = true
+    } else {
+        Mer.rest.short = false
+    }
+})
+
 $('#edit-cont textarea').on('input', function() {
     var e = event.target
     e.value = e.value.replace(/\n| /g,'')
@@ -122,64 +134,6 @@ $('#edit-cont-no').on('click', function() {
     $('#edit-cont').hide()
     $('#' + $('#edit-cont-no')[0].dataset.tag).show()
 })
-$('#edit-cont').on('click', '.amend', function() {
-    // 修改数据
-    var e = Mer.edit.at
-    var tag = e.dataset.kind || e.localName
-    var key = e.dataset.key
-    var name = e.dataset.cls
-    var kind = tag + 's'
-    var newName = $('#edit-cont-name').val()
-    var newUrl  = $('#edit-cont-url').val()
-    // 表单验证
-    if (!newName) {
-        $('#edit-cont .text').text('名字不能为空')
-        $('#edit-cont-name').focus()
-    } else {
-        // 数据存储
-        if (key) { //.show
-            if (!newUrl) {
-                $('#edit-cont .text').text('网址不能为空')
-                $('#edit-cont-url').focus()
-            } else {
-                var i = User[kind][name][key]
-                if (i.icon) { // 引擎
-                    $(e).children().removeClass('icon-' + i.icon)
-                    i.icon = $('#edit-cont-icon').val()
-                    i.color = $('#edit-cont-color').css('color')
-                    i.wap = $('#edit-cont-wap').val()
-                    i.url = $('#edit-cont-url').val()
-                    $(e).children().addClass('icon-' + i.icon)
-                } else { // 书签
-                    i.color = $('#edit-cont-color').css('color')
-                    i.url = $('#edit-cont-url').val()
-                }
-                if (key !== newName) {
-                    User[kind][name][newName] = JSON.parse(JSON.stringify( User[kind][name][key] ))
-                    delete User[kind][name][key]
-                    e.dataset.key = newName
-                    if ($(e).children()[0].localName === 'span') {
-                        $(e).children().text(newName)
-                    }
-                }
-                $(e).children().css('color', i.color)
-                $('#edit-cont-no').click()
-            }
-        } else { //.kind
-            if (name !== newName) {
-                User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
-                delete User[kind][name]
-                e.innerText = newName
-                e.dataset.cls = newName
-            }
-            $('#edit-cont-no').click()
-        }
-    }
-})
-$('#edit-cont').on('click', '.new', function() {
-    log('未完成 - 添加')
-    $('#edit-cont-no').click()
-})
 
 // PC右键菜单
 $('body').on('click', function() {
@@ -195,27 +149,16 @@ $('body').on('click', function() {
         }
     }
 })
-// 长按
-$('body').on('touchstart', function() {
-    Mer.rest.time = parseInt(event.timeStamp)
-})
-$('body').on('touchend', function() {
-    var time = parseInt(event.timeStamp) - Mer.rest.time
-    if (time < 300) {
-        Mer.rest.short = true
-    } else {
-        Mer.rest.short = false
-    }
-})
 
 // 增删改查
 Mer.edit.new = function(e) {
     // 空白新建
+    Mer.edit.hide(e)
+    $('#engine,#book').hide()
     if (e.localName === 'div') {
-        log(e)
+
     } else {
-        Mer.edit.hide(e)
-        $('#engine,#book').hide()
+
         var tag = e.dataset.kind || e.localName
         var key = e.dataset.key
         var name = e.dataset.cls
@@ -304,3 +247,68 @@ Mer.edit.del = function(e) {
         }
     }
 }
+
+Mer.edit.move = function(e) {
+    Mer.edit.hide(e)
+}
+
+// 增删改查 - 提交
+$('#edit-cont').on('click', '.amend', function() {
+    // 修改数据
+    var e = Mer.edit.at
+    var tag = e.dataset.kind || e.localName
+    var key = e.dataset.key
+    var name = e.dataset.cls
+    var kind = tag + 's'
+    var newName = $('#edit-cont-name').val()
+    var newUrl  = $('#edit-cont-url').val()
+    // 表单验证
+    if (!newName) {
+        $('#edit-cont .text').text('名字不能为空')
+        $('#edit-cont-name').focus()
+    } else {
+        // 数据存储
+        if (key) { //.show
+            if (!newUrl) {
+                $('#edit-cont .text').text('网址不能为空')
+                $('#edit-cont-url').focus()
+            } else {
+                var i = User[kind][name][key]
+                if (i.icon) { // 引擎
+                    $(e).children().removeClass('icon-' + i.icon)
+                    i.icon = $('#edit-cont-icon').val()
+                    i.color = $('#edit-cont-color').css('color')
+                    i.wap = $('#edit-cont-wap').val()
+                    i.url = $('#edit-cont-url').val()
+                    $(e).children().addClass('icon-' + i.icon)
+                } else { // 书签
+                    i.color = $('#edit-cont-color').css('color')
+                    i.url = $('#edit-cont-url').val()
+                }
+                if (key !== newName) {
+                    User[kind][name][newName] = JSON.parse(JSON.stringify( User[kind][name][key] ))
+                    delete User[kind][name][key]
+                    e.dataset.key = newName
+                    if ($(e).children()[0].localName === 'span') {
+                        $(e).children().text(newName)
+                    }
+                }
+                $(e).children().css('color', i.color)
+                $('#edit-cont-no').click()
+            }
+        } else { //.kind
+            if (name !== newName) {
+                User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
+                delete User[kind][name]
+                e.innerText = newName
+                e.dataset.cls = newName
+            }
+            $('#edit-cont-no').click()
+        }
+    }
+})
+
+$('#edit-cont').on('click', '.new', function() {
+    log('未完成 - 添加')
+    $('#edit-cont-no').click()
+})
