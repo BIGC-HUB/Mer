@@ -163,11 +163,11 @@ Mer.edit.new = function(e) {
     }
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
-    var name = e.dataset.cls
+    var cls = e.dataset.cls
     var kind = tag + 's'
     if (key) { //.show
-        var i = User[kind][name][key]
-        if (i.icon) { // engine
+        var i = User[kind][cls][key]
+        if (tag === 'engine') {
             $('#edit-cont .text').text('添加丨引擎')
             $('#edit-cont-wap').val('')
             $('#edit-cont-icon').val('')
@@ -194,12 +194,12 @@ Mer.edit.amend =  function(e) {
     $('#engine,#book').hide()
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
-    var name = e.dataset.cls
+    var cls = e.dataset.cls
     var kind = tag + 's'
     $('#edit-cont .val').show()
     if (key) { //.show
-        var i = User[kind][name][key]
-        if (i.icon !== undefined) { // engine
+        var i = User[kind][cls][key]
+        if (tag === 'engine') {
             $('#edit-cont .text').text('编辑丨引擎')
             $('#edit-cont-wap').val(i.wap)
             $('#edit-cont-icon').val(i.icon)
@@ -216,7 +216,7 @@ Mer.edit.amend =  function(e) {
     } else { //.kind
         $('#edit-cont .text').text('重命名')
         $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
-        $('#edit-cont-name').val(name)
+        $('#edit-cont-name').val(cls)
     }
     $('#edit-cont-no')[0].dataset.tag = tag
     $('#edit-cont-yes')[0].dataset.btn = 'amend'
@@ -246,9 +246,9 @@ Mer.edit.move = function(e) {
 
 // 增删改查 - 提交
 Mer.send = {
-    repeat: function(arr, name) {
+    repeat: function(arr, cls) {
         for (var i = 0; i < arr.length; i++) {
-            if (arr[i] === name) {
+            if (arr[i] === cls) {
                 return false
             }
         }
@@ -258,7 +258,7 @@ Mer.send = {
 Mer.send.amend = function(e) {
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
-    var name = e.dataset.cls
+    var cls = e.dataset.cls
     var kind = tag + 's'
     var newName = $('#edit-cont-name').val()
     var newUrl  = $('#edit-cont-url').val()
@@ -274,7 +274,7 @@ Mer.send.amend = function(e) {
                 $('#edit-cont-url').focus()
             } else {
                 var i = {}
-                if (User[kind][name][key].icon !== undefined) { // engine
+                if (User[kind][cls][key].icon !== undefined) { // engine
                     i.icon = $('#edit-cont-icon').val()
                     i.color = $('#edit-cont-color').css('color')
                     i.wap = $('#edit-cont-wap').val()
@@ -283,17 +283,17 @@ Mer.send.amend = function(e) {
                     i.color = $('#edit-cont-color').css('color')
                     i.url = $('#edit-cont-url').val()
                 }
-                var bool = Mer.send.repeat(Object.keys(User[kind][name]), newName)
+                var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
                 if (bool) {
-                    User[kind][name][newName] = JSON.parse(JSON.stringify( User[kind][name][key] ))
-                    delete User[kind][name][key]
+                    User[kind][cls][newName] = JSON.parse(JSON.stringify( User[kind][cls][key] ))
+                    delete User[kind][cls][key]
                     // 没有重复才可以删除
-                    $(e.parentElement).html(Mer.showHtml(tag, name))
+                    $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
                 } else if (key == newName) {
-                    User[kind][name][newName] = i
+                    User[kind][cls][newName] = i
                     // 直接修改
-                    $(e.parentElement).html(Mer.showHtml(tag, name))
+                    $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
@@ -304,8 +304,8 @@ Mer.send.amend = function(e) {
         } else { //.kind
             var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
             if (bool) {
-                User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
-                delete User[kind][name]
+                User[kind][newName] = JSON.parse(JSON.stringify( User[kind][cls] ))
+                delete User[kind][cls]
                 e.innerText = newName
                 e.dataset.cls = newName
                 $('#edit-cont-no').click()
@@ -323,7 +323,7 @@ Mer.send.new = function(e) {
     }
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
-    var name = e.dataset.cls
+    var cls = e.dataset.cls
     var kind = tag + 's'
     var newName = $('#edit-cont-name').val()
     var newUrl  = $('#edit-cont-url').val()
@@ -340,7 +340,7 @@ Mer.send.new = function(e) {
             } else {
                 var i = {}
                 var showhtml = ''
-                if (User[kind][name][key].icon) { // engine
+                if (tag === 'engine') {
                     i.icon = $('#edit-cont-icon').val()
                     i.color = $('#edit-cont-color').css('color')
                     i.wap = $('#edit-cont-wap').val()
@@ -354,10 +354,10 @@ Mer.send.new = function(e) {
                     i.color = $('#edit-cont-color').css('color')
                     i.url = $('#edit-cont-url').val()
                 }
-                var bool = Mer.send.repeat(Object.keys(User[kind][name]), newName)
+                var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
                 if (bool) {
                     $(e.parentElement).append(showhtml)
-                    User[kind][name][newName] = i
+                    User[kind][cls][newName] = i
                     $('#edit-cont-no').click()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
@@ -368,8 +368,8 @@ Mer.send.new = function(e) {
         } else { //.kind
             var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
             if (bool) {
-                // User[kind][newName] = JSON.parse(JSON.stringify( User[kind][name] ))
-                // delete User[kind][name]
+                // User[kind][newName] = JSON.parse(JSON.stringify( User[kind][cls] ))
+                // delete User[kind][cls]
                 // e.innerText = newName
                 // e.dataset.cls = newName
                 // $('#edit-cont-no').click()
