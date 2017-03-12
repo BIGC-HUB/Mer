@@ -10,10 +10,10 @@ body {
 span, i {
     pointer-events: none;
 }
-logo,tag,engine,book,top,li,button,.fa-mini {
+logo, tag, engine, book, top, li, button, .fa-mini {
     cursor: pointer;
 }
-logo,tag,engine,top,li {
+logo, tag, engine, top, li {
     /* 禁止 换行 */
     white-space: nowrap;
     /* 隐藏 超出部分 */
@@ -21,7 +21,7 @@ logo,tag,engine,top,li {
     /* 省略号 替代 */
     text-overflow: ellipsis;
 }
-#engine,#book,#login,#edit-cont,#login-zhuce {
+#engine, #book, #login, #edit-cont, #login-zhuce {
     display: none;
 }
 .transparent {
@@ -35,12 +35,12 @@ logo,tag,engine,top,li {
     color: #333 !important;
     background-color: #F5F6F9;
 }
-#engine,#book,#edit {
+#engine, #book, #edit {
     margin: 3em auto 0;
 }
 
 /* 字体栈 */
-html,button,input,select,textarea{
+html, button, input, select, textarea{
     color: #333;
     font-size: 1.17em;
     font-family: Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
@@ -48,7 +48,7 @@ html,button,input,select,textarea{
 }
 
 /* Safari */
-input,button,textarea {
+input, button, textarea {
     margin: 0 auto;
     background-color: transparent;
 }
@@ -122,7 +122,7 @@ logo span {
 }
 
 /* search */
-#search-input,#search-button{
+#search-input, #search-button{
     vertical-align: bottom;
     font-size: 25px;
     padding: 8px;
@@ -171,7 +171,7 @@ logo span {
 #more-ul li {
     margin: 1px;
 }
-#more-ul,#more-button {
+#more-ul, #more-button {
     vertical-align: top;
     padding: 8px;
     outline: 0;
@@ -252,6 +252,10 @@ engine span {
 }
 
 /* book */
+#book .show {
+    margin: 0 auto;
+    width: 95%;
+}
 book {
     vertical-align: top;
     display: inline-block;
@@ -261,9 +265,9 @@ book {
     height: 7em;
     margin: 0.5em 0.1em;
     padding: 0 0.4em;
+    letter-spacing: 0.5em;
 
     word-wrap: break-word;
-    letter-spacing: 0.5em;
     line-height: 1.41em;
     overflow: hidden;
 
@@ -443,8 +447,11 @@ inputbox input {
     #search-input, #more-ul {
         width: 38.2%;
     }
-    #engine,#book {
+    #book, #engine {
         width: 85%;
+    }
+    #book .show {
+        width: auto;
     }
     engine {
         width: 8em;
@@ -452,7 +459,7 @@ inputbox input {
         line-height: 8em;
         margin: 0.5em;
     }
-    engine span, book {
+    engine span ,book {
         font-size: 1.5em;
     }
 
