@@ -1,5 +1,6 @@
 var __initEdit = function() {
     var html =
+    '<div class="full"></div>' +
     '<ul id="edit-ul"></ul><div id="edit-cont">' +
         '<div class="text"></div>' +
         '<div id="edit-val">' +
@@ -9,7 +10,7 @@ var __initEdit = function() {
             '<div class="half"><span>图　标</span><input id="edit-cont-icon"></div>' +
             '<div><span>移动端</span><textarea id="edit-cont-wap" rows="1"></textarea></div>' +
         '</div>' +
-        '<button id="edit-cont-yes" class="btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确定</button>' +
+        '<button id="edit-cont-yes" class="btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>' +
         '<button id="edit-cont-no"  class="btn btn-white"><div class="fa-2x iconfont icon-no"></div>取消</button>' +
         '<button id="edit-cont-del" class="btn btn-red"><div class="fa-2x iconfont icon-del"></div>删除</button>' +
     '</div>'
@@ -26,18 +27,18 @@ Mer.edit = {
         } else {
             return false
         }
-        var x = event.clientX
-        if (window.document.body.offsetWidth - x < 160) {
-            x = window.document.body.offsetWidth - 165
-        }
+        var x = event.clientX - 80
+        var y = event.clientY
         $(e).addClass('edit-hover')
+        $('.full').show()
         $('#edit-ul').css({
             display: "block",
-            top: event.clientY + "px",
+            top: y + "px",
             left: x + "px"
         })
         setTimeout(function(){
             $('body').one('mousedown', function() {
+                $('.full').hide()
                 var edit = event.target.classList.contains('edit')
                 var key  = event.target.dataset.btn
                 if (edit) {
