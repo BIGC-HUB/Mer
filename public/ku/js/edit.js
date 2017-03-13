@@ -5,10 +5,10 @@ var __initEdit = function() {
         '<div class="text"></div>' +
         '<div id="edit-val">' +
             '<div><span>名　字</span><input id="edit-cont-name"></div>' +
-            '<div><span>网　址</span><textarea id="edit-cont-url" rows="1"></textarea></div>' +
+            '<div><span>网　址</span><textarea spellcheck="false" id="edit-cont-url" rows="1"></textarea></div>' +
             '<div class="half"><span>颜　色</span><input id="edit-cont-color"></div>' +
             '<div class="half"><span>图　标</span><input id="edit-cont-icon"></div>' +
-            '<div><span>移动端</span><textarea id="edit-cont-wap" rows="1"></textarea></div>' +
+            '<div><span>移动端</span><textarea spellcheck="false" id="edit-cont-wap" rows="1"></textarea></div>' +
         '</div>' +
         '<button id="edit-cont-yes" class="btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>' +
         '<button id="edit-cont-no"  class="btn btn-white"><div class="fa-2x iconfont icon-no"></div>取消</button>' +
@@ -29,6 +29,11 @@ Mer.edit = {
         }
         var x = event.clientX - 80
         var y = event.clientY
+        if (window.document.body.offsetWidth - x < 160) {
+            x = window.document.body.offsetWidth - 165
+        } else if (x < 0) {
+            x = 5
+        }
         $(e).addClass('edit-hover')
         $('#edit-ul, #edit-full').show()
         $('#edit-ul').css({
@@ -128,6 +133,7 @@ $('#edit-cont textarea').on('focus', function() {
     e.value = arr.join('')
     e.rows = parseInt(e.scrollHeight / dif)
     e.dataset.dif = dif
+    e.select()
 })
 $('#edit-cont textarea').on('blur', function() {
     event.target.rows = 1
