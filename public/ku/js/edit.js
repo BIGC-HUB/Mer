@@ -176,47 +176,48 @@ Mer.edit.new = function(e) {
     var key = e.dataset.key
     var cls = e.dataset.cls
     var kind = tag + 's'
-    if (key) { //.show
+    if (key) { // show
         var i = User[kind][cls][key]
         if (tag === 'engine') {
-            $('#edit-cont .text').text('添加丨引擎')
+            $('#edit-cont .text').text('添加·引擎')
             $('#edit-cont-wap').val('')
             $('#edit-cont-icon').val('')
             $('#edit-cont-color').parent().addClass('half')
         } else { // book
-            $('#edit-cont .text').text('添加丨书签')
+            $('#edit-cont .text').text('添加·书签')
             $('#edit-cont-icon,#edit-cont-wap').parent().hide()
             $('#edit-cont-color').parent().removeClass('half')
         }
         $('#edit-cont-color').val('')
         $('#edit-cont-url').val('')
         $('#edit-cont-name').val('')
-    } else { //.kind
-        $('#edit-cont .text').text('添加丨分类')
+    } else { // kind
+        $('#edit-cont .text').text('添加·分类')
         $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
         $('#edit-cont-name').val('')
     }
+    $('#edit-cont').show()
+    $('#edit-cont-del').hide()
     $('#edit-cont-no')[0].dataset.tag = tag
     $('#edit-cont-yes')[0].dataset.btn = 'new'
-    $('#edit-cont').show()
 }
 Mer.edit.amend =  function(e) {
     Mer.edit.hide(e)
-    $('#engine,#book').hide()
+    $('#engine, #book').hide()
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
     var cls = e.dataset.cls
     var kind = tag + 's'
     $('#edit-val').children().show()
-    if (key) { //.show
+    if (key) { // show
         var i = User[kind][cls][key]
         if (tag === 'engine') {
-            $('#edit-cont .text').text('编辑丨引擎')
+            $('#edit-cont .text').text('编辑·引擎')
             $('#edit-cont-wap').val(i.wap)
             $('#edit-cont-icon').val(i.icon)
             $('#edit-cont-color').parent().addClass('half')
         } else { // book
-            $('#edit-cont .text').text('编辑丨书签')
+            $('#edit-cont .text').text('编辑·书签')
             $('#edit-cont-icon, #edit-cont-wap').parent().hide()
             $('#edit-cont-color').parent().removeClass('half')
         }
@@ -224,14 +225,14 @@ Mer.edit.amend =  function(e) {
         $('#edit-cont-color')[0].style.color = i.color
         $('#edit-cont-url').val(i.url)
         $('#edit-cont-name').val(key)
-    } else { //.kind
-        $('#edit-cont .text').text('重命名丨分类')
+    } else { // kind
+        $('#edit-cont .text').text('重命名·分类')
         $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
         $('#edit-cont-name').val(cls)
     }
     $('#edit-cont-no')[0].dataset.tag = tag
     $('#edit-cont-yes')[0].dataset.btn = 'amend'
-    $('#edit-cont').show()
+    $('#edit-cont-del, #edit-cont').show()
 }
 Mer.edit.move = function(e) {
     Mer.edit.hide(e)
@@ -239,6 +240,7 @@ Mer.edit.move = function(e) {
 
 // 增删改查 - 提交
 Mer.send = {
+    // if (bool) 重点
     repeat: function(arr, cls) {
         for (var i = 0; i < arr.length; i++) {
             if (arr[i] === cls) {
@@ -246,6 +248,26 @@ Mer.send = {
             }
         }
         return true
+    }
+}
+Mer.send.del = function(e) {
+    Mer.edit.hide(e)
+    var tag = e.dataset.kind || e.localName
+    var cls = e.dataset.cls
+    var key = e.dataset.key
+    var kind = tag + 's'
+    if (key) {
+        delete User[kind][cls][key]
+        e.remove()
+        $('#edit-cont-no').click()
+    } else {
+        if (Object.keys(User[kind][cls]).length) {
+            $('#edit-cont .text').html('提示：类不为空')
+        } else {
+            delete User[kind][cls]
+            e.remove()
+            $('#edit-cont-no').click()
+        }
     }
 }
 Mer.send.amend = function(e) {
@@ -261,13 +283,13 @@ Mer.send.amend = function(e) {
         $('#edit-cont-name').focus()
     } else {
         // 数据存储
-        if (key) { //.show
+        if (key) { // show
             if (!newUrl) {
                 $('#edit-cont .text').text('网址不能为空')
                 $('#edit-cont-url').focus()
             } else {
                 var i = {}
-                if (User[kind][cls][key].icon !== undefined) { // engine
+                if (tag === 'engine') {
                     i.icon = $('#edit-cont-icon').val()
                     i.color = $('#edit-cont-color').val()
                     i.wap = $('#edit-cont-wap').val()
@@ -292,9 +314,8 @@ Mer.send.amend = function(e) {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
                 }
-
             }
-        } else { //.kind
+        } else { // kind
             var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
             if (bool) {
                 User[kind][newName] = JSON.parse(JSON.stringify( User[kind][cls] ))
@@ -310,9 +331,6 @@ Mer.send.amend = function(e) {
     }
 }
 Mer.send.new = function(e) {
-    if (e.localName === 'div') {
-        e = e.children[0]
-    }
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
     var cls = e.dataset.cls
@@ -325,74 +343,45 @@ Mer.send.new = function(e) {
         $('#edit-cont-name').focus()
     } else {
         // 数据存储
-        if (key) { //.show
+        if (key) { // show
             if (!newUrl) {
                 $('#edit-cont .text').text('网址不能为空')
                 $('#edit-cont-url').focus()
             } else {
                 var i = {}
-                var showhtml = ''
                 if (tag === 'engine') {
                     i.icon = $('#edit-cont-icon').val()
                     i.color = $('#edit-cont-color').val()
                     i.wap = $('#edit-cont-wap').val()
                     i.url = $('#edit-cont-url').val()
-                    if (i.icon) {
-                        showhtml = `<${tag} data-cls="${name}" data-key="${newName}"><i style="color:${i.color}" class="fa-logo iconfont icon-${i.icon}"></i></${tag}>`
-                    } else {
-                        showhtml = `<${tag} data-cls="${name}" data-key="${newName}"><span style="color:${i.color}">${newName}</span></${tag}>`
-                    }
                 } else { // book
                     i.color = $('#edit-cont-color').val()
                     i.url = $('#edit-cont-url').val()
                 }
                 var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
                 if (bool) {
-                    $(e.parentElement).append(showhtml)
                     User[kind][cls][newName] = i
+                    $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
                 }
-
             }
-        } else { //.kind
+        } else { // kind
             var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
             if (bool) {
-                // User[kind][newName] = JSON.parse(JSON.stringify( User[kind][cls] ))
-                // delete User[kind][cls]
-                // e.innerText = newName
-                // e.dataset.cls = newName
-                // $('#edit-cont-no').click()
+                User[kind][newName] = {}
+                $(e.parentElement).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
+                $('#edit-cont-no').click()
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
             }
+        }
+    }
+}
 
-        }
-    }
-}
-Mer.send.del = function(e) {
-    Mer.edit.hide(e)
-    var tag = e.dataset.kind || e.localName
-    var cls = e.dataset.cls
-    var key = e.dataset.key
-    var kind = tag + 's'
-    if (key) {
-        delete User[kind][cls][key]
-        e.remove()
-        $('#edit-cont-no').click()
-    } else {
-        if (Object.keys(User[kind][cls]).length) {
-            $('#edit-cont .text').html('提示：类不为空')
-        } else {
-            delete User[kind][cls]
-            e.remove()
-            $('#edit-cont-no').click()
-        }
-    }
-}
 $('#edit-cont-yes').on('click', function() {
     Mer.send[event.target.dataset.btn](Mer.edit.at)
 })

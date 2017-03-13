@@ -323,6 +323,9 @@ Mer.showHtml = function(tag, def) {
             html += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
         }
     }
+    if (html === '') {
+        html += `<${tag}><span style="color:#037DD8">＋</span></${tag}>`
+    }
     return html
 }
 $('#book').on('click', 'tag' , function() {
