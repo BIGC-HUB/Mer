@@ -23,19 +23,6 @@ app.get('/', function(req, res) {
     sendFile('index.html', res)
 })
 
-// // 写入
-// app.post('/todo/save', function (req, res) {
-//     var data = JSON.stringify(req.body)
-//     var fs = require("fs");
-//     fs.writeFile('data', data, function (err) {
-//         if (err) {
-//               res.send('错误！')
-//         } else {
-//               res.send('POST 数据已保存')
-//         }
-//    })
-// })
-
 // listen 函数的第一个参数是我们要监听的端口
 // 这个端口是要浏览器输入的
 // 默认的端口是 80

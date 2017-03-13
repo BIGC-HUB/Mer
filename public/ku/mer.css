@@ -65,6 +65,9 @@ input, button, textarea {
 .fa-1x {
     font-size: 1em;
 }
+.fa-2x {
+    font-size: 2em;
+}
 .fa-5x {
     font-size: 5.5em;
 }
@@ -308,6 +311,13 @@ book:hover {
     background-color: rgba(59,147,255,.06);
 }
 
+#edit-val {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    margin: 1em auto;
+    padding: 1em 0;
+}
+
 #edit-cont {
     width: 95%;
     margin: 0 auto;
@@ -321,7 +331,7 @@ book:hover {
     width: 4em;
     margin: 0 auto;
     padding: 4px;
-    color: #037DD8;
+    color: #8590A6;
     border: 1px solid transparent;
     font-size: 1.17em;
 }
@@ -347,8 +357,9 @@ book:hover {
     margin: 0 auto;
 }
 #edit-cont button {
+    outline: 0;
     font-size: 1em;
-    margin: 1em 0.5em;
+    margin: 0 1em;
 }
 #edit-cont-url {
     margin-bottom: 1.5em;
@@ -372,11 +383,20 @@ book:hover {
 .btn-blue {
     color: #FFF;
     background-color: #037DD8;
-    border-color: #037DD8;
+    border-color: #0771C1;
 }
 .btn-blue:hover {
     background-color: #0771C1;
-    border-color: #0771C1;
+    border-color: #0363AC;
+}
+.btn-red {
+    color: #FFF;
+    background-color: #D9534F;
+    border-color: #D43F3A;
+}
+.btn-red:hover {
+    background-color: #C9302C;
+    border-color: #AC2925;
 }
 
 inputbox {

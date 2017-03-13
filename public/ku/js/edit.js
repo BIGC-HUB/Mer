@@ -1,15 +1,18 @@
 var __initEdit = function() {
     var html =
     '<ul id="edit-ul"></ul><div id="edit-cont">' +
-        '<div class="text"></div><hr>' +
-        '<div class="val"><span>名　字</span><input id="edit-cont-name"></div>' +
-        '<div class="val"><span>网　址</span><textarea id="edit-cont-url" rows="1"></textarea></div>' +
-        '<div class="val half"><span>颜　色</span><input id="edit-cont-color"></div>' +
-        '<div class="val half"><span>图　标</span><input id="edit-cont-icon"></div>' +
-        '<div class="val"><span>移动端</span><textarea id="edit-cont-wap" rows="1"></textarea></div><hr>' +
-        '<button id="edit-cont-yes" class="btn btn-white"><i class="fa-lg iconfont icon-yes"></i>确定</button>' +
-        '<button id="edit-cont-no"  class="btn btn-white"><i class="fa-lg iconfont icon-no"></i>返回</button>' +
-        '<button id="edit-cont-del" class="btn btn-white"><i class="fa-lg iconfont icon-del"></i>删除</button>'
+        '<div class="text"></div>' +
+        '<div id="edit-val">' +
+            '<div><span>名　字</span><input id="edit-cont-name"></div>' +
+            '<div><span>网　址</span><textarea id="edit-cont-url" rows="1"></textarea></div>' +
+            '<div class="half"><span>颜　色</span><input id="edit-cont-color"></div>' +
+            '<div class="half"><span>图　标</span><input id="edit-cont-icon"></div>' +
+            '<div><span>移动端</span><textarea id="edit-cont-wap" rows="1"></textarea></div>' +
+        '</div>' +
+        '<button id="edit-cont-yes" class="btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确定</button>' +
+        '<button id="edit-cont-no"  class="btn btn-white"><div class="fa-2x iconfont icon-no"></div>取消</button>' +
+        '<button id="edit-cont-del" class="btn btn-red"><div class="fa-2x iconfont icon-del"></div>删除</button>' +
+    '</div>'
     $('#edit').html(html)
 }()
 
@@ -156,7 +159,7 @@ $('body').on('click', function() {
 Mer.edit.new = function(e) {
     Mer.edit.hide(e)
     $('#engine,#book').hide()
-    $('#edit-cont .val').show()
+    $('#edit-val').children().show()
      // 空白处
     if (e.localName === 'div') {
         var e = e.children[0]
@@ -196,7 +199,7 @@ Mer.edit.amend =  function(e) {
     var key = e.dataset.key
     var cls = e.dataset.cls
     var kind = tag + 's'
-    $('#edit-cont .val').show()
+    $('#edit-val').children().show()
     if (key) { //.show
         var i = User[kind][cls][key]
         if (tag === 'engine') {

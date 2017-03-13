@@ -89,256 +89,255 @@ var Mer = {}
 var User = {}
 
 // data.json = engines | books | note
+$.get('ku/data/def.json', function(data) {
+User = data || 'defUser'
 
-fetch('ku/data/def.json').then(function(res) {
-    res.json().then(function(data) {
-        User = data || defUser
-        // Top
-        $('#search').on('click', 'logo',function() {
-            $('#search').hide()
-            $('#engine').slideDown("slow")
-        })
-        $('#top').on('click', '.home', function() {
-            if ($('#search').css('display') === 'none') {
-                $('#engine,#book,#login,#edit-cont').hide()
-                $('#search').animate({ height:'show' })
-            }
-        })
-        $('#top').on('click', '.book', function() {
-            if ($('#book').css('display') === 'none') {
-                $('#engine,#search,#login,#edit-cont').hide()
-                $('#book').animate({ height:'show' })
-            } else {
-                $('#top .home').click()
-            }
-        })
-        $('#top').on('click', '.user', function() {
-            if ($('#login').css('display') === 'none') {
-                $('#engine,#search,#book,#edit-cont').hide()
-                $('#login').animate({ height:'show' })
-            } else {
-                $('#top .home').click()
-            }
-        })
+// Top
+$('#search').on('click', 'logo',function() {
+    $('#search').hide()
+    $('#engine').slideDown("slow")
+})
+$('#top').on('click', '.home', function() {
+    if ($('#search').css('display') === 'none') {
+        $('#engine,#book,#login,#edit-cont').hide()
+        $('#search').animate({ height:'show' })
+    }
+})
+$('#top').on('click', '.book', function() {
+    if ($('#book').css('display') === 'none') {
+        $('#engine,#search,#login,#edit-cont').hide()
+        $('#book').animate({ height:'show' })
+    } else {
+        $('#top .home').click()
+    }
+})
+$('#top').on('click', '.user', function() {
+    if ($('#login').css('display') === 'none') {
+        $('#engine,#search,#book,#edit-cont').hide()
+        $('#login').animate({ height:'show' })
+    } else {
+        $('#top .home').click()
+    }
+})
 
-        // 输入 - 智能联想
-        Mer.ai = {
-            moreHtml: '',
-            now: -1,
-            firstUp: true,
-            soGou: function(value) {
-                Mer.ai.now = -1
-                Mer.ai.firstUp = true
-                //组装 URL
-                var sugurl = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
-                //回调函数
-                window.sogou = {
-                    sug: function(json) {
-                        var arr = json[1]
-                        if (arr.length) {
-                            var html = ''
-                            for (var i = 0; i < arr.length; i++) {
-                                html += '<li data-id="' + i + '">' + arr[i] +'</li>'
-                            }
-                            Mer.ai.moreHtml = html
-                            $('#more-ul').html(Mer.ai.moreHtml)
-                            $('#more-ul').addClass('more-border')
-                            $('#search-input').addClass('more-radius')
-                        } else {
-                            $('#more-ul').html('')
-                            $('#more-ul').removeClass('more-border')
-                            $('#search-input').removeClass('more-radius')
-                        }
+// 输入 - 智能联想
+Mer.ai = {
+    moreHtml: '',
+    now: -1,
+    firstUp: true,
+    soGou: function(value) {
+        Mer.ai.now = -1
+        Mer.ai.firstUp = true
+        //组装 URL
+        var sugurl = 'https://www.sogou.com/suggnew/ajajjson?type=web&key=' + encodeURI(value)
+        //回调函数
+        window.sogou = {
+            sug: function(json) {
+                var arr = json[1]
+                if (arr.length) {
+                    var html = ''
+                    for (var i = 0; i < arr.length; i++) {
+                        html += '<li data-id="' + i + '">' + arr[i] +'</li>'
                     }
-                }
-                //动态 JS脚本 cnblogs.com/woider/p/5805248.html
-                $("#sug").html('<script src=' + sugurl + '></script>')
-            },
-            UpDn: function(next) {
-                if (Mer.ai.firstUp && next === -1) {
-                    next = 0
-                    Mer.ai.firstUp = false
-                }
-                var old = Mer.ai.now
-                var all = $('#more-ul li')
-                var now = (old + next + all.length) % all.length
-
-                Mer.ai.now = now
-                event.target.value = all[now].innerText
-                $(all[now]).addClass('li-hover')
-                $(all[old]).removeClass('li-hover')
-            }
-        }
-        $('#search-input').on('blur', function() {
-            // 智能联想
-            if (screen.width > 768) {
-                $('#more-ul').html('')
-                $('#more-ul').removeClass('more-border')
-                $('#search-input').removeClass('more-radius')
-            }
-        })
-        $('#search-input').on('focus', function() {
-            $('.fa-mini').remove()
-            $('#more-button i').addClass('transparent')
-            // 智能联想
-            if (Mer.ai.moreHtml && event.target.value) {
-                $('#more-ul').html(Mer.ai.moreHtml)
-                $('#more-ul').addClass('more-border')
-                $('#search-input').addClass('more-radius')
-            } else {
-                $('#more-ul').html('')
-            }
-        })
-        $('#search-input').on('keyup', function() {
-            if (event.keyCode === 13) {
-                $('#search-button').click()
-            } else if (event.keyCode === 38) {
-                Mer.ai.UpDn( -1 )
-            } else if (event.keyCode === 40) {
-                Mer.ai.UpDn( +1 )
-            } else {
-                Mer.ai.soGou(event.target.value)
-            }
-        })
-        $('#search-input').on('keydown', function() {
-             if (event.keyCode === 38) {
-                 event.preventDefault()
-             }
-        })
-        $('#more-ul').on('mouseover', 'li', function() {
-            var old = Mer.ai.now
-            var all = $('#more-ul li')
-            var now = Number(event.target.dataset.id)
-
-            Mer.ai.now = now
-            $(all[now]).addClass('li-hover')
-            $(all[old]).removeClass('li-hover')
-        })
-
-        // Search
-        Mer.Search = function(value) {
-            var target = $('logo i')[0] || $('logo span')[0]
-            var i = target.dataset
-            var e = User.engines[i.cls][i.key]
-            var url = e.url
-            if (screen.width < 768) {
-                if (e.wap) {
-                    url = e.wap
-                }
-            }
-            url += encodeURI(value)
-            window.open(url)
-        }
-        $('#more-ul').on('mousedown', 'li', function() {
-            Mer.Search(event.target.innerText)
-        })
-        $('#search-button').on('click', function() {
-            var value = $('#search-input')[0].value
-            if (value) {
-                Mer.Search(value)
-            } else {
-                var input = $('#search-input')[0]
-                input.focus()
-            }
-        })
-
-        // More
-        Mer.Mini = function(engines, def) {
-            $('.fa-mini').remove()
-            var miniHtml = ''
-            var styleHtml = ''
-            for (var key in engines[def]) {
-                var e = engines[def][key]
-                if (e.icon && key != '大海') {
-                    miniHtml += `<i data-cls="${def}" data-key="${key}" class="fa-mini iconfont icon-${e.icon}"></i>`
-                    styleHtml += `.icon-${e.icon}:hover {color:${e.color}}`
-                }
-            }
-            $('#more-i').append(miniHtml)
-            $('style').append(styleHtml)
-        }
-        Mer.Note = function(note) {
-            $('#more-ul').html('<textarea id="more-note"></textarea>')
-            $('#more-note')[0].value = localStorage.note || note
-        }
-        $('#more-ul').on('focus', '#more-note',function() {
-            $('.fa-mini').fadeOut(618)
-        })
-        $('#more-ul').on('blur', '#more-note',function() {
-            var note = event.target.value
-            localStorage.note = note
-            User.note = note
-        })
-        $('#more-button').on('click', function() {
-            $('#more-ul').removeClass('more-border')
-            $('#search-input').removeClass('more-radius')
-            Mer.Mini(User.engines, '综合')
-            Mer.Note(User.note)
-        })
-        $('#more-button').on('mouseover', function() {
-            $('#more-button i').removeClass('transparent')
-        })
-        $('#more-i').on('click', '.fa-mini', function() {
-            Mer.Engine()
-        })
-
-        // Engine
-        Mer.Engine = function() {
-            var e = event.target.dataset
-            var i = User.engines[e.cls][e.key]
-            var input = $('#search-input')[0]
-            var html
-            if (i.icon) {
-                html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
-                input.placeholder = e.key
-            } else {
-                html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
-                input.placeholder = ''
-            }
-            $('logo').html(html)
-            input.focus()
-        }
-        $('#engine').on('click', 'tag', function() {
-            if (Mer.rest.short) {
-                $('#engine .show').html(Mer.showHtml('engine'))
-            }
-        })
-        $('#engine').on('click', 'engine', function() {
-            if (Mer.rest.short) {
-                Mer.Engine()
-                $('#engine').hide()
-                $('#search').slideDown("slow")
-            }
-        })
-
-        // Book
-        Mer.showHtml = function(tag, def) {
-            var kind = User[tag + 's']
-            var cls = def || event.target.innerText
-            var html = ''
-            for (var key in kind[cls]) {
-                var e = kind[cls][key]
-                if (e.icon) {
-                    html += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
+                    Mer.ai.moreHtml = html
+                    $('#more-ul').html(Mer.ai.moreHtml)
+                    $('#more-ul').addClass('more-border')
+                    $('#search-input').addClass('more-radius')
                 } else {
-                    html += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
+                    $('#more-ul').html('')
+                    $('#more-ul').removeClass('more-border')
+                    $('#search-input').removeClass('more-radius')
                 }
             }
-            return html
         }
-        $('#book').on('click', 'tag' , function() {
-            if (Mer.rest.short) {
-                $('#book .show').html(Mer.showHtml('book'))
-            }
-        })
-        $('#book').on('click', 'book', function() {
-            if (Mer.rest.short) {
-                var e = event.target.dataset
-                var i = User.books[e.cls][e.key]
-                window.open(i.url)
-            }
-        })
+        //动态 JS脚本 cnblogs.com/woider/p/5805248.html
+        $("#sug").html('<script src=' + sugurl + '></script>')
+    },
+    UpDn: function(next) {
+        if (Mer.ai.firstUp && next === -1) {
+            next = 0
+            Mer.ai.firstUp = false
+        }
+        var old = Mer.ai.now
+        var all = $('#more-ul li')
+        var now = (old + next + all.length) % all.length
 
-        __init__(User)
-    })
+        Mer.ai.now = now
+        event.target.value = all[now].innerText
+        $(all[now]).addClass('li-hover')
+        $(all[old]).removeClass('li-hover')
+    }
+}
+$('#search-input').on('blur', function() {
+    // 智能联想
+    if (screen.width > 768) {
+        $('#more-ul').html('')
+        $('#more-ul').removeClass('more-border')
+        $('#search-input').removeClass('more-radius')
+    }
+})
+$('#search-input').on('focus', function() {
+    $('.fa-mini').remove()
+    $('#more-button i').addClass('transparent')
+    // 智能联想
+    if (Mer.ai.moreHtml && event.target.value) {
+        $('#more-ul').html(Mer.ai.moreHtml)
+        $('#more-ul').addClass('more-border')
+        $('#search-input').addClass('more-radius')
+    } else {
+        $('#more-ul').html('')
+    }
+})
+$('#search-input').on('keyup', function() {
+    if (event.keyCode === 13) {
+        $('#search-button').click()
+    } else if (event.keyCode === 38) {
+        Mer.ai.UpDn( -1 )
+    } else if (event.keyCode === 40) {
+        Mer.ai.UpDn( +1 )
+    } else {
+        Mer.ai.soGou(event.target.value)
+    }
+})
+$('#search-input').on('keydown', function() {
+     if (event.keyCode === 38) {
+         event.preventDefault()
+     }
+})
+$('#more-ul').on('mouseover', 'li', function() {
+    var old = Mer.ai.now
+    var all = $('#more-ul li')
+    var now = Number(event.target.dataset.id)
+
+    Mer.ai.now = now
+    $(all[now]).addClass('li-hover')
+    $(all[old]).removeClass('li-hover')
+})
+
+// Search
+Mer.Search = function(value) {
+    var target = $('logo i')[0] || $('logo span')[0]
+    var i = target.dataset
+    var e = User.engines[i.cls][i.key]
+    var url = e.url
+    if (screen.width < 768) {
+        if (e.wap) {
+            url = e.wap
+        }
+    }
+    url += encodeURI(value)
+    window.open(url)
+}
+$('#more-ul').on('mousedown', 'li', function() {
+    Mer.Search(event.target.innerText)
+})
+$('#search-button').on('click', function() {
+    var value = $('#search-input')[0].value
+    if (value) {
+        Mer.Search(value)
+    } else {
+        var input = $('#search-input')[0]
+        input.focus()
+    }
+})
+
+// More
+Mer.Mini = function(engines, def) {
+    $('.fa-mini').remove()
+    var miniHtml = ''
+    var styleHtml = ''
+    for (var key in engines[def]) {
+        var e = engines[def][key]
+        if (e.icon && key != '大海') {
+            miniHtml += `<i data-cls="${def}" data-key="${key}" class="fa-mini iconfont icon-${e.icon}"></i>`
+            styleHtml += `.icon-${e.icon}:hover {color:${e.color}}`
+        }
+    }
+    $('#more-i').append(miniHtml)
+    $('style').append(styleHtml)
+}
+Mer.Note = function(note) {
+    $('#more-ul').html('<textarea id="more-note"></textarea>')
+    $('#more-note')[0].value = localStorage.note || note
+}
+$('#more-ul').on('focus', '#more-note',function() {
+    $('.fa-mini').fadeOut(618)
+})
+$('#more-ul').on('blur', '#more-note',function() {
+    var note = event.target.value
+    localStorage.note = note
+    User.note = note
+})
+$('#more-button').on('click', function() {
+    $('#more-ul').removeClass('more-border')
+    $('#search-input').removeClass('more-radius')
+    Mer.Mini(User.engines, '综合')
+    Mer.Note(User.note)
+})
+$('#more-button').on('mouseover', function() {
+    $('#more-button i').removeClass('transparent')
+})
+$('#more-i').on('click', '.fa-mini', function() {
+    Mer.Engine()
+})
+
+// Engine
+Mer.Engine = function() {
+    var e = event.target.dataset
+    var i = User.engines[e.cls][e.key]
+    var input = $('#search-input')[0]
+    var html
+    if (i.icon) {
+        html = `<i data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};" class="fa-5x iconfont icon-${i.icon}"></i>`
+        input.placeholder = e.key
+    } else {
+        html = `<span data-cls="${e.cls}" data-key="${e.key}" style="color:${i.color};">${e.key}</span>`
+        input.placeholder = ''
+    }
+    $('logo').html(html)
+    input.focus()
+}
+$('#engine').on('click', 'tag', function() {
+    if (Mer.rest.short) {
+        $('#engine .show').html(Mer.showHtml('engine'))
+    }
+})
+$('#engine').on('click', 'engine', function() {
+    if (Mer.rest.short) {
+        Mer.Engine()
+        $('#engine').hide()
+        $('#search').slideDown("slow")
+    }
+})
+
+// Book
+Mer.showHtml = function(tag, def) {
+    var kind = User[tag + 's']
+    var cls = def || event.target.innerText
+    var html = ''
+    for (var key in kind[cls]) {
+        var e = kind[cls][key]
+        if (e.icon) {
+            html += `<${tag} data-cls="${cls}" data-key="${key}"><i style="color:${e.color}" class="fa-logo iconfont icon-${e.icon}"></i></${tag}>`
+        } else {
+            html += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
+        }
+    }
+    return html
+}
+$('#book').on('click', 'tag' , function() {
+    if (Mer.rest.short) {
+        $('#book .show').html(Mer.showHtml('book'))
+    }
+})
+$('#book').on('click', 'book', function() {
+    if (Mer.rest.short) {
+        var e = event.target.dataset
+        var i = User.books[e.cls][e.key]
+        window.open(i.url)
+    }
+})
+
+__init__(User)
+
 })
