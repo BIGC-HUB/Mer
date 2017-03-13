@@ -1,6 +1,6 @@
 var __initEdit = function() {
     var html =
-    '<div class="full"></div>' +
+    '<div id="edit-full"></div>' +
     '<ul id="edit-ul"></ul><div id="edit-cont">' +
         '<div class="text"></div>' +
         '<div id="edit-val">' +
@@ -30,29 +30,26 @@ Mer.edit = {
         var x = event.clientX - 80
         var y = event.clientY
         $(e).addClass('edit-hover')
-        $('.full').show()
+        $('#edit-ul, #edit-full').show()
         $('#edit-ul').css({
-            display: "block",
             top: y + "px",
             left: x + "px"
         })
         setTimeout(function(){
-            $('body').one('mousedown', function() {
-                $('.full').hide()
+            $('body').one('click', function() {
                 var edit = event.target.classList.contains('edit')
                 var key  = event.target.dataset.btn
                 if (edit) {
                     Mer.edit[key](e)
                 } else {
-                    $(e).removeClass('edit-hover')
-                    $('#edit-ul').hide()
+                    Mer.edit.hide(e)
                 }
             })
         }, 100)
     },
     hide: function(e) {
         $(e).removeClass('edit-hover')
-        $('#edit-ul').hide()
+        $('#edit-ul,#edit-full').hide()
     },
     at: {}
 }
@@ -109,6 +106,9 @@ $('body').on('touchend', function() {
     }
 })
 
+$('#edit-full').on('click', function() {
+    $(event.target).hide()
+})
 $('#edit-cont textarea').on('input', function() {
     var e = event.target
     e.value = e.value.replace(/\n| /g,'')
@@ -132,7 +132,6 @@ $('#edit-cont textarea').on('focus', function() {
 $('#edit-cont textarea').on('blur', function() {
     event.target.rows = 1
 })
-
 $('#edit-cont-color').on('blur', function() {
     event.target.style.color = event.target.value
 })
@@ -141,7 +140,7 @@ $('#edit-cont-no').on('click', function() {
     $('#' + $('#edit-cont-no')[0].dataset.tag).show()
 })
 
-// PC右键菜单
+// PC右键菜单 + 移动端长按
 $('body').on('click', function() {
     document.oncontextmenu = function() {
         var e = event.target
