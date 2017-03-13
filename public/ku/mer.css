@@ -7,7 +7,7 @@ body {
     -webkit-user-select:none;
     -moz-user-select:none;
 }
-span, i {
+span, i, #edit-btn div {
     pointer-events: none;
 }
 logo, tag, engine, book, top, li, button, .fa-mini {
