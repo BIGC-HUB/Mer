@@ -32,8 +32,8 @@ logo, tag, engine, top, li {
     color: #037DD8;
 }
 .theme-hover {
-    color: #333 !important;
-    background-color: #F5F6F9;
+    color: #FFF;
+    background-color: #037DD8;
 }
 #engine, #book, #edit {
     margin: 3em auto 0;
@@ -235,6 +235,7 @@ tag {
 }
 tag:hover {
     background-color: #F5F6F9;
+    color: #333;
 }
 engine {
     vertical-align: bottom;
