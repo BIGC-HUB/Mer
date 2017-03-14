@@ -94,7 +94,7 @@ Mer.rest = {
         } else if (Mer.rest.cls(e, ['show', 'kind'])) {
             html =
                 '<li data-btn="new"   class="edit"><span>添加</span></li>'
-        } else if (Mer.rest.tag(e, ['textarea', 'input'])) {
+        } else if (Mer.rest.tag(e, ['textarea','input'])) {
             html =
                 '<li data-btn="copy"  class="edit"><span>复制</span></li>' +
                 '<li data-btn="select" class="edit"><span>全选</span></li>'
@@ -113,6 +113,16 @@ $('body').on('touchend', function() {
     } else {
         Mer.rest.short = false
     }
+})
+
+$('#edit-cont textarea, #edit-cont input').on('blur', function() {
+    var str = ''
+    for (var i of event.target.value) {
+        if (!/ /.test(i)) {
+            str += i
+        }
+    }
+    event.target.value = str
 })
 
 $('#edit-full').on('click', function() {
@@ -141,11 +151,6 @@ $('#edit-cont textarea').on('focus', function() {
 })
 $('#edit-cont textarea').on('blur', function() {
     event.target.rows = 1
-})
-$('#edit-cont-color').on('blur', function() {
-    event.target.style.color = event.target.value
-})
-$('#edit-cont-url, #edit-cont-wap').on('blur', function() {
     var val = event.target.value
     if (val.slice(0,4) === 'http') {
         event.target.value = val.slice(7)
@@ -154,9 +159,19 @@ $('#edit-cont-url, #edit-cont-wap').on('blur', function() {
         }
     }
 })
+$('#edit-cont-color').on('blur', function() {
+    event.target.style.color = event.target.value
+})
 $('#edit-cont-no').on('click', function() {
     $('#edit-cont').hide()
     $('#' + $('#edit-cont-no')[0].dataset.tag).show()
+})
+$('#edit-cont-move').on('click', 'tag', function() {
+    Mer.send.tag.remove('edit-hover')
+    Mer.send.tag = event.target.classList
+    Mer.send.tag.add('edit-hover')
+    $('#edit-cont .text').text(event.target.innerText + '·分组')
+    $('#edit-cont-yes')[0].dataset.move = event.target.innerText
 })
 
 // PC右键菜单 + 移动端长按
@@ -316,6 +331,7 @@ Mer.send.del = function(e) {
             show.style.height = 'auto'
         }
         $('#edit-cont-no').click()
+        Mer.post(e)
     } else {
         if (Object.keys(User[kind][cls]).length) {
             $('#edit-cont .text').html('提示：类不为空')
@@ -323,6 +339,7 @@ Mer.send.del = function(e) {
             delete User[kind][cls]
             e.remove()
             $('#edit-cont-no').click()
+            Mer.post(e)
         }
     }
 }
@@ -367,6 +384,7 @@ Mer.send.new = function(e) {
                     }
                     $(e).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
+                    Mer.post(e)
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
@@ -380,7 +398,9 @@ Mer.send.new = function(e) {
                     e = e.parentElement
                 }
                 $(e).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
+                Mer.tagClick(tag)
                 $('#edit-cont-no').click()
+                Mer.post(e)
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
@@ -425,11 +445,13 @@ Mer.send.amend = function(e) {
                     // 没有重复才可以删除
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
+                    Mer.post(e)
                 } else if (key == newName) {
                     User[kind][cls][newName] = i
                     // 直接修改
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
+                    Mer.post(e)
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
@@ -443,6 +465,7 @@ Mer.send.amend = function(e) {
                 e.innerText = newName
                 e.dataset.cls = newName
                 $('#edit-cont-no').click()
+                Mer.post(e)
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
@@ -467,18 +490,17 @@ Mer.send.move = function(e) {
         delete User[kind][cls][key]
         e.remove()
         $('#edit-cont-no').click()
+        Mer.post(e)
     }
 }
-$('#edit-cont-move').on('click', 'tag', function() {
-    Mer.send.tag.remove('edit-hover')
-    Mer.send.tag = event.target.classList
-    Mer.send.tag.add('edit-hover')
-    $('#edit-cont .text').text(event.target.innerText + '·分组')
-    $('#edit-cont-yes')[0].dataset.move = event.target.innerText
-})
+
 $('#edit-cont-yes').on('click', function() {
     Mer.send[event.target.dataset.btn](Mer.edit.at)
 })
 $('#edit-cont-del').on('click', function() {
     Mer.send.del(Mer.edit.at)
 })
+
+Mer.post = function(e) {
+    log('发送一次')
+}

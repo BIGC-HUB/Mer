@@ -40,6 +40,13 @@ $('#login input').on('focus', function() {
 })
 $('#login input').on('blur', function() {
     event.target.parentElement.classList.remove('theme')
+    var str = ''
+    for (var i of event.target.value) {
+        if (!/ /.test(i)) {
+            str += i
+        }
+    }
+    event.target.value = str
 })
 $('#login input').on('keydown', function() {
     if (/ /.test(event.key)) {
