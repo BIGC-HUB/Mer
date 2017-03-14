@@ -97,7 +97,7 @@ Mer.rest = {
         } else if (Mer.rest.tag(e, ['textarea', 'input'])) {
             html =
                 '<li data-btn="copy"  class="edit"><span>复制</span></li>' +
-                '<li data-btn="paste" class="edit"><span>粘贴</span></li>'
+                '<li data-btn="select" class="edit"><span>全选</span></li>'
         }
         return html
     }
@@ -174,12 +174,15 @@ $('body').on('click', function() {
     }
 })
 
-// 复制粘贴
+// 复制全选
 Mer.edit.copy = function(e) {
     Mer.edit.hide(e)
+    e.select()
+    document.execCommand("Copy")
 }
-Mer.edit.paste = function(e) {
+Mer.edit.select = function(e) {
     Mer.edit.hide(e)
+    e.select()
 }
 
 // 增删改查

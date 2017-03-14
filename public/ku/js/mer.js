@@ -298,10 +298,7 @@ Mer.Engine = function() {
     input.focus()
 }
 $('#engine').on('click', 'tag', function() {
-    if (Mer.rest.short) {
-        $('#engine .show').html(Mer.showHtml('engine'))
-        $('#engine .show')[0].dataset.cls = event.target.innerText
-    }
+    Mer.tagClick('engine')
 })
 $('#engine').on('click', 'engine', function() {
     if (Mer.rest.short) {
@@ -326,11 +323,22 @@ Mer.showHtml = function(tag, def) {
     }
     return html
 }
-$('#book').on('click', 'tag' , function() {
+Mer.tagClick = function(tag) {
     if (Mer.rest.short) {
-        $('#book .show').html(Mer.showHtml('book'))
-        $('#book .show')[0].dataset.cls = event.target.innerText
+        var html = Mer.showHtml(tag)
+        var show = $('#' + tag + ' .show')[0]
+        show.innerHTML = html
+        if (html === '') {
+            show.style.height = '10em'
+            show.dataset.cls = event.target.innerText
+            show.dataset.kind = tag
+        } else {
+            show.style.height = 'auto'
+        }
     }
+}
+$('#book').on('click', 'tag' , function() {
+    Mer.tagClick('book')
 })
 $('#book').on('click', 'book', function() {
     if (Mer.rest.short) {

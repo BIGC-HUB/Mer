@@ -31,10 +31,6 @@ logo, tag, engine, top, li {
 .theme {
     color: #037DD8;
 }
-.theme-hover {
-    color: #FFF;
-    background-color: #037DD8;
-}
 #engine, #book, #edit {
     margin: 3em auto 0;
 }
