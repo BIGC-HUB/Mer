@@ -42,10 +42,10 @@ Mer.edit = {
             top: y + "px",
             left: x + "px"
         })
-        setTimeout(function(){
+        setTimeout(function() {
             $('body').one('click', function() {
                 var edit = event.target.classList.contains('edit')
-                var key  = event.target.dataset.btn
+                var key = event.target.dataset.btn
                 if (edit) {
                     Mer.edit[key](e)
                 } else {
@@ -81,7 +81,7 @@ Mer.rest = {
     },
     html: function(e) {
         var html = ''
-        if (Mer.rest.tag(e, ['book','engine'])) {
+        if (Mer.rest.tag(e, ['book', 'engine'])) {
             html =
                 '<li data-btn="new"   class="edit"><span>添加</span></li>' +
                 '<li data-btn="amend" class="edit"><span>编辑</span></li>' +
@@ -101,6 +101,7 @@ Mer.rest = {
         return html
     }
 }
+
 $('body').on('touchstart', function() {
     Mer.rest.time = parseInt(event.timeStamp)
 })
@@ -177,16 +178,16 @@ Mer.edit.new = function(e) {
     Mer.edit.hide(e)
     $('#engine,#book').hide()
     $('#edit-val').children().show()
-     // 空白处
-    if (e.localName === 'div') {
-        var e = e.children[0]
-    }
+    //
+    var cls = e.dataset.cls
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
-    var cls = e.dataset.cls
+    if (e.className === 'show') {
+        tag = e.dataset.key
+    }
     var kind = tag + 's'
+    //
     if (key) { // show
-        var i = User[kind][cls][key]
         if (tag === 'engine') {
             $('#edit-cont .text').text('添加·引擎')
             $('#edit-cont-wap').val('')
@@ -268,6 +269,14 @@ Mer.send.del = function(e) {
     if (key) {
         delete User[kind][cls][key]
         e.remove()
+        var show = $('#' + tag + ' .show')[0]
+        if (Object.keys(User[kind][cls]).length === 0) {
+            show.style.height = '10em'
+            show.dataset.cls = cls
+            show.dataset.kind = tag
+        } else {
+            show.style.height = 'auto'
+        }
         $('#edit-cont-no').click()
     } else {
         if (Object.keys(User[kind][cls]).length) {
@@ -340,12 +349,17 @@ Mer.send.amend = function(e) {
     }
 }
 Mer.send.new = function(e) {
-    var tag = e.dataset.kind || e.localName
-    var key = e.dataset.key
-    var cls = e.dataset.cls
-    var kind = tag + 's'
     var newName = $('#edit-cont-name').val()
     var newUrl  = $('#edit-cont-url').val()
+    //
+    var cls = e.dataset.cls
+    var tag = e.dataset.kind || e.localName
+    var key = e.dataset.key
+    if (e.className === 'show') {
+        tag = e.dataset.key
+    }
+    var kind = tag + 's'
+    //
     // 表单验证
     if (!newName) {
         $('#edit-cont .text').text('名字不能为空')
@@ -370,7 +384,10 @@ Mer.send.new = function(e) {
                 var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
                 if (bool) {
                     User[kind][cls][newName] = i
-                    $(e.parentElement).html(Mer.showHtml(tag, cls))
+                    if (e.localName !== 'div') {
+                        e = e.parentElement
+                    }
+                    $(e).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
@@ -381,7 +398,10 @@ Mer.send.new = function(e) {
             var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
             if (bool) {
                 User[kind][newName] = {}
-                $(e.parentElement).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
+                if (e.localName !== 'div') {
+                    e = e.parentElement
+                }
+                $(e).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
                 $('#edit-cont-no').click()
             } else {
                 $('#edit-cont .text').text('名字不能重复')

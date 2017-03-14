@@ -75,8 +75,8 @@ var __initBookEngine = function(tag) {
     }
     var showHtml = Mer.showHtml(tag, def)
     var html = `
-    <div class="kind">${tagHtml}</div>
-    <div class="show">${showHtml}</div>`
+    <div class="kind" data-kind="${tag}" data-cls="${def}">${tagHtml}</div>
+    <div class="show" data-cls="${def}"  data-key="${tag}">${showHtml}</div>`
     element.html(html)
 }
 var __init__ = function(User) {
@@ -300,6 +300,7 @@ Mer.Engine = function() {
 $('#engine').on('click', 'tag', function() {
     if (Mer.rest.short) {
         $('#engine .show').html(Mer.showHtml('engine'))
+        $('#engine .show')[0].dataset.cls = event.target.innerText
     }
 })
 $('#engine').on('click', 'engine', function() {
@@ -323,14 +324,12 @@ Mer.showHtml = function(tag, def) {
             html += `<${tag} data-cls="${cls}" data-key="${key}"><span style="color:${e.color}">${key}</span></${tag}>`
         }
     }
-    if (html === '') {
-        html += `<${tag}><span style="color:#037DD8">＋</span></${tag}>`
-    }
     return html
 }
 $('#book').on('click', 'tag' , function() {
     if (Mer.rest.short) {
         $('#book .show').html(Mer.showHtml('book'))
+        $('#book .show')[0].dataset.cls = event.target.innerText
     }
 })
 $('#book').on('click', 'book', function() {
