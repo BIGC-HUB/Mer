@@ -345,25 +345,22 @@ book:hover {
     font-size: 1.17em;
 }
 #edit-cont input, #edit-cont textarea {
+    -webkit-appearance: none;
     display: inline-block;
     width: calc(100% - 4em - 21px);
-    border: 1.5px solid transparent;
     border-radius: 3px;
-    padding: 4px;
+    border-style: none;
     outline-style: none;
+    padding: 4px;
 }
 #edit-cont input:focus, #edit-cont textarea:focus {
-    border-color: #F5F6F9;
     background-color: #F5F6F9;
 }
 #edit-cont textarea {
+    color: #B1B7CA;
     overflow-y: hidden;
     resize: none;
-    -webkit-appearance: none;
     height: auto;
-}
-#edit-cont logo {
-    margin: 0 auto;
 }
 #edit-cont button {
     outline: 0;
@@ -387,7 +384,7 @@ book:hover {
     border-color: #9DA3A6;
 }
 .btn-white:hover {
-    background-color: #F8F8F8;
+    background-color: #F5F6F9;
 }
 .btn-blue {
     color: #FFF;

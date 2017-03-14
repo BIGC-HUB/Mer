@@ -226,7 +226,7 @@ Mer.Search = function(value) {
         }
     }
     url += encodeURI(value)
-    window.open(url)
+    window.open('//' + url)
 }
 $('#more-ul').on('mousedown', 'li', function() {
     Mer.Search(event.target.innerText)
@@ -337,7 +337,7 @@ $('#book').on('click', 'book', function() {
     if (Mer.rest.short) {
         var e = event.target.dataset
         var i = User.books[e.cls][e.key]
-        window.open(i.url)
+        window.open('//' + i.url)
     }
 })
 

@@ -143,6 +143,15 @@ $('#edit-cont textarea').on('blur', function() {
 $('#edit-cont-color').on('blur', function() {
     event.target.style.color = event.target.value
 })
+$('#edit-cont-url, #edit-cont-wap').on('blur', function() {
+    var val = event.target.value
+    if (val.slice(0,4) === 'http') {
+        event.target.value = val.slice(7)
+        if (val.slice(4,5) === 's') {
+            event.target.value = val.slice(8)
+        }
+    }
+})
 $('#edit-cont-no').on('click', function() {
     $('#edit-cont').hide()
     $('#' + $('#edit-cont-no')[0].dataset.tag).show()
