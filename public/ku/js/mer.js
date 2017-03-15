@@ -176,6 +176,12 @@ Mer.ai = {
         event.target.value = all[now].innerText
         $(all[now]).addClass('li-hover')
         $(all[old]).removeClass('li-hover')
+    },
+    hide: function() {
+        $('#search-input ~ a').hide()
+        $('#more-ul').html('')
+        $('#more-ul').removeClass('more-border')
+        $('#search-input').removeClass('more-radius')
     }
 }
 $('#search-input').on('blur', function() {
@@ -228,15 +234,12 @@ $('#search-input').on('input', function() {
         Mer.ai.soGou(val)
         $('#search-input ~ a').show()
     } else {
-        $('#search-input ~ a').hide()
-        $('#more-ul').html('')
-        $('#more-ul').removeClass('more-border')
-        $('#search-input').removeClass('more-radius')
+        Mer.ai.hide()
     }
 })
 $('#search-input ~ a').on('click', function() {
     $('#search-input').val('')
-    $(event.target).hide()
+    Mer.ai.hide()
 })
 
 // Search
