@@ -178,8 +178,12 @@ $('#edit-cont-move').on('click', 'tag', function() {
 $('body').on('click', function() {
     document.oncontextmenu = function() {
         var e = event.target
-        Mer.edit.show(Mer.rest.html(e))
-        return false
+        if (Mer.rest.tag(e, ['textarea', 'input']) && !Mer.pc) {
+            return true
+        } else {
+            Mer.edit.show(Mer.rest.html(e))
+            return false
+        }
     }
     var e = event.target
     if (!Mer.rest.short) {
