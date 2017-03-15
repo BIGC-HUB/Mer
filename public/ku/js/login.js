@@ -17,7 +17,7 @@ var html = '<div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon
     '<div id="login-zhuce">' +
         '<inputbox>' +
             '<i class="iconfont icon-phone"></i>' +
-            '<input id="login-phone" type="text" maxlength="11" placeholder="手机">' +
+            '<input id="login-phone" type="tel" maxlength="11" placeholder="手机">' +
             '<span  id="login-phone-11">11</span>' +
         '</inputbox>' +
         '<inputbox>' +

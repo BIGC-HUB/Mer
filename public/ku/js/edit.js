@@ -4,11 +4,11 @@ var __initEdit = function() {
     '<ul id="edit-ul"></ul><div id="edit-cont">' +
         '<div class="text"></div>' +
         '<div id="edit-val">' +
-            '<div><span>名　字</span><input id="edit-cont-name"></div>' +
-            '<div><span>网　址</span><textarea spellcheck="false" id="edit-cont-url" rows="1"></textarea></div>' +
-            '<div class="half"><span>颜　色</span><input id="edit-cont-color"></div>' +
-            '<div class="half"><span>图　标</span><input id="edit-cont-icon"></div>' +
-            '<div><span>移动端</span><textarea spellcheck="false" id="edit-cont-wap" rows="1"></textarea></div>' +
+            '<div><span>名　字</span><input id="edit-cont-name" placeholder="…"></div>' +
+            '<div><span>网　址</span><textarea spellcheck="false" id="edit-cont-url" rows="1" placeholder="…"></textarea></div>' +
+            '<div class="half"><span>颜　色</span><input id="edit-cont-color" placeholder="…"></div>' +
+            '<div class="half"><span>图　标</span><input id="edit-cont-icon" placeholder="…"></div>' +
+            '<div><span>移动端</span><textarea spellcheck="false" id="edit-cont-wap" rows="1" placeholder="…"></textarea></div>' +
             '<div id="edit-cont-move"></div>' +
         '</div>' +
         '<div id="edit-btn">' +
@@ -233,7 +233,7 @@ Mer.edit.new = function(e) {
         $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
         $('#edit-cont-name').val('')
     }
-    $('#edit-cont').show()
+    $('#edit-cont').animate({ opacity:'show' })
     $('#edit-cont-del').hide()
     $('#edit-cont-move').hide()
     $('#edit-cont-no')[0].dataset.tag = tag
@@ -270,7 +270,8 @@ Mer.edit.amend =  function(e) {
         $('#edit-cont-icon,#edit-cont-wap,#edit-cont-url,#edit-cont-color').parent().hide()
         $('#edit-cont-name').val(cls)
     }
-    $('#edit-cont-del, #edit-cont').show()
+    $('#edit-cont').animate({ opacity:'show' })
+    $('#edit-cont-del').show()
     $('#edit-cont-move').hide()
     $('#edit-cont-no')[0].dataset.tag = tag
     $('#edit-cont-yes')[0].dataset.btn = 'amend'

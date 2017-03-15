@@ -29,19 +29,23 @@ var __initTop = function() {
     $('#top').html(html)
 }()
 var __initMain = function() {
-    var html = `
-        <logo><i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i></logo>
-        <div class="search">
-            <input id="search-input" type="text" maxlength="70"><button id="search-button">
-                <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
-            </button>
-        </div>
-        <div class="more"><ul id="more-ul"></ul><div id="more-i">
-                <button id="more-button">
-                    <i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>`
+    var html =
+        '<logo>' +
+            '<i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i>' +
+        '</logo>' +
+        '<div class="search">' +
+            '<input id="search-input" type="text" maxlength="70">' +
+            '<a><i class="fa-1x iconfont icon-xclear"></i></a>' +
+            '<button id="search-button">' +
+                '<i class="fa-lg iconfont icon-search" aria-hidden="true"></i>' +
+            '</button>' +
+        '</div>' +
+        '<div class="more"><ul id="more-ul"></ul><div id="more-i">' +
+                '<button id="more-button">' +
+                    '<i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>' +
+                '</button>' +
+            '</div>' +
+        '</div>'
     $('#search').html(html)
 }()
 var __initLogo = function(logo) {
@@ -87,10 +91,16 @@ var __init__ = function(User) {
 
 var Mer = {}
 var User = {}
-
 // data.json = engines | books | note
-$.get('ku/data/def.json', function(data) {
-User = data || 'defUser'
+var guaSync = function(func) {
+    setTimeout(function() {
+        func()
+    }, 0)
+}
+$.ajaxSetup({ async: false })
+$.get("ku/data/def.json", function(data){
+    User = data
+})
 
 // Top
 $('#search').on('click', 'logo',function() {
@@ -169,7 +179,6 @@ Mer.ai = {
     }
 }
 $('#search-input').on('blur', function() {
-    // 智能联想
     if (screen.width > 768) {
         $('#more-ul').html('')
         $('#more-ul').removeClass('more-border')
@@ -195,14 +204,13 @@ $('#search-input').on('keyup', function() {
         Mer.ai.UpDn( -1 )
     } else if (event.keyCode === 40) {
         Mer.ai.UpDn( +1 )
-    } else {
-        Mer.ai.soGou(event.target.value)
     }
 })
 $('#search-input').on('keydown', function() {
-     if (event.keyCode === 38) {
-         event.preventDefault()
-     }
+    if (event.keyCode === 38) {
+        // UP
+        event.preventDefault()
+    }
 })
 $('#more-ul').on('mouseover', 'li', function() {
     var old = Mer.ai.now
@@ -212,6 +220,23 @@ $('#more-ul').on('mouseover', 'li', function() {
     Mer.ai.now = now
     $(all[now]).addClass('li-hover')
     $(all[old]).removeClass('li-hover')
+})
+$('#search-input').on('input', function() {
+    var val = event.target.value
+    if (val) {
+        // 智能联想
+        Mer.ai.soGou(val)
+        $('#search-input ~ a').show()
+    } else {
+        $('#search-input ~ a').hide()
+        $('#more-ul').html('')
+        $('#more-ul').removeClass('more-border')
+        $('#search-input').removeClass('more-radius')
+    }
+})
+$('#search-input ~ a').on('click', function() {
+    $('#search-input').val('')
+    $(event.target).hide()
 })
 
 // Search
@@ -349,5 +374,3 @@ $('#book').on('click', 'book', function() {
 })
 
 __init__(User)
-
-})

@@ -10,7 +10,7 @@ body {
 span, i, #edit-btn div {
     pointer-events: none;
 }
-logo, tag, engine, book, top, li, button, .fa-mini {
+logo, tag, engine, book, top, a, li, button, .fa-mini {
     cursor: pointer;
 }
 logo, tag, engine, top, li {
@@ -128,12 +128,20 @@ logo span {
     outline: 0;
 }
 #search-input {
-    width: 61.8%;
+    width: calc(61.8% - 22px);
     border-top-left-radius: 4px;
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 0;
     border: 1px solid #C0C0C0;
+    padding-right: 30px;
+}
+#search-input ~ a {
+    display: none;
+    position: absolute;
+    font-size: 25px;
+    padding: 9px 0;
+    margin: 0 0 0 -30px;
 }
 #search-input:hover {
     border-color: #999;
@@ -467,8 +475,11 @@ inputbox input {
     .fa-logo {
         font-size: 5.5em;
     }
-    #search-input, #more-ul {
+    #more-ul {
         width: 38.2%;
+    }
+    #search-input {
+        width: calc(38.2% - 22px);
     }
     #book, #engine {
         width: 85%;
