@@ -91,16 +91,37 @@ var __init__ = function(User) {
 
 var Mer = {}
 var User = {}
+
 // data.json = engines | books | note
-var guaSync = function(func) {
-    setTimeout(function() {
-        func()
-    }, 0)
+var ajax = function(url, data, callback, sync) {
+    if (sync === undefined) {          // false 同步
+        sync = true                    // true  异步
+    }
+    if (callback === undefined) {
+        callback = function(err) {
+            console.log(err)
+        }
+    }
+    var r = new XMLHttpRequest( )      // 创建 AJAX 对象
+    r.open('POST', url, sync)          // 请求方法 网址 同步
+    r.setRequestHeader('Content-Type', 'application/json')
+    r.onreadystatechange = function() {
+        if (r.readyState === 4) {      // 完成
+            callback(r.response)       // 注册 响应函数 结果
+        }
+    }
+    if (data) {                        // POST
+        data = JSON.stringify(data)
+        r.send(data)
+    } else {                           // GET
+        r.send()
+    }                                  // 发送 请求
 }
-$.ajaxSetup({ async: false })
-$.get("ku/data/def.json", function(data){
-    User = data
-})
+// 阿贾克斯 ? 不存在的
+ajax('user/load', null, function(data){
+    User = JSON.parse(data)
+}, false)
+Mer.post = function() { ajax('user/save', User) }
 
 // Top
 $('#search').on('click', 'logo',function() {

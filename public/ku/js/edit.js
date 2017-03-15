@@ -332,7 +332,7 @@ Mer.send.del = function(e) {
             show.style.height = 'auto'
         }
         $('#edit-cont-no').click()
-        Mer.post(e)
+        Mer.post()
     } else {
         if (Object.keys(User[kind][cls]).length) {
             $('#edit-cont .text').html('提示：类不为空')
@@ -340,7 +340,7 @@ Mer.send.del = function(e) {
             delete User[kind][cls]
             e.remove()
             $('#edit-cont-no').click()
-            Mer.post(e)
+            Mer.post()
         }
     }
 }
@@ -385,7 +385,7 @@ Mer.send.new = function(e) {
                     }
                     $(e).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
-                    Mer.post(e)
+                    Mer.post()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
@@ -401,7 +401,7 @@ Mer.send.new = function(e) {
                 $(e).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
                 Mer.tagClick(tag, newName)
                 $('#edit-cont-no').click()
-                Mer.post(e)
+                Mer.post()
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
@@ -446,13 +446,13 @@ Mer.send.amend = function(e) {
                     // 没有重复才可以删除
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
-                    Mer.post(e)
+                    Mer.post()
                 } else if (key == newName) {
                     User[kind][cls][newName] = i
                     // 直接修改
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
-                    Mer.post(e)
+                    Mer.post()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
@@ -466,7 +466,7 @@ Mer.send.amend = function(e) {
                 e.innerText = newName
                 e.dataset.cls = newName
                 $('#edit-cont-no').click()
-                Mer.post(e)
+                Mer.post()
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
@@ -491,7 +491,7 @@ Mer.send.move = function(e) {
         delete User[kind][cls][key]
         e.remove()
         $('#edit-cont-no').click()
-        Mer.post(e)
+        Mer.post()
     }
 }
 
@@ -501,7 +501,3 @@ $('#edit-cont-yes').on('click', function() {
 $('#edit-cont-del').on('click', function() {
     Mer.send.del(Mer.edit.at)
 })
-
-Mer.post = function(e) {
-    log('发送一次')
-}

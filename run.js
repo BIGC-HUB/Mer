@@ -6,28 +6,35 @@ var app = express()
 // 引入 fs
 var fs = require('fs')
 
-// 安装 $ npm install body-parser
 // 配置 body-Parser
 app.use(bodyParser.json())
 
 // 公共 文件
 app.use(express.static('public'))
 
-var sendFile = function(path, res) {
-    var data = fs.readFileSync(path, 'utf8')
-    res.send(data)
-}
-
 // 读取 文件
 app.get('/', function(req, res) {
-    sendFile('index.html', res)
+    var data = fs.readFileSync('index.html', 'utf8')
+    res.send(data)
 })
 
-// listen 函数的第一个参数是我们要监听的端口
-// 这个端口是要浏览器输入的
-// 默认的端口是 80
-// 所以如果你监听 80 端口的话，浏览器就不需要输入端口了
-// 但是 1024 以下的端口是系统保留端口，需要管理员权限才能使用
+app.post('/user/def', function(req, res) {
+    var data = fs.readFileSync('user/def.json', 'utf8')
+    res.send(data)
+})
+
+app.post('/user/save', function (req, res) {
+    var data = JSON.stringify(req.body)
+    fs.writeFile('user/mer.json', data, 'utf8', function(err) {
+        res.send('写入成功！')
+    })
+})
+app.post('/user/load', function (req, res) {
+    var data = fs.readFileSync( 'user/mer.json', 'utf8')
+    res.send(data)
+})
+
+// listen 函数监听端口
 var server = app.listen(80, function () {
   var host = server.address().address
   var port = server.address().port
