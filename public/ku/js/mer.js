@@ -351,14 +351,14 @@ Mer.showHtml = function(tag, def) {
     }
     return html
 }
-Mer.tagClick = function(tag) {
+Mer.tagClick = function(tag, def) {
     if (Mer.rest.short) {
         var html = Mer.showHtml(tag)
         var show = $('#' + tag + ' .show')[0]
         show.innerHTML = html
         if (html === '') {
             show.style.height = '10em'
-            show.dataset.cls = event.target.innerText
+            show.dataset.cls = def || event.target.innerText
             show.dataset.kind = tag
         } else {
             show.style.height = 'auto'

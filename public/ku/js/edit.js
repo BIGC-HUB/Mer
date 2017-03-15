@@ -399,7 +399,7 @@ Mer.send.new = function(e) {
                     e = e.parentElement
                 }
                 $(e).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
-                Mer.tagClick(tag)
+                Mer.tagClick(tag, newName)
                 $('#edit-cont-no').click()
                 Mer.post(e)
             } else {
