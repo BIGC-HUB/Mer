@@ -121,9 +121,35 @@ var ajax = function(url, data, callback, sync) {
 ajax('user/load', null, function(data){
     User = JSON.parse(data)
 }, false)
-Mer.post = function() { ajax('user/save', User) }
+
+// Cookie
+var enCookie = function() {
+    var cookie = document.cookie
+    if (cookie) {
+        var cookies = decodeURIComponent(cookie).split(';')
+        var tempObj = {}
+        for (var i of cookies) {
+            var arr = i.split('=')
+            tempObj[arr[0]] = arr[1]
+        }
+        return tempObj
+    }
+}
+var deCookie = function(obj) {
+    var arr = []
+    for (var key in obj) {
+        var tempArr = []
+        tempArr.push(key)
+        tempArr.push(obj[key])
+        arr.push( tempArr.join('=') )
+    }
+    return encodeURIComponent(arr.join(';'))
+}
 
 // Top
+Mer.post = function() {
+    ajax('user/save', User)
+}
 $('#search').on('click', 'logo',function() {
     $('#search').hide()
     $('#engine').slideDown("slow")
@@ -153,6 +179,16 @@ $('#top').on('click', '.user', function() {
 
 // 输入 - 智能联想
 Mer.ai = {
+    isPC: function() {
+       var userAgent = navigator.userAgent;
+       var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"]
+       for (var i of Agents) {
+           if (userAgent.indexOf(i) > 0) {
+               return false
+           }
+       }
+       return true
+    },
     moreHtml: '',
     now: -1,
     firstUp: true,
@@ -205,6 +241,7 @@ Mer.ai = {
         $('#search-input').removeClass('more-radius')
     }
 }
+Mer.pc = Mer.ai.isPC()
 $('#search-input').on('blur', function() {
     if (screen.width > 768) {
         $('#more-ul').html('')
@@ -307,15 +344,14 @@ Mer.Mini = function(engines, def) {
 }
 Mer.Note = function(note) {
     $('#more-ul').html('<textarea id="more-note"></textarea>')
-    $('#more-note')[0].value = localStorage.note || note
+    $('#more-note')[0].value = note
 }
 $('#more-ul').on('focus', '#more-note',function() {
     $('.fa-mini').fadeOut(618)
 })
 $('#more-ul').on('blur', '#more-note',function() {
-    var note = event.target.value
-    localStorage.note = note
-    User.note = note
+    User.note = event.target.value
+    Mer.post()
 })
 $('#more-button').on('click', function() {
     $('#more-ul').removeClass('more-border')

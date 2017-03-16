@@ -1,3 +1,6 @@
+var log = function() {
+        console.log.apply(console, arguments)
+    }
 // 引入 express 并且创建一个 express 实例赋值给 app
 var bodyParser = require('body-parser')
 var express = require('express')
@@ -25,12 +28,11 @@ app.post('/user/def', function(req, res) {
 
 app.post('/user/save', function (req, res) {
     var data = JSON.stringify(req.body)
-    fs.writeFile('user/mer.json', data, 'utf8', function(err) {
-        res.send('写入成功！')
-    })
+    var err = fs.writeFileSync('user/mer.json', data, 'utf8')
+    res.send('写入成功！')
 })
 app.post('/user/load', function (req, res) {
-    var data = fs.readFileSync( 'user/mer.json', 'utf8')
+    var data = fs.readFileSync('user/mer.json', 'utf8')
     res.send(data)
 })
 
