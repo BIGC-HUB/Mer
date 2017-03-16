@@ -19,6 +19,52 @@ var ckXian = function() {
         }
     })
 }()
+var Ajax = function(url, data, func, sync) {
+    if (sync === undefined) {          // false 同步
+        sync = true                    // true  异步
+    }
+    if (func === undefined) {
+        callback = function(err) {
+            console.log(err)
+        }
+    }
+    var r = new XMLHttpRequest( )      // 创建 AJAX 对象
+    r.open('POST', url, sync)          // 请求方法 网址 同步
+    r.setRequestHeader('Content-Type', 'application/json')
+    r.onreadystatechange = function() {
+        if (r.readyState === 4) {      // 完成
+            func(r.response)       // 注册 响应函数 结果
+        }
+    }
+    if (data) {                        // POST
+        data = JSON.stringify(data)
+        r.send(data)
+    } else {                           // GET
+        r.send()
+    }                                  // 发送 请求
+}
+
+// Cokie
+var setCookie = function (name, value, days) {
+    var date = new Date()
+    var str = ''
+    if (days) {
+        date.setDate(date.getDate() + days)
+        str = ";expires=" + date.toGMTString()
+    } else {
+        str = ""
+    }
+    document.cookie = name + "=" + encodeURIComponent(value) + str
+}
+var getCookie = function (name) {
+    var arr = document.cookie.split('; ')
+    for (var i of arr) {
+        var e = i.split('=')
+        if(e[0] === name) {
+            return e[1]
+        }
+    }
+}
 
 // initHtml
 var __initTop = function() {
@@ -93,62 +139,13 @@ var Mer = {}
 var User = {}
 
 // data.json = engines | books | note
-var ajax = function(url, data, callback, sync) {
-    if (sync === undefined) {          // false 同步
-        sync = true                    // true  异步
-    }
-    if (callback === undefined) {
-        callback = function(err) {
-            console.log(err)
-        }
-    }
-    var r = new XMLHttpRequest( )      // 创建 AJAX 对象
-    r.open('POST', url, sync)          // 请求方法 网址 同步
-    r.setRequestHeader('Content-Type', 'application/json')
-    r.onreadystatechange = function() {
-        if (r.readyState === 4) {      // 完成
-            callback(r.response)       // 注册 响应函数 结果
-        }
-    }
-    if (data) {                        // POST
-        data = JSON.stringify(data)
-        r.send(data)
-    } else {                           // GET
-        r.send()
-    }                                  // 发送 请求
-}
-// 阿贾克斯 ? 不存在的
-ajax('user/load', null, function(data){
-    User = JSON.parse(data)
-}, false)
 
-// Cookie
-var enCookie = function() {
-    var cookie = document.cookie
-    if (cookie) {
-        var cookies = decodeURIComponent(cookie).split(';')
-        var tempObj = {}
-        for (var i of cookies) {
-            var arr = i.split('=')
-            tempObj[arr[0]] = arr[1]
-        }
-        return tempObj
-    }
-}
-var deCookie = function(obj) {
-    var arr = []
-    for (var key in obj) {
-        var tempArr = []
-        tempArr.push(key)
-        tempArr.push(obj[key])
-        arr.push( tempArr.join('=') )
-    }
-    return encodeURIComponent(arr.join(';'))
-}
+Ajax('user/load', null, function(data){
+User = JSON.parse(data)
 
 // Top
 Mer.post = function() {
-    ajax('user/save', User)
+    Ajax('user/save', User)
 }
 $('#search').on('click', 'logo',function() {
     $('#search').hide()
@@ -434,3 +431,4 @@ $('#book').on('click', 'book', function() {
 })
 
 __init__(User)
+})
