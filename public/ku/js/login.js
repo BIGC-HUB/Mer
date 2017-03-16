@@ -1,7 +1,7 @@
 var __initLogin = function() {
     var html = '<div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon-star"></div>' +
         '<div class="text">' +
-            '请输入名字' +
+            '…' +
         '</div>' +
         '<div id="login-denglu">' +
             '<inputbox>' +
@@ -140,9 +140,16 @@ $('#login-btn-denglu').on('click', function() {
         Ajax('user/login', null, function(data){
             if (typeof data === "string") {
                 $('#login .text').text(data)
-                if (data === '登录成功！') { location.reload() }
-            } else {
-
+                if (data === '登录成功！') {
+                    Ajax('user/load', null, function(data){
+                        var data = JSON.parse(data)
+                        User = data.user
+                        __init__(User)
+                        if (!data.def) {
+                            $('#login button,#login-denglu').hide()
+                        }
+                    })
+                }
             }
         })
     }

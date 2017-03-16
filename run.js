@@ -60,16 +60,25 @@ app.post('/user/load', function (req, res) {
             console.log('自动登录！')
             var url = 'user/' + phone + '.json'
             var data = fs.readFileSync(url, 'utf8')
-            res.send(data)
+            res.send({
+                "user": JSON.parse(data),
+                "def": false
+            })
         } else {
-            console.log('游客登录！（账号密码不匹配）')
+            console.log('游客登录！账号密码不匹配')
             var data = fs.readFileSync('user/def.json', 'utf8')
-            res.send(data)
+            res.send({
+                "user": JSON.parse(data),
+                "def": true
+            })
         }
     } else {
         console.log('游客登录！')
         var data = fs.readFileSync('user/def.json', 'utf8')
-        res.send(data)
+        res.send({
+            "user": JSON.parse(data),
+            "def": true
+        })
     }
 })
 // 存储
@@ -97,7 +106,6 @@ app.post('/user/login', function (req, res) {
         var key = user.pass(phone)
         if (key === cookie.key){
             res.send('登录成功！')
-            location.reload()
         } else {
             res.send('密码错误！')
         }

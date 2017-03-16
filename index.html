@@ -24,8 +24,12 @@
         <script src="ku/js/edit.js"></script>
         <script>
             Ajax('user/load', null, function(data){
-                User = JSON.parse(data)
+                var data = JSON.parse(data)
+                User = data.user
                 __init__(User)
+                if (!data.def) {
+                    $('#login button,#login-denglu').hide()
+                }
             })
         </script>
     </body>

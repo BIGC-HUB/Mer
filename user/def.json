@@ -260,37 +260,17 @@
             }
         },
         "编程": {
-            "鼠标事件": {
-                "url": "www.cnblogs.com/rubylouvre/archive/2009/08/24/1552862.html",
-                "color": ""
+            "小甲鱼": {
+                "color": "",
+                "url": "www.zybuluo.com/iwangyang/note/460072"
             },
-            "Yarn": {
-                "url": "zhuanlan.zhihu.com/p/25320734",
-                "color": ""
-            },
-            "萧瓜笔记": {
-                "url": "www.zybuluo.com/iwangyang/note/519509",
-                "color": ""
-            },
-            "小甲鱼Python": {
-                "color": "rgb(57,152,214)",
+            "萧瓜": {
+                "color": "#08c",
                 "url": "www.zybuluo.com/iwangyang/note/519509"
             },
-            "Js美化": {
-                "url": "jsbeautifier.org",
-                "color": ""
-            },
-            "Pure": {
-                "url": "purecss.io",
-                "color": ""
-            },
-            "虚拟主机": {
-                "url": "myhostadmin.net",
-                "color": ""
-            },
-            "哔哩招聘": {
-                "url": "www.bilibili.com/html/join-list.html#32",
-                "color": ""
+            "美化代码": {
+                "color": "",
+                "url": "jsbeautifier.org"
             }
         },
         "新闻": {
