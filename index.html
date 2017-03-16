@@ -22,5 +22,11 @@
         <script src="ku/js/mer.js"></script>
         <script src="ku/js/login.js"></script>
         <script src="ku/js/edit.js"></script>
+        <script>
+            Ajax('user/load', null, function(data){
+                User = JSON.parse(data)
+                __init__(User)
+            })
+        </script>
     </body>
 </html>

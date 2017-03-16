@@ -29,7 +29,7 @@ var user = {
     name: function (cookie) {
         // Phone Number
         var name = cookie.name
-        if (!isNaN(name) && name.length === 13) {
+        if (!isNaN(name) && name.length === 11) {
             return name
         } else {
             var json = fs.readFileSync('user/name.json', 'utf8')
@@ -50,29 +50,61 @@ app.get('/', function(req, res) {
     var data = fs.readFileSync('index.html', 'utf8')
     res.send(data)
 })
-
+// 加载
 app.post('/user/load', function (req, res) {
-    var cookie = user.cookie(req)
-    var phone = user.name(cookie)
-    var key = user.pass(phone)
-    if (key === cookie.key){
-        var url = 'user/' + phone + '.json'
-        var data = fs.readFileSync(url, 'utf8')
-        res.send(data)
+    if (req.headers.cookie) {
+        var cookie = user.cookie(req)
+        var phone = user.name(cookie)
+        var key = user.pass(phone)
+        if (key === cookie.key){
+            console.log('自动登录！')
+            var url = 'user/' + phone + '.json'
+            var data = fs.readFileSync(url, 'utf8')
+            res.send(data)
+        } else {
+            console.log('游客登录！（账号密码不匹配）')
+            var data = fs.readFileSync('user/def.json', 'utf8')
+            res.send(data)
+        }
     } else {
-        console.log('密码错误！', key, cookie.key)
+        console.log('游客登录！')
         var data = fs.readFileSync('user/def.json', 'utf8')
         res.send(data)
     }
-
 })
-
+// 存储
 app.post('/user/save', function (req, res) {
-    var data = JSON.stringify(req.body)
-    var err = fs.writeFileSync('user/18966702120.json', data, 'utf8')
-    res.send('写入成功！')
+    var cookie = user.cookie(req)
+    var phone = user.name(cookie)
+    if (phone) {
+        var key = user.pass(phone)
+        if (key === cookie.key){
+            var data = JSON.stringify(req.body)
+            var err = fs.writeFileSync('user/' + phone +'.json', data, 'utf8')
+            res.send('写入成功！')
+        } else {
+            res.send('请登录')
+        }
+    } else {
+        res.send('请登录')
+    }
 })
-
+// 登录
+app.post('/user/login', function (req, res) {
+    var cookie = user.cookie(req)
+    var phone = user.name(cookie)
+    if (phone) {
+        var key = user.pass(phone)
+        if (key === cookie.key){
+            res.send('登录成功！')
+            location.reload()
+        } else {
+            res.send('密码错误！')
+        }
+    } else {
+        res.send('名字错误！')
+    }
+})
 
 // listen 函数监听端口
 // nodemon --ignore public/ --ignore user/ run.js

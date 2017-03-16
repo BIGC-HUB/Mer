@@ -56,20 +56,7 @@ $('#login input').on('keydown', function() {
         event.preventDefault()
     }
 })
-
-$('#login-denglu input').on('blur', function() {
-    var arr = [$('#login-name'), $('#login-key')]
-    var ok = true
-    for (var i of arr) {
-        if (!i.val()) {
-            ok = false
-            break
-        }
-    }
-    if (ok) {
-        $('#login .text').text('点击登录')
-    }
-})
+// 登录
 $('#login-name').on('focus', function() {
     $('#login .text').text('名字 | 手机号')
 })
@@ -91,7 +78,6 @@ $('#login-name ~ i').on('click', function() {
     $('#login-name').focus()
 })
 $('#login-key').on('focus', function() {
-    event.target.parentElement.classList.add('theme')
     $('#login .text').text('请输入密码')
 })
 $('#login-key ~ i').on('click', function() {
@@ -105,7 +91,7 @@ $('#login-key ~ i').on('click', function() {
         i.addClass('icon-zhengyan')
     }
 })
-
+// 注册
 $('#login-phone').on('blur', function() {
     var str = ''
     for (var i of event.target.value) {
@@ -144,14 +130,46 @@ $('#login-sms').on('blur', function() {
     }
     event.target.value = str
 })
-
+// 按钮
 $('#login-btn-denglu').on('click', function() {
-    $('#login-zhuce').hide()
-    $('#login-denglu').animate({ height:'show' })
-    $('#login .text').text('请输入名字')
+    var send = function( ) {
+        var name = $('#login-name').val()
+        var key  = $('#login-key').val()
+        setCookie('name', name, 7)
+        setCookie('key', key, 7)
+        Ajax('user/login', null, function(data){
+            if (typeof data === "string") {
+                $('#login .text').text(data)
+                if (data === '登录成功！') { location.reload() }
+            } else {
+
+            }
+        })
+    }
+    // 验证
+    if ($('#login-denglu').css('display') === 'none') {
+        $('#login-zhuce').hide()
+        $('#login-denglu').animate({ height:'show' })
+        $('#login .text').text('请输入名字')
+    } else {
+        if ($('#login-name').val() === '') {
+            $('#login-name').focus()
+        } else {
+            if ($('#login-key').val() === '') {
+                $('#login-key').focus()
+            } else {
+                send()
+            }
+        }
+    }
 })
 $('#login-btn-zhuce').on('click', function() {
-    $('#login-denglu').hide()
-    $('#login .text').text('请输入手机')
-    $('#login-zhuce').animate({ height:'show' })
+    if ($('#login-zhuce').css('display') === 'none') {
+        $('#login-denglu').hide()
+        $('#login-zhuce').animate({ height:'show' })
+        $('#login .text').text('请输入手机')
+    } else {
+        console.log('注册')
+    }
+
 })
