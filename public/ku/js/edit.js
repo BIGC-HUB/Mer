@@ -20,7 +20,7 @@ var __initEdit = function() {
     $('#edit').html(html)
 }()
 
-// Edit
+// 增删改查
 Mer.edit = {
     show: function(html) {
         Mer.edit.at = event.target
@@ -61,150 +61,6 @@ Mer.edit = {
     },
     at: {}
 }
-Mer.rest = {
-    time: 0,
-    short: true,
-    tag: function(e, arr) {
-        for (var i of arr) {
-            if (i === e.localName) {
-                return true
-            }
-        }
-        return false
-    },
-    cls: function(e, arr) {
-        for (var i of arr) {
-            if (e.classList.contains(i)) {
-                return true
-            }
-        }
-        return false
-    },
-    html: function(e) {
-        var html = ''
-        if (Mer.rest.tag(e, ['book', 'engine'])) {
-            html =
-                '<li data-btn="new"   class="edit"><span>添加</span></li>' +
-                '<li data-btn="amend" class="edit"><span>编辑</span></li>' +
-                '<li data-btn="move"  class="edit"><span>移动</span></li>'
-        } else if (Mer.rest.tag(e, ['tag'])) {
-            html =
-                '<li data-btn="new"   class="edit"><span>添加</span></li>' +
-                '<li data-btn="amend"   class="edit"><span>重命名</span></li>'
-        } else if (Mer.rest.cls(e, ['show', 'kind'])) {
-            html =
-                '<li data-btn="new"   class="edit"><span>添加</span></li>'
-        } else if (Mer.rest.tag(e, ['textarea','input'])) {
-            html =
-                '<li data-btn="copy"  class="edit"><span>复制</span></li>' +
-                '<li data-btn="select" class="edit"><span>全选</span></li>'
-        }
-        return html
-    }
-}
-
-$('body').on('touchstart', function() {
-    Mer.rest.time = parseInt(event.timeStamp)
-})
-$('body').on('touchend', function() {
-    var time = parseInt(event.timeStamp) - Mer.rest.time
-    if (time < 300) {
-        Mer.rest.short = true
-    } else {
-        Mer.rest.short = false
-    }
-})
-
-$('#edit-cont textarea, #edit-cont input').on('blur', function() {
-    var str = ''
-    for (var i of event.target.value) {
-        if (!/ /.test(i)) {
-            str += i
-        }
-    }
-    event.target.value = str
-})
-
-$('#edit-full').on('click', function() {
-    $(event.target).hide()
-})
-$('#edit-cont textarea').on('input', function() {
-    var e = event.target
-    e.value = e.value.replace(/\n| /g,'')
-    if (e.value) {
-        e.rows = parseInt(e.scrollHeight / e.dataset.dif)
-    } else {
-        e.rows = 1
-    }
-})
-$('#edit-cont textarea').on('focus', function() {
-    var e = event.target
-    var dif = e.scrollHeight
-    e.value += '\n'
-    dif = e.scrollHeight - dif
-    var arr = e.value.split('')
-    arr.splice(-1, 1)
-    e.value = arr.join('')
-    e.rows = parseInt(e.scrollHeight / dif)
-    e.dataset.dif = dif
-    e.select()
-})
-$('#edit-cont textarea').on('blur', function() {
-    event.target.rows = 1
-    var val = event.target.value
-    if (val.slice(0,4) === 'http') {
-        event.target.value = val.slice(7)
-        if (val.slice(4,5) === 's') {
-            event.target.value = val.slice(8)
-        }
-    }
-})
-$('#edit-cont-color').on('blur', function() {
-    event.target.style.color = event.target.value
-})
-$('#edit-cont-no').on('click', function() {
-    $('#edit-cont').hide()
-    $('#' + $('#edit-cont-no')[0].dataset.tag).show()
-})
-$('#edit-cont-move').on('click', 'tag', function() {
-    Mer.send.tag.remove('edit-hover')
-    Mer.send.tag = event.target.classList
-    Mer.send.tag.add('edit-hover')
-    $('#edit-cont .text').text(event.target.innerText + '·分组')
-    $('#edit-cont-yes')[0].dataset.move = event.target.innerText
-})
-
-// PC右键菜单 + 移动端长按
-$('body').on('click', function() {
-    document.oncontextmenu = function() {
-        var e = event.target
-        if (Mer.rest.tag(e, ['textarea', 'input']) && !Mer.pc) {
-            return true
-        } else {
-            Mer.edit.show(Mer.rest.html(e))
-            return false
-        }
-    }
-    var e = event.target
-    if (!Mer.rest.short) {
-        if (!Mer.rest.tag(e, ['textarea', 'input'])) {
-            Mer.edit.show(Mer.rest.html(e))
-        }
-    }
-})
-
-// 复制全选
-Mer.edit.copy = function(e) {
-    Mer.edit.hide(e)
-    e.select()
-    document.execCommand("Copy")
-}
-Mer.edit.select = function(e) {
-    Mer.edit.hide(e)
-    e.select()
-}
-
-// 增删改查
 Mer.edit.new = function(e) {
     Mer.edit.hide(e)
     $('#engine,#book').hide()
@@ -301,6 +157,17 @@ Mer.edit.move = function(e) {
     $('#edit-cont-no')[0].dataset.tag = tag
     $('#edit-cont-yes')[0].dataset.btn = 'move'
     $('#edit-cont-yes')[0].dataset.move = ''
+}
+
+// 复制全选
+Mer.edit.copy = function(e) {
+    Mer.edit.hide(e)
+    e.select()
+    document.execCommand("Copy")
+}
+Mer.edit.select = function(e) {
+    Mer.edit.hide(e)
+    e.select()
 }
 
 // 增删改查 - 提交
@@ -499,8 +366,140 @@ Mer.send.move = function(e) {
     }
 }
 
+// 长按
+Mer.rest = {
+    time: 0,
+    short: true,
+    tag: function(e, arr) {
+        for (var i of arr) {
+            if (i === e.localName) {
+                return true
+            }
+        }
+        return false
+    },
+    cls: function(e, arr) {
+        for (var i of arr) {
+            if (e.classList.contains(i)) {
+                return true
+            }
+        }
+        return false
+    },
+    html: function(e) {
+        var html = ''
+        if (Mer.rest.tag(e, ['book', 'engine'])) {
+            html =
+                '<li data-btn="new"   class="edit"><span>添加</span></li>' +
+                '<li data-btn="amend" class="edit"><span>编辑</span></li>' +
+                '<li data-btn="move"  class="edit"><span>移动</span></li>'
+        } else if (Mer.rest.tag(e, ['tag'])) {
+            html =
+                '<li data-btn="new"   class="edit"><span>添加</span></li>' +
+                '<li data-btn="amend"   class="edit"><span>重命名</span></li>'
+        } else if (Mer.rest.cls(e, ['show', 'kind'])) {
+            html =
+                '<li data-btn="new"   class="edit"><span>添加</span></li>'
+        } else if (Mer.rest.tag(e, ['textarea','input'])) {
+            html =
+                '<li data-btn="copy"  class="edit"><span>复制</span></li>' +
+                '<li data-btn="select" class="edit"><span>全选</span></li>'
+        }
+        return html
+    }
+}
+$('body').on('touchstart', function() {
+    Mer.rest.time = parseInt(event.timeStamp)
+})
+$('body').on('touchend', function() {
+    var time = parseInt(event.timeStamp) - Mer.rest.time
+    if (time < 300) {
+        Mer.rest.short = true
+    } else {
+        Mer.rest.short = false
+    }
+})
+$('#edit-full').on('click', function() {
+    $(event.target).hide()
+})
+
+$('#edit-cont textarea, #edit-cont input').on('blur', function() {
+    var str = ''
+    for (var i of event.target.value) {
+        if (!/ /.test(i)) {
+            str += i
+        }
+    }
+    event.target.value = str
+})
+$('#edit-cont textarea').on('input', function() {
+    var e = event.target
+    e.value = e.value.replace(/\n| /g,'')
+    if (e.value) {
+        e.rows = parseInt(e.scrollHeight / e.dataset.dif)
+    } else {
+        e.rows = 1
+    }
+})
+$('#edit-cont textarea').on('focus', function() {
+    var e = event.target
+    var dif = e.scrollHeight
+    e.value += '\n'
+    dif = e.scrollHeight - dif
+    var arr = e.value.split('')
+    arr.splice(-1, 1)
+    e.value = arr.join('')
+    e.rows = parseInt(e.scrollHeight / dif)
+    e.dataset.dif = dif
+    e.select()
+})
+$('#edit-cont textarea').on('blur', function() {
+    event.target.rows = 1
+    var val = event.target.value
+    if (val.slice(0,4) === 'http') {
+        event.target.value = val.slice(7)
+        if (val.slice(4,5) === 's') {
+            event.target.value = val.slice(8)
+        }
+    }
+})
+$('#edit-cont-color').on('blur', function() {
+    event.target.style.color = event.target.value
+})
+$('#edit-cont-move').on('click', 'tag', function() {
+    Mer.send.tag.remove('edit-hover')
+    Mer.send.tag = event.target.classList
+    Mer.send.tag.add('edit-hover')
+    $('#edit-cont .text').text(event.target.innerText + '·分组')
+    $('#edit-cont-yes')[0].dataset.move = event.target.innerText
+})
+
+// PC右键菜单 + 移动端长按
+$('body').on('click', function() {
+    document.oncontextmenu = function() {
+        var e = event.target
+        if (Mer.rest.tag(e, ['textarea', 'input']) && !Mer.pc) {
+            return true
+        } else {
+            Mer.edit.show(Mer.rest.html(e))
+            return false
+        }
+    }
+    var e = event.target
+    if (!Mer.rest.short) {
+        if (!Mer.rest.tag(e, ['textarea', 'input'])) {
+            Mer.edit.show(Mer.rest.html(e))
+        }
+    }
+})
+
+// 确定 取消 删除
 $('#edit-cont-yes').on('click', function() {
     Mer.send[event.target.dataset.btn](Mer.edit.at)
+})
+$('#edit-cont-no').on('click', function() {
+    $('#edit-cont').hide()
+    $('#' + $('#edit-cont-no')[0].dataset.tag).show()
 })
 $('#edit-cont-del').on('click', function() {
     Mer.send.del(Mer.edit.at)

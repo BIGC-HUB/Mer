@@ -24,7 +24,7 @@ var Ajax = function(url, data, func, sync) {
         sync = true                    // true  异步
     }
     if (func === undefined) {
-        callback = function(err) {
+        func = function(err) {
             console.log(err)
         }
     }
@@ -66,7 +66,7 @@ var getCookie = function (name) {
     }
 }
 
-// initHtml
+// Html
 var __initTop = function() {
     var html =
         '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
@@ -140,8 +140,6 @@ var User = {}
 
 // data.json = engines | books | note
 
-Ajax('user/load', null, function(data){
-User = JSON.parse(data)
 
 // Top
 Mer.post = function() {
@@ -428,7 +426,4 @@ $('#book').on('click', 'book', function() {
         var i = User.books[e.cls][e.key]
         window.open('//' + i.url)
     }
-})
-
-__init__(User)
 })

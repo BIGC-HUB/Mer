@@ -51,16 +51,6 @@ app.get('/', function(req, res) {
     res.send(data)
 })
 
-app.post('/user/def', function(req, res) {
-    var data = fs.readFileSync('user/def.json', 'utf8')
-    res.send(data)
-})
-
-app.post('/user/save', function (req, res) {
-    var data = JSON.stringify(req.body)
-    var err = fs.writeFileSync('user/18966702120.json', data, 'utf8')
-    res.send('写入成功！')
-})
 app.post('/user/load', function (req, res) {
     var cookie = user.cookie(req)
     var phone = user.name(cookie)
@@ -77,7 +67,15 @@ app.post('/user/load', function (req, res) {
 
 })
 
+app.post('/user/save', function (req, res) {
+    var data = JSON.stringify(req.body)
+    var err = fs.writeFileSync('user/18966702120.json', data, 'utf8')
+    res.send('写入成功！')
+})
+
+
 // listen 函数监听端口
+// nodemon --ignore public/ --ignore user/ run.js
 var server = app.listen(80, function () {
   var host = server.address().address
   var port = server.address().port
