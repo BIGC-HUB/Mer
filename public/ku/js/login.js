@@ -131,23 +131,24 @@ $('#login-sms').on('blur', function() {
     event.target.value = str
 })
 // 按钮
-Mer.login = function() {
-    var name = $('#login-name').val()
-    var key  = $('#login-key').val()
-    setCookie('name', name, 7)
-    setCookie('key', key, 7)
-    Ajax('user/login', null, function(data){
-        var data = JSON.parse(data)
-        Mer.login = data.login
-        $('#login .text').text(data.text)
-        if (Mer.login) {
-            User = data.user
-            __init__(User)
-            $('#login button, #login-denglu').hide()
-        }
-    })
-}
 $('#login-btn-denglu').on('click', function() {
+    var send = function() {
+        var name = $('#login-name').val()
+        var key  = $('#login-key').val()
+        setCookie('name', name, 7)
+        setCookie('key', key, 7)
+        Ajax('user/login', null, function(data){
+            var data = JSON.parse(data)
+            Mer.login = data.login
+            $('#login .text').text(data.text)
+            if (Mer.login) {
+                User = data.user
+                __init__(User)
+                $('#login button, #login-denglu').hide()
+            }
+        })
+    }
+    // 验证
     if ($('#login-denglu').css('display') === 'none') {
         $('#login-zhuce').hide()
         $('#login-denglu').animate({ height:'show' })
@@ -159,7 +160,7 @@ $('#login-btn-denglu').on('click', function() {
             if ($('#login-key').val() === '') {
                 $('#login-key').focus()
             } else {
-                Mer.login()
+                send()
             }
         }
     }

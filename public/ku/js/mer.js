@@ -155,7 +155,9 @@ Mer.load = function() {
     })
 }
 Mer.save = function() {
-    Ajax('user/save', User)
+    if (Mer.login) {
+        Ajax('user/save', User)
+    }
 }
 $('#search').on('click', 'logo',function() {
     $('#search').hide()
@@ -350,8 +352,13 @@ Mer.Mini = function(engines, def) {
     $('style').append(styleHtml)
 }
 Mer.Note = function(note) {
-    $('#more-ul').html('<textarea id="more-note"></textarea>')
-    $('#more-note')[0].value = note
+    if (Mer.login) {
+        $('#more-ul').html('<textarea id="more-note"></textarea>')
+        $('#more-note')[0].value = note
+    } else {
+        $('#more-ul').html('')
+    }
+
 }
 $('#more-ul').on('focus', '#more-note',function() {
     $('.fa-mini').fadeOut(618)
