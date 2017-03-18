@@ -143,14 +143,14 @@ var User = {}
 
 // Top
 Mer.load = function() {
-    Ajax('user/login', null, function(data){
+    Ajax('user/load', null, function(data){
         var data = JSON.parse(data)
         Mer.login = data.login
+        User = data.user
+        __init__(User)
         $('#login .text').text(data.text)
         if (Mer.login) {
-            User = data.user
-            __init__(User)
-            $('#login button, #login-denglu').hide()
+            $('#login button,#login-denglu').hide()
         }
     })
 }
