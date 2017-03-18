@@ -142,7 +142,19 @@ var User = {}
 
 
 // Top
-Mer.post = function() {
+Mer.load = function() {
+    Ajax('user/login', null, function(data){
+        var data = JSON.parse(data)
+        Mer.login = data.login
+        $('#login .text').text(data.text)
+        if (Mer.login) {
+            User = data.user
+            __init__(User)
+            $('#login button, #login-denglu').hide()
+        }
+    })
+}
+Mer.save = function() {
     Ajax('user/save', User)
 }
 $('#search').on('click', 'logo',function() {
@@ -346,7 +358,7 @@ $('#more-ul').on('focus', '#more-note',function() {
 })
 $('#more-ul').on('blur', '#more-note',function() {
     User.note = event.target.value
-    Mer.post()
+    Mer.save()
 })
 $('#more-button').on('click', function() {
     $('#more-ul').removeClass('more-border')

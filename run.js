@@ -52,51 +52,52 @@ app.get('/', function(req, res) {
 })
 // 加载
 app.post('/user/load', function (req, res) {
-    if (req.headers.cookie) {
-        var cookie = user.cookie(req)
-        var phone = user.name(cookie)
-        var key = user.pass(phone)
-        if (key === cookie.key){ // 登录成功
-            var url = 'user/' + phone + '.json'
-            var data = fs.readFileSync(url, 'utf8')
-            res.send({
-                "user": JSON.parse(data),
-                "text": "欢迎回来 " + cookie.name + " ！",
-                "logged": true
-            })
-        } else { // 账户密码不匹配
-            var data = fs.readFileSync('user/def.json', 'utf8')
-            res.send({
-                "user": JSON.parse(data),
-                "text": "请输入名字",
-                "logged": false
-            })
-        }
-    } else { // 未登录
+    var notLogin = function() {
         var data = fs.readFileSync('user/def.json', 'utf8')
         res.send({
             "user": JSON.parse(data),
             "text": "请输入名字",
-            "logged": false
+            "login": false
         })
+    }
+    if (req.headers.cookie) {
+        var cookie = user.cookie(req)
+        var phone = user.name(cookie)
+        if (phone) {
+            var key = user.pass(phone)
+            if (key === cookie.key){ // 登录成功
+                var url = 'user/' + phone + '.json'
+                var data = fs.readFileSync(url, 'utf8')
+                res.send({
+                    "user": JSON.parse(data),
+                    "text": "欢迎回来 " + cookie.name + " ！",
+                    "login": true
+                })
+            } else { // 账户密码不匹配
+                notLogin()
+            }
+        } else {
+            notLogin()
+        }
+    } else { // 未登录
+        notLogin()
     }
 })
 // 存储
 app.post('/user/save', function (req, res) {
-    var cookie = user.cookie(req)
-    var phone = user.name(cookie)
-    if (phone) {
-        var key = user.pass(phone)
-        if (key === cookie.key){
-            var data = JSON.stringify(req.body)
-            var err = fs.writeFileSync('user/' + phone +'.json', data, 'utf8')
-            res.send('写入成功！')
-        } else {
-            res.send('请登录')
+    if (req.headers.cookie) {
+        var cookie = user.cookie(req)
+        var phone = user.name(cookie)
+        if (phone) {
+            var key = user.pass(phone)
+            if (key === cookie.key){
+                var data = JSON.stringify(req.body)
+                var err = fs.writeFileSync('user/' + phone +'.json', data, 'utf8')
+                res.send('写入成功！')
+            }
         }
-    } else {
-        res.send('请登录')
     }
+
 })
 // 登录
 app.post('/user/login', function (req, res) {
@@ -110,18 +111,18 @@ app.post('/user/login', function (req, res) {
             res.send({
                 "user": JSON.parse(data),
                 "text": '欢迎回来 ' + cookie.name + ' ！',
-                "logged": true
+                "login": true
             })
         } else {
             res.send({
                 "text": '密码错误！',
-                "logged": false
+                "login": false
             })
         }
     } else {
         res.send({
             "text": '名字错误！',
-            "logged": false
+            "login": false
         })
     }
 })

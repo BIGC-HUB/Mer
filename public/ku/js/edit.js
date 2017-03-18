@@ -481,14 +481,18 @@ $('body').on('click', function() {
         if (Mer.rest.tag(e, ['textarea', 'input']) && !Mer.pc) {
             return true
         } else {
-            Mer.edit.show(Mer.rest.html(e))
+            if (Mer.login) {
+                Mer.edit.show(Mer.rest.html(e))
+            }
             return false
         }
     }
     var e = event.target
     if (!Mer.rest.short) {
         if (!Mer.rest.tag(e, ['textarea', 'input'])) {
-            Mer.edit.show(Mer.rest.html(e))
+            if (Mer.login) {
+                Mer.edit.show(Mer.rest.html(e))
+            }
         }
     }
 })

@@ -137,15 +137,7 @@ $('#login-btn-denglu').on('click', function() {
         var key  = $('#login-key').val()
         setCookie('name', name, 7)
         setCookie('key', key, 7)
-        Ajax('user/login', null, function(data){
-            var data = JSON.parse(data)
-            $('#login .text').text(data.text)
-            if (data.logged) {
-                User = data.user
-                __init__(User)
-                $('#login button, #login-denglu').hide()
-            }
-        })
+        Mer.load()
     }
     // 验证
     if ($('#login-denglu').css('display') === 'none') {
