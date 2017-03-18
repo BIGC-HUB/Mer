@@ -148,9 +148,10 @@ Mer.load = function() {
         Mer.login = data.login
         User = data.user
         __init__(User)
+        $('body').click()
         $('#login .text').text(data.text)
         if (Mer.login) {
-            $('#login button,#login-denglu').hide()
+            $('#login-btn-zhuce,#login-btn-denglu,#login-denglu').hide()
         }
     })
 }

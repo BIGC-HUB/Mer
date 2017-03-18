@@ -27,33 +27,33 @@ Mer.edit = {
         var e = event.target
         if (html) {
             $('#edit-ul').html(html)
-        } else {
-            return false
-        }
-        var x = event.clientX - 80
-        var y = event.clientY
-        if (window.document.body.offsetWidth - x < 160) {
-            x = window.document.body.offsetWidth - 165
-        } else if (x < 0) {
-            x = 5
-        }
-        $(e).addClass('edit-hover')
-        $('#edit-ul, #edit-full').show()
-        $('#edit-ul').css({
-            top: y + "px",
-            left: x + "px"
-        })
-        setTimeout(function() {
-            $('body').one('click', function() {
-                var edit = event.target.classList.contains('edit')
-                var key = event.target.dataset.btn
-                if (edit) {
-                    Mer.edit[key](e)
-                } else {
-                    Mer.edit.hide(e)
-                }
+            var x = event.clientX - 80
+            var y = event.clientY
+            if (window.document.body.offsetWidth - x < 160) {
+                x = window.document.body.offsetWidth - 165
+            } else if (x < 0) {
+                x = 5
+            }
+            $(e).addClass('edit-hover')
+            $('#edit-ul, #edit-full').show()
+            $('#edit-ul').css({
+                top: y + "px",
+                left: x + "px"
             })
-        }, 100)
+            setTimeout(function() {
+                $('body').one('click', function() {
+                    var edit = event.target.classList.contains('edit')
+                    var key = event.target.dataset.btn
+                    if (edit) {
+                        Mer.edit[key](e)
+                    } else {
+                        Mer.edit.hide(e)
+                    }
+                })
+            }, 100)
+        } else {
+            $('#top .home').click()
+        }
     },
     hide: function(e) {
         $(e).removeClass('edit-hover')

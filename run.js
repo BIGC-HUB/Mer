@@ -70,7 +70,7 @@ app.post('/user/load', function (req, res) {
                 var data = fs.readFileSync(url, 'utf8')
                 res.send({
                     "user": JSON.parse(data),
-                    "text": "欢迎回来 " + cookie.name + " ！",
+                    "text": "欢迎回来",
                     "login": true
                 })
             } else { // 账户密码不匹配

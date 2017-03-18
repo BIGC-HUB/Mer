@@ -1,7 +1,6 @@
 /* 全局 */
 body {
     margin: 0 auto;
-    padding-bottom: 0.5em;
     text-align: center;
     user-select:none;
     -webkit-user-select:none;
@@ -142,6 +141,7 @@ logo span {
     font-size: 25px;
     padding: 9px 0;
     margin: 0 0 0 -30px;
+    color: #D6DBDF;
 }
 #search-input:hover {
     border-color: #999;
@@ -463,6 +463,17 @@ inputbox input {
     display: inline-block;
     width: calc(35% - 31px);
     border-left: 1px solid #9DA3A6;
+}
+
+#login-information input {
+    text-align: center;
+    color: #8590A6;
+}
+#login-information i {
+    color: #333;
+}
+#login-information input ~ i {
+    color: #8590A6;
 }
 
 /* 媒体查询 >= 768px */

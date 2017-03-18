@@ -27,6 +27,23 @@ var __initLogin = function() {
                 '<span  id="login-sms-60">60</span>' +
             '</inputbox>' +
         '</div>' +
+        '<div id="login-information">' +
+            '<inputbox>' +
+                '<i class="iconfont icon-login"></i>' +
+                '<input id="login-name" type="text" placeholder="名字" maxlength="16" readonly value="大海">' +
+                '<i class="iconfont icon-go"></i>' +
+            '</inputbox>' +
+            '<inputbox>' +
+                '<i class="iconfont icon-sms"></i>' +
+                '<input id="login-key"  type="password" placeholder="密码" maxlength="30" readonly value="2120">' +
+                '<i class="iconfont icon-go"></i>' +
+            '</inputbox>' +
+            '<inputbox>' +
+                '<i class="iconfont icon-phone"></i>' +
+                '<input id="login-phone" type="tel" maxlength="11" placeholder="手机" readonly value="18966702120">' +
+                '<i class="iconfont icon-go"></i>' +
+            '</inputbox>' +
+        '</div>' +
         '<button class="btn btn-white" id="login-btn-zhuce"  type="button">注册</button>' +
         '<button class="btn btn-blue"  id="login-btn-denglu" type="button">登录</button>'
     $('#login').html(html)
