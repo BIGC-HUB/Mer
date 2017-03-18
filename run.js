@@ -56,28 +56,28 @@ app.post('/user/load', function (req, res) {
         var cookie = user.cookie(req)
         var phone = user.name(cookie)
         var key = user.pass(phone)
-        if (key === cookie.key){
-            console.log('自动登录！')
+        if (key === cookie.key){ // 登录成功
             var url = 'user/' + phone + '.json'
             var data = fs.readFileSync(url, 'utf8')
             res.send({
                 "user": JSON.parse(data),
-                "def": false
+                "text": "欢迎回来 " + cookie.name + " ！",
+                "logged": true
             })
-        } else {
-            console.log('游客登录！账号密码不匹配')
+        } else { // 账户密码不匹配
             var data = fs.readFileSync('user/def.json', 'utf8')
             res.send({
                 "user": JSON.parse(data),
-                "def": true
+                "text": "请输入名字",
+                "logged": false
             })
         }
-    } else {
-        console.log('游客登录！')
+    } else { // 未登录
         var data = fs.readFileSync('user/def.json', 'utf8')
         res.send({
             "user": JSON.parse(data),
-            "def": true
+            "text": "请输入名字",
+            "logged": false
         })
     }
 })
@@ -105,12 +105,24 @@ app.post('/user/login', function (req, res) {
     if (phone) {
         var key = user.pass(phone)
         if (key === cookie.key){
-            res.send('登录成功！')
+            var url = 'user/' + phone + '.json'
+            var data = fs.readFileSync(url, 'utf8')
+            res.send({
+                "user": JSON.parse(data),
+                "text": '欢迎回来 ' + cookie.name + ' ！',
+                "logged": true
+            })
         } else {
-            res.send('密码错误！')
+            res.send({
+                "text": '密码错误！',
+                "logged": false
+            })
         }
     } else {
-        res.send('名字错误！')
+        res.send({
+            "text": '名字错误！',
+            "logged": false
+        })
     }
 })
 

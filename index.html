@@ -25,9 +25,10 @@
         <script>
             Ajax('user/load', null, function(data){
                 var data = JSON.parse(data)
+                $('#login .text').text(data.text)
                 User = data.user
                 __init__(User)
-                if (!data.def) {
+                if (data.logged) {
                     $('#login button,#login-denglu').hide()
                 }
             })

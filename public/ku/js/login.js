@@ -138,18 +138,12 @@ $('#login-btn-denglu').on('click', function() {
         setCookie('name', name, 7)
         setCookie('key', key, 7)
         Ajax('user/login', null, function(data){
-            if (typeof data === "string") {
-                $('#login .text').text(data)
-                if (data === '登录成功！') {
-                    Ajax('user/load', null, function(data){
-                        var data = JSON.parse(data)
-                        User = data.user
-                        __init__(User)
-                        if (!data.def) {
-                            $('#login button,#login-denglu').hide()
-                        }
-                    })
-                }
+            var data = JSON.parse(data)
+            $('#login .text').text(data.text)
+            if (data.logged) {
+                User = data.user
+                __init__(User)
+                $('#login button, #login-denglu').hide()
             }
         })
     }
