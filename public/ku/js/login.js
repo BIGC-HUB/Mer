@@ -62,7 +62,6 @@ Mer.login = {
         $('#login-btn, #login-dengl').animate({ opacity:'show' })
         $('.fa-mini').remove()
         $('#more-ul').html('')
-        $('#top .home').click()
         Mer.dengl = false
     },
     show: function(data) {

@@ -203,15 +203,19 @@ Mer.send.del = function(e) {
             show.style.height = 'auto'
         }
         $('#edit-cont-no').click()
-        Mer.post()
+        Mer.save()
     } else {
         if (Object.keys(User[kind][cls]).length) {
             $('#edit-cont .text').html('提示：类不为空')
         } else {
-            delete User[kind][cls]
-            e.remove()
-            $('#edit-cont-no').click()
-            Mer.post()
+            if (Object.keys(User[kind]).length === 1) {
+                $('#edit-cont .text').html('提示：LivSyrup')
+            } else {
+                delete User[kind][cls]
+                e.remove()
+                $('#edit-cont-no').click()
+                Mer.save()
+            }
         }
     }
 }
@@ -256,7 +260,7 @@ Mer.send.new = function(e) {
                     }
                     $(e).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
-                    Mer.post()
+                    Mer.save()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
@@ -272,7 +276,7 @@ Mer.send.new = function(e) {
                 $(e).append(`<tag data-kind="${tag}" data-cls="${newName}">${newName}</tag>`)
                 Mer.tagClick(tag, newName)
                 $('#edit-cont-no').click()
-                Mer.post()
+                Mer.save()
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
@@ -317,13 +321,13 @@ Mer.send.amend = function(e) {
                     // 没有重复才可以删除
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
-                    Mer.post()
+                    Mer.save()
                 } else if (key == newName) {
                     User[kind][cls][newName] = i
                     // 直接修改
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-cont-no').click()
-                    Mer.post()
+                    Mer.save()
                 } else {
                     $('#edit-cont .text').text('名字不能重复')
                     $('#edit-cont-name').focus()
@@ -337,7 +341,7 @@ Mer.send.amend = function(e) {
                 e.innerText = newName
                 e.dataset.cls = newName
                 $('#edit-cont-no').click()
-                Mer.post()
+                Mer.save()
             } else {
                 $('#edit-cont .text').text('名字不能重复')
                 $('#edit-cont-name').focus()
@@ -362,7 +366,7 @@ Mer.send.move = function(e) {
         delete User[kind][cls][key]
         e.remove()
         $('#edit-cont-no').click()
-        Mer.post()
+        Mer.save()
     }
 }
 
@@ -396,7 +400,7 @@ Mer.rest = {
         } else if (Mer.rest.tag(e, ['tag'])) {
             html =
                 '<li data-btn="new"   class="edit"><span>添加</span></li>' +
-                '<li data-btn="amend"   class="edit"><span>重命名</span></li>'
+                '<li data-btn="amend" class="edit"><span>重命名</span></li>'
         } else if (Mer.rest.cls(e, ['show', 'kind'])) {
             html =
                 '<li data-btn="new"   class="edit"><span>添加</span></li>'
