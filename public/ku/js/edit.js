@@ -1,13 +1,13 @@
 var __initEdit = function() {
     var html =
-    '<div id="edit-full"></div><ul id="edit-ul"></ul>' +
-    '<div id="edit-cont">' +
-        '<div class="tan">' +
-            '<div class="text"></div>' +
-            '<div id="edit-val"></div>' +
-            '<div id="edit-btn"></div>' +
-        '</div>' +
-    '</div>'
+        '<div id="edit-full"></div><ul id="edit-ul"></ul>' +
+        '<div id="edit-cont">' +
+            '<div class="tan">' +
+                '<div class="text"></div>' +
+                '<div id="edit-val"></div>' +
+                '<div id="edit-btn"></div>' +
+            '</div>' +
+        '</div>'
     $('#edit').html(html)
 }()
 
@@ -19,7 +19,9 @@ Mer.edit = {
         i.cls = e.dataset.cls
         i.key = e.dataset.key
         i.tag = e.dataset.kind || e.localName
-        if (e.className === 'show') { i.tag = e.dataset.key }
+        if (e.className === 'show') {
+            i.tag = e.dataset.key
+        }
         i.kind = i.tag + 's'
         // init
         i.label = '引擎'
@@ -35,9 +37,9 @@ Mer.edit = {
         if (i.key) { // show
             if (i.tag === 'book') {
                 valHtml =
-                '<div><span>名　字</span><input class="name" placeholder="…"></div>' +
-                '<div><span>网　址</span><textarea spellcheck="false" class="url" rows="1" placeholder="…"></textarea></div>' +
-                '<div><span>颜　色</span><input class="color" placeholder="…"></div>'
+                    '<div><span>名　字</span><input class="name" placeholder="…"></div>' +
+                    '<div><span>网　址</span><textarea spellcheck="false" class="url" rows="1" placeholder="…"></textarea></div>' +
+                    '<div><span>颜　色</span><input class="color" placeholder="…"></div>'
                 i.label = '书签'
             }
         } else { // kind
@@ -50,7 +52,9 @@ Mer.edit = {
         }
         $('#edit-val').html(valHtml)
         $('#edit-btn').html(btnHtml)
-        $('#edit-cont').animate({ height:'show' })
+        $('#edit-cont').animate({
+            height: 'show'
+        })
         return i
     },
     show: function(html) {
@@ -97,12 +101,15 @@ Mer.edit.new = function(e) {
     $('#edit .text').text('添加·' + e.label)
     $('#edit-btn .yes')[0].dataset.btn = 'new'
 }
-Mer.edit.amend =  function(e) {
+Mer.edit.amend = function(e) {
     e = Mer.edit.init(e, true)
     var text = '编辑·'
     if (e.key) { // show
         var i = User[e.kind][e.cls][e.key]
         if (e.tag === 'engine') {
+            if (e.key === User.def.logo.key && e.cls === User.def.logo.cls) {
+                $('#edit-btn .del').hide()
+            }
             $('#edit-val .wap').val(i.wap)
             $('#edit-val .icon').val(i.icon)
         }
@@ -122,7 +129,7 @@ Mer.edit.move = function(e) {
     $('#edit .text').text('移动·分组')
     var html = ''
     for (var cls in User[e.kind]) {
-        html += '<tag>' + cls +'</tag>'
+        html += '<tag>' + cls + '</tag>'
     }
     $('#edit-val').html(html)
     $('#edit-btn .yes')[0].dataset.btn = 'move'
@@ -191,11 +198,13 @@ Mer.send.new = function(e) {
     var cls = e.dataset.cls
     var tag = e.dataset.kind || e.localName
     var key = e.dataset.key
-    if (e.className === 'show') { tag = e.dataset.key }
+    if (e.className === 'show') {
+        tag = e.dataset.key
+    }
     var kind = tag + 's'
     //
     var newName = $('#edit-val .name').val()
-    var newUrl  = $('#edit-val .url').val()
+    var newUrl = $('#edit-val .url').val()
     // 表单验证
     if (!newName) {
         $('#edit .text').text('名字不能为空')
@@ -257,7 +266,7 @@ Mer.send.amend = function(e) {
     var kind = tag + 's'
     //
     var newName = $('#edit-cont .name').val()
-    var newUrl  = $('#edit-val .url').val()
+    var newUrl = $('#edit-val .url').val()
     // 表单验证
     if (!newName) {
         $('#edit .text').text('名字不能为空')
@@ -281,11 +290,14 @@ Mer.send.amend = function(e) {
                 }
                 var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
                 if (bool) {
-                    User[kind][cls][newName] = JSON.parse(JSON.stringify( User[kind][cls][key] ))
+                    User[kind][cls][newName] = JSON.parse(JSON.stringify(User[kind][cls][key]))
                     delete User[kind][cls][key]
                     // 没有重复才可以删除
                     $(e.parentElement).html(Mer.showHtml(tag, cls))
                     $('#edit-btn .no').click()
+                    if (key === User.def.logo.key && cls === User.def.logo.cls) {
+                        User.def.logo.key = newName
+                    }
                     Mer.save()
                 } else if (key == newName) {
                     User[kind][cls][newName] = i
@@ -301,10 +313,11 @@ Mer.send.amend = function(e) {
         } else { // kind
             var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
             if (bool) {
-                User[kind][newName] = JSON.parse(JSON.stringify( User[kind][cls] ))
+                User[kind][newName] = JSON.parse(JSON.stringify(User[kind][cls]))
                 delete User[kind][cls]
                 e.innerText = newName
                 e.dataset.cls = newName
+                e.click()
                 $('#edit-btn .no').click()
                 Mer.save()
             } else {
@@ -327,6 +340,9 @@ Mer.send.move = function(e) {
     } else if (newCls === cls) {
         $('#edit-btn .no').click()
     } else {
+        if (cls === User.def.logo.cls) {
+            User.def.logo.cls = newCls
+        }
         User[kind][newCls][key] = JSON.parse(JSON.stringify(User[kind][cls][key]))
         delete User[kind][cls][key]
         e.remove()
@@ -369,7 +385,7 @@ Mer.rest = {
         } else if (Mer.rest.cls(e, ['show', 'kind'])) {
             html =
                 '<li data-btn="new"   class="edit"><span>添加</span></li>'
-        } else if (Mer.rest.tag(e, ['textarea','input'])) {
+        } else if (Mer.rest.tag(e, ['textarea', 'input'])) {
             html =
                 '<li data-btn="copy"  class="edit"><span>复制</span></li>' +
                 '<li data-btn="select" class="edit"><span>全选</span></li>'
@@ -416,10 +432,10 @@ $('body').on('click', function() {
 })
 
 // 事件委托
-$('#edit-val').on('blur',  '.color', function() {
+$('#edit-val').on('blur', '.color', function() {
     event.target.style.color = event.target.value
 })
-$('#edit-val').on('blur',  'input', function() {
+$('#edit-val').on('blur', 'input', function() {
     var str = ''
     for (var i of event.target.value) {
         if (!/ /.test(i)) {
@@ -428,7 +444,7 @@ $('#edit-val').on('blur',  'input', function() {
     }
     event.target.value = str
 })
-$('#edit-val').on('blur',  'textarea', function() {
+$('#edit-val').on('blur', 'textarea', function() {
     event.target.rows = 1
     var str = ''
     for (var i of event.target.value) {
@@ -436,16 +452,16 @@ $('#edit-val').on('blur',  'textarea', function() {
             str += i
         }
     }
-    if (str.slice(0,4) === 'http') {
+    if (str.slice(0, 4) === 'http') {
         event.target.value = str.slice(7)
-        if (str.slice(4,5) === 's') {
+        if (str.slice(4, 5) === 's') {
             event.target.value = str.slice(8)
         }
     }
 })
 $('#edit-val').on('input', 'textarea', function() {
     var e = event.target
-    e.value = e.value.replace(/\n| /g,'')
+    e.value = e.value.replace(/\n| /g, '')
     if (e.value) {
         e.rows = parseInt(e.scrollHeight / e.dataset.dif)
     } else {
@@ -473,12 +489,14 @@ $('#edit-val').on('click', 'tag', function() {
 })
 
 // 按钮
-$('#edit-btn').on('click', '.yes',function() {
+$('#edit-btn').on('click', '.yes', function() {
     Mer.send[event.target.dataset.btn](Mer.edit.at)
 })
-$('#edit-btn').on('click', '.no' ,function() {
-    $('#edit-cont').animate({ height:'hide' })
+$('#edit-btn').on('click', '.no', function() {
+    $('#edit-cont').animate({
+        height: 'hide'
+    })
 })
-$('#edit-btn').on('click', '.del',function() {
+$('#edit-btn').on('click', '.del', function() {
     Mer.send.del(Mer.edit.at)
 })

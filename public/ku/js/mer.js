@@ -1,10 +1,10 @@
 // 定义 log enSure
 var log = function() {
-        console.log.apply(console, arguments)
-    }
+    console.log.apply(console, arguments)
+}
 var ckXian = function() {
-    var body  = document.querySelector('body')
-    var style ='<style id="xm" media="screen"> * {outline: 1px red dashed!important} </style>'
+    var body = document.querySelector('body')
+    var style = '<style id="xm" media="screen"> * {outline: 1px red dashed!important} </style>'
     var i = false
     body.addEventListener('keydown', function(event) {
         if (event.keyCode === 77 && event.ctrlKey) {
@@ -20,32 +20,32 @@ var ckXian = function() {
     })
 }()
 var Ajax = function(url, data, func, sync) {
-    if (sync === undefined) {          // false 同步
-        sync = true                    // true  异步
+    if (sync === undefined) { // false 同步
+        sync = true // true  异步
     }
     if (func === undefined) {
         func = function(err) {
             console.log(err)
         }
     }
-    var r = new XMLHttpRequest( )      // 创建 AJAX 对象
-    r.open('POST', url, sync)          // 请求方法 网址 同步
+    var r = new XMLHttpRequest() // 创建 AJAX 对象
+    r.open('POST', url, sync) // 请求方法 网址 同步
     r.setRequestHeader('Content-Type', 'application/json')
     r.onreadystatechange = function() {
-        if (r.readyState === 4) {      // 完成
-            func(r.response)       // 注册 响应函数 结果
+        if (r.readyState === 4) { // 完成
+            func(r.response) // 注册 响应函数 结果
         }
     }
-    if (data) {                        // POST
+    if (data) { // POST
         data = JSON.stringify(data)
         r.send(data)
-    } else {                           // GET
+    } else { // GET
         r.send()
-    }                                  // 发送 请求
+    } // 发送 请求
 }
 
 // Cokie
-var setCookie = function (name, value, days) {
+var setCookie = function(name, value, days) {
     var date = new Date()
     var str = ''
     if (days) {
@@ -56,11 +56,11 @@ var setCookie = function (name, value, days) {
     }
     document.cookie = name + "=" + encodeURIComponent(value) + str
 }
-var getCookie = function (name) {
+var getCookie = function(name) {
     var arr = document.cookie.split('; ')
     for (var i of arr) {
         var e = i.split('=')
-        if(e[0] === name) {
+        if (e[0] === name) {
             return e[1]
         }
     }
@@ -77,20 +77,20 @@ var __initTop = function() {
 var __initMain = function() {
     var html =
         '<logo>' +
-            '<i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i>' +
+        '<i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i>' +
         '</logo>' +
         '<div class="search">' +
-            '<input id="search-input" type="text" maxlength="70">' +
-            '<a><i class="fa-1x iconfont icon-xclear"></i></a>' +
-            '<button id="search-button">' +
-                '<i class="fa-lg iconfont icon-search" aria-hidden="true"></i>' +
-            '</button>' +
+        '<input id="search-input" type="text" maxlength="70">' +
+        '<a><i class="fa-1x iconfont icon-xclear"></i></a>' +
+        '<button id="search-button">' +
+        '<i class="fa-lg iconfont icon-search" aria-hidden="true"></i>' +
+        '</button>' +
         '</div>' +
         '<div class="more"><ul id="more-ul"></ul><div id="more-i">' +
-                '<button id="more-button">' +
-                    '<i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>' +
-                '</button>' +
-            '</div>' +
+        '<button id="more-button">' +
+        '<i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>' +
+        '</button>' +
+        '</div>' +
         '</div>'
     $('#search').html(html)
 }()
@@ -142,7 +142,7 @@ var User = {}
 
 // Top
 Mer.load = function() {
-    Ajax('user/load', null, function(data){
+    Ajax('user/load', null, function(data) {
         var data = JSON.parse(data)
         User = data.user
         Mer.dengl = data.login
@@ -159,20 +159,24 @@ Mer.save = function() {
         Ajax('user/save', User)
     }
 }
-$('#search').on('click', 'logo',function() {
+$('#search').on('click', 'logo', function() {
     $('#search').hide()
     $('#engine').slideDown("slow")
 })
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
         $('#engine,#book,#login,#edit-cont').hide()
-        $('#search').animate({ height:'show' })
+        $('#search').animate({
+            height: 'show'
+        })
     }
 })
 $('#top').on('click', '.book', function() {
     if ($('#book').css('display') === 'none') {
         $('#engine,#search,#login,#edit-cont').hide()
-        $('#book').animate({ height:'show' })
+        $('#book').animate({
+            height: 'show'
+        })
     } else {
         $('#top .home').click()
     }
@@ -180,7 +184,9 @@ $('#top').on('click', '.book', function() {
 $('#top').on('click', '.user', function() {
     if ($('#login').css('display') === 'none') {
         $('#engine,#search,#book,#edit-cont').hide()
-        $('#login').animate({ height:'show' })
+        $('#login').animate({
+            height: 'show'
+        })
     } else {
         $('#top .home').click()
     }
@@ -189,14 +195,14 @@ $('#top').on('click', '.user', function() {
 // 输入 - 智能联想
 Mer.ai = {
     isPC: function() {
-       var userAgent = navigator.userAgent;
-       var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"]
-       for (var i of Agents) {
-           if (userAgent.indexOf(i) > 0) {
-               return false
-           }
-       }
-       return true
+        var userAgent = navigator.userAgent;
+        var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"]
+        for (var i of Agents) {
+            if (userAgent.indexOf(i) > 0) {
+                return false
+            }
+        }
+        return true
     },
     moreHtml: '',
     now: -1,
@@ -213,7 +219,7 @@ Mer.ai = {
                 if (arr.length) {
                     var html = ''
                     for (var i = 0; i < arr.length; i++) {
-                        html += '<li data-id="' + i + '">' + arr[i] +'</li>'
+                        html += '<li data-id="' + i + '">' + arr[i] + '</li>'
                     }
                     Mer.ai.moreHtml = html
                     $('#more-ul').html(Mer.ai.moreHtml)
@@ -274,9 +280,9 @@ $('#search-input').on('keyup', function() {
     if (event.keyCode === 13) {
         $('#search-button').click()
     } else if (event.keyCode === 38) {
-        Mer.ai.UpDn( -1 )
+        Mer.ai.UpDn(-1)
     } else if (event.keyCode === 40) {
-        Mer.ai.UpDn( +1 )
+        Mer.ai.UpDn(+1)
     }
 })
 $('#search-input').on('keydown', function() {
@@ -362,10 +368,10 @@ Mer.Note = function(note) {
         $('#more-ul').html('')
     }
 }
-$('#more-ul').on('focus', '#more-note',function() {
+$('#more-ul').on('focus', '#more-note', function() {
     $('.fa-mini').fadeOut(618)
 })
-$('#more-ul').on('blur', '#more-note',function() {
+$('#more-ul').on('blur', '#more-note', function() {
     User.note = event.target.value
     Mer.save()
 })
@@ -438,7 +444,7 @@ Mer.tagClick = function(tag, def) {
         }
     }
 }
-$('#book').on('click', 'tag' , function() {
+$('#book').on('click', 'tag', function() {
     Mer.tagClick('book')
 })
 $('#book').on('click', 'book', function() {

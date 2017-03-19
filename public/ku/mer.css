@@ -48,7 +48,7 @@ input, button, textarea {
     margin: 0 auto;
     background-color: transparent;
 }
-#login input::-webkit-input-placeholder {
+input::-webkit-input-placeholder {
     line-height: 1.26em;
 }
 
@@ -309,7 +309,7 @@ book:hover {
     height: 100%;
 }
 #edit-cont {
-    z-index: 1;
+    z-index: 0;
     position: fixed;
     top: 0px;
     left: 0px;
