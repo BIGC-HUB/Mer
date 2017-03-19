@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1489433299737'); /* IE9*/
-  src: url('iconfont.eot?t=1489433299737#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1489433299737') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1489433299737') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1489433299737#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1489888200712'); /* IE9*/
+  src: url('iconfont.eot?t=1489888200712#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1489888200712') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1489888200712') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1489888200712#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -32,6 +32,8 @@
 .icon-sms:before { content: "\e64e"; }
 
 .icon-phone:before { content: "\e71a"; }
+
+.icon-right:before { content: "\e72d"; }
 
 .icon-xclear:before { content: "\e732"; }
 
@@ -69,7 +71,7 @@
 
 .icon-new:before { content: "\e603"; }
 
-.icon-amend:before { content: "\e608"; }
+.icon-set:before { content: "\e608"; }
 
 .icon-books:before { content: "\e7e7"; }
 

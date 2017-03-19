@@ -305,7 +305,10 @@ $('#search-input').on('input', function() {
     }
 })
 $('#search-input ~ a').on('click', function() {
-    $('#search-input').val('')
+    event.preventDefault()
+    var input = $('#search-input')[0]
+    input.value = ''
+    input.focus()
     Mer.ai.hide()
 })
 
@@ -358,7 +361,6 @@ Mer.Note = function(note) {
     } else {
         $('#more-ul').html('')
     }
-
 }
 $('#more-ul').on('focus', '#more-note',function() {
     $('.fa-mini').fadeOut(618)

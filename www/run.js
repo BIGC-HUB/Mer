@@ -47,13 +47,13 @@ var user = {
 
 // 读取 文件
 app.get('/', function(req, res) {
-    var data = fs.readFileSync('index.html', 'utf8')
+    var data = fs.readFileSync('www/index.html', 'utf8')
     res.send(data)
 })
 // 加载
 app.post('/user/load', function (req, res) {
     var notLogin = function() {
-        var data = fs.readFileSync('user/def.json', 'utf8')
+        var data = fs.readFileSync('www/def.json', 'utf8')
         res.send({
             "user": JSON.parse(data),
             "text": "请输入名字",
