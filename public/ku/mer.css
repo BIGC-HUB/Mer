@@ -44,6 +44,7 @@ html, button, input, select, textarea{
 
 /* Safari */
 input, button, textarea {
+    -webkit-appearance: none;
     margin: 0 auto;
     background-color: transparent;
 }
@@ -81,6 +82,13 @@ input, button, textarea {
     margin: 1em auto;
     padding: 8px;
     color: #037DD8;
+}
+.tan {
+    position:relative;
+    top: 50%;
+    transform: translateY(-61.8%);
+    width: 95%;
+    margin: 0 auto;
 }
 
 /* top */
@@ -300,6 +308,15 @@ book:hover {
     width: 100%;
     height: 100%;
 }
+#edit-cont {
+    z-index: 1;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+}
 #edit-ul {
     z-index: 2;
     position:absolute;
@@ -330,15 +347,10 @@ book:hover {
     margin: 1em auto;
     padding: 1em .5em 1em 0;
 }
-
-#edit-cont {
-    width: 95%;
-    margin: 0 auto;
-}
-#edit-cont i {
+#edit-val i {
     font-size: 1.333333em;
 }
-#edit-cont span {
+#edit-val span {
     vertical-align: top;
     display: inline-block;
     width: 4em;
@@ -348,8 +360,7 @@ book:hover {
     border: 1px solid transparent;
     font-size: 1.17em;
 }
-#edit-cont input, #edit-cont textarea {
-    -webkit-appearance: none;
+#edit-val input, #edit-val textarea {
     display: inline-block;
     width: calc(100% - 4em - 21px);
     border-radius: 3px;
@@ -357,21 +368,18 @@ book:hover {
     outline-style: none;
     padding: 4px;
 }
-#edit-cont input:focus, #edit-cont textarea:focus {
-    background-color: #F5F6F9;
-}
-#edit-cont textarea {
+#edit-val textarea {
     color: #B1B7CA;
     overflow-y: hidden;
     resize: none;
     height: auto;
 }
-#edit-cont button {
+#edit-btn button {
     outline: 0;
     font-size: 1em;
     margin: 0 1em;
 }
-#edit-cont-url {
+#edit-val .url {
     margin-bottom: 1.5em;
 }
 
@@ -429,7 +437,6 @@ inputbox i {
 }
 inputbox input {
     vertical-align: middle;
-    -webkit-appearance: none;
     border-radius: 0;
     width: calc(100% - 60px);
     padding: 8px 0;
@@ -475,9 +482,12 @@ inputbox input {
 }
 /* 媒体查询 >= 768px */
 @media (min-width: 768px) {
+    .tan {
+        width: 65%;
+    }
     .half {
         display: inline-block;
-        width: 50% !important;
+        width: 50%;
     }
     .fa-logo {
         font-size: 5.5em;
@@ -509,9 +519,6 @@ inputbox input {
     }
     #login inputbox {
         width: calc(30% + 14px);
-    }
-    #edit-cont {
-        width: 65%;
     }
     #edit-cont input, #edit-cont textarea {
         width: calc(100% - 4em - 21px);
