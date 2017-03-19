@@ -71,7 +71,10 @@ app.post('/user/load', function (req, res) {
                 res.send({
                     "user": JSON.parse(data),
                     "text": "欢迎回来",
-                    "login": true
+                    "login": true,
+                    "name": cookie.name,
+                    "phone": phone,
+                    "key": key
                 })
             } else { // 账户密码不匹配
                 notLogin()
@@ -110,8 +113,11 @@ app.post('/user/login', function (req, res) {
             var data = fs.readFileSync(url, 'utf8')
             res.send({
                 "user": JSON.parse(data),
-                "text": '欢迎回来 ' + cookie.name + ' ！',
-                "login": true
+                "text": '欢迎回来',
+                "login": true,
+                "name": cookie.name,
+                "phone": phone,
+                "key": key
             })
         } else {
             res.send({

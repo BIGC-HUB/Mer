@@ -3,7 +3,7 @@ var __initLogin = function() {
         '<div class="text">' +
             '…' +
         '</div>' +
-        '<div id="login-denglu">' +
+        '<div id="login-dengl">' +
             '<inputbox>' +
                 '<i class="iconfont icon-login"></i>' +
                 '<input id="login-name" type="text" placeholder="名字" maxlength="16">' +
@@ -30,30 +30,51 @@ var __initLogin = function() {
         '<div id="login-information">' +
             '<inputbox>' +
                 '<i class="iconfont icon-login"></i>' +
-                '<input id="login-name" type="text" placeholder="名字" maxlength="16" readonly value="大海">' +
-                '<i class="iconfont icon-go"></i>' +
-            '</inputbox>' +
-            '<inputbox>' +
-                '<i class="iconfont icon-sms"></i>' +
-                '<input id="login-key"  type="password" placeholder="密码" maxlength="30" readonly value="2120">' +
+                '<input class="name" type="text" maxlength="16" readonly>' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
             '<inputbox>' +
                 '<i class="iconfont icon-phone"></i>' +
-                '<input id="login-phone" type="tel" maxlength="11" placeholder="手机" readonly value="18966702120">' +
+                '<input class="phone" type="tel" maxlength="11" readonly>' +
+                '<i class="iconfont icon-go"></i>' +
+            '</inputbox>' +
+            '<button class="exit btn btn-white" type="button">退出</button>' +
+            '<inputbox>' +
+                '<i class="iconfont icon-sms"></i>' +
+                '<input class="key"  type="password" maxlength="30" readonly>' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
         '</div>' +
-        '<button class="btn btn-white" id="login-btn-zhuce"  type="button">注册</button>' +
-        '<button class="btn btn-blue"  id="login-btn-denglu" type="button">登录</button>'
+        '<div id="login-btn">' +
+            '<button class="zhuce  btn btn-white" type="button">注册</button>' +
+            '<button class="dengl btn btn-blue"  type="button">登录</button>' +
+        '</div>'
     $('#login').html(html)
 }()
 
 // 短信验证
-var sms = function() {
-    return (parseInt(Math.random()*(10000-1000)+1000))
-}
+Mer.login = {
+    sms: function() {
+        return (parseInt(Math.random()*(10000-1000)+1000))
+    },
+    hide: function() {
+        $('#login-information').hide()
+        $('#login-information input').val('')
+        $('#login-btn, #login-dengl').animate({ opacity:'show' })
+        $('.fa-mini').remove()
+        $('#more-ul').html('')
+    },
+    show: function(data) {
+        $('#login-btn, #login-dengl').hide()
+        $('#login-information').animate({ opacity:'show' })
+        $('#login-information .phone').val(data.phone)
+        $('#login-information .name').val(data.name)
+        $('#login-information .key').val(data.key)
+        $('.fa-mini').remove()
+        $('#more-ul').html('')
+    }
 
+}
 // Login
 $('#login input').on('focus', function() {
     event.target.parentElement.classList.add('theme')
@@ -136,7 +157,7 @@ $('#login-phone').on('keyup', function() {
     }
 })
 $('#login-sms').on('focus', function() {
-    event.target.value = sms()
+    event.target.value = Mer.login.sms()
 })
 $('#login-sms').on('blur', function() {
     var str = ''
@@ -148,7 +169,7 @@ $('#login-sms').on('blur', function() {
     event.target.value = str
 })
 // 按钮
-$('#login-btn-denglu').on('click', function() {
+$('#login-btn .dengl').on('click', function() {
     var send = function() {
         var name = $('#login-name').val()
         var key  = $('#login-key').val()
@@ -156,19 +177,19 @@ $('#login-btn-denglu').on('click', function() {
         setCookie('key', key, 7)
         Ajax('user/login', null, function(data){
             var data = JSON.parse(data)
-            Mer.login = data.login
             $('#login .text').text(data.text)
-            if (Mer.login) {
+            if (data.login) {
                 User = data.user
+                User.login = data.login
                 __init__(User)
-                $('#login button, #login-denglu').hide()
+                Mer.login.show(data)
             }
         })
     }
     // 验证
-    if ($('#login-denglu').css('display') === 'none') {
+    if ($('#login-dengl').css('display') === 'none') {
         $('#login-zhuce').hide()
-        $('#login-denglu').animate({ height:'show' })
+        $('#login-dengl').animate({ height:'show' })
         $('#login .text').text('请输入名字')
     } else {
         if ($('#login-name').val() === '') {
@@ -182,12 +203,18 @@ $('#login-btn-denglu').on('click', function() {
         }
     }
 })
-$('#login-btn-zhuce').on('click', function() {
+$('#login-btn .zhuce').on('click', function() {
     if ($('#login-zhuce').css('display') === 'none') {
-        $('#login-denglu').hide()
+        $('#login-dengl').hide()
         $('#login-zhuce').animate({ height:'show' })
         $('#login .text').text('请输入手机')
     } else {
         console.log('注册')
     }
+})
+$('#login-information .exit').on('click', function() {
+    setCookie('name', '', 0)
+    setCookie('key', '', 0)
+    Mer.load()
+    Mer.login.hide()
 })
