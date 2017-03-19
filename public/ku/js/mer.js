@@ -141,40 +141,21 @@ var User = {}
 // data.json = engines | books | note
 
 // Top
-Mer.login = {
-    hide: function() {
-        $('#login-information').hide()
-        $('#login-information input').val('')
-        $('#login-btn, #login-dengl').animate({ opacity:'show' })
-        $('.fa-mini').remove()
-        $('#more-ul').html('')
-    },
-    show: function(data) {
-        $('#login-btn, #login-dengl').hide()
-        $('#login-information').animate({ opacity:'show' })
-        $('#login-information .phone').val(data.phone)
-        $('#login-information .name').val(data.name)
-        $('#login-information .key').val(data.key)
-        $('.fa-mini').remove()
-        $('#more-ul').html('')
-    }
-
-}
 Mer.load = function() {
     Ajax('user/load', null, function(data){
         var data = JSON.parse(data)
         User = data.user
-        User.login = data.login
+        Mer.dengl = data.login
         __init__(User)
         $('body').click()
         $('#login .text').text(data.text)
-        if (User.login) {
+        if (Mer.dengl) {
             Mer.login.show(data)
         }
     })
 }
 Mer.save = function() {
-    if (User.login) {
+    if (Mer.dengl) {
         Ajax('user/save', User)
     }
 }
@@ -371,7 +352,7 @@ Mer.Mini = function(engines, def) {
     $('style').append(styleHtml)
 }
 Mer.Note = function(note) {
-    if (User.login) {
+    if (Mer.dengl) {
         $('#more-ul').html('<textarea id="more-note"></textarea>')
         $('#more-note')[0].value = note
     } else {

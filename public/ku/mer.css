@@ -477,7 +477,10 @@ inputbox input {
 #login-information input ~ i {
     color: #8590A6;
 }
-
+#login-information a {
+    display: inline-block;
+    margin: 1em auto;
+}
 /* 媒体查询 >= 768px */
 @media (min-width: 768px) {
     .half {

@@ -481,7 +481,7 @@ $('body').on('click', function() {
         if (Mer.rest.tag(e, ['textarea', 'input']) && !Mer.pc) {
             return true
         } else {
-            if (Mer.login) {
+            if (Mer.dengl) {
                 Mer.edit.show(Mer.rest.html(e))
             }
             return false
@@ -490,7 +490,7 @@ $('body').on('click', function() {
     var e = event.target
     if (!Mer.rest.short) {
         if (!Mer.rest.tag(e, ['textarea', 'input'])) {
-            if (Mer.login) {
+            if (Mer.dengl) {
                 Mer.edit.show(Mer.rest.html(e))
             }
         }

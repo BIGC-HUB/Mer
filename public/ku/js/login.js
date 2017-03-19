@@ -1,8 +1,6 @@
 var __initLogin = function() {
     var html = '<div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon-star"></div>' +
-        '<div class="text">' +
-            '…' +
-        '</div>' +
+        '<div class="text"></div>' +
         '<div id="login-dengl">' +
             '<inputbox>' +
                 '<i class="iconfont icon-login"></i>' +
@@ -28,20 +26,20 @@ var __initLogin = function() {
             '</inputbox>' +
         '</div>' +
         '<div id="login-information">' +
-            '<inputbox>' +
+            '<inputbox class="name">' +
                 '<i class="iconfont icon-login"></i>' +
-                '<input class="name" type="text" maxlength="16" readonly>' +
+                '<input type="text" maxlength="16" disabled>' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
-            '<inputbox>' +
+            '<inputbox class="phone">' +
                 '<i class="iconfont icon-phone"></i>' +
-                '<input class="phone" type="tel" maxlength="11" readonly>' +
+                '<input type="tel" maxlength="11" disabled>' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
-            '<button class="exit btn btn-white" type="button">退出</button>' +
-            '<inputbox>' +
+            '<button class="exit btn btn-red" type="button">退出</button>' +
+            '<inputbox class="key">' +
                 '<i class="iconfont icon-sms"></i>' +
-                '<input class="key"  type="password" maxlength="30" readonly>' +
+                '<input  type="password" maxlength="30" disabled>' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
         '</div>' +
@@ -52,8 +50,9 @@ var __initLogin = function() {
     $('#login').html(html)
 }()
 
-// 短信验证
+// Login
 Mer.login = {
+    // 短信验证
     sms: function() {
         return (parseInt(Math.random()*(10000-1000)+1000))
     },
@@ -63,19 +62,19 @@ Mer.login = {
         $('#login-btn, #login-dengl').animate({ opacity:'show' })
         $('.fa-mini').remove()
         $('#more-ul').html('')
+        $('#top .home').click()
+        Mer.dengl = false
     },
     show: function(data) {
         $('#login-btn, #login-dengl').hide()
         $('#login-information').animate({ opacity:'show' })
-        $('#login-information .phone').val(data.phone)
-        $('#login-information .name').val(data.name)
-        $('#login-information .key').val(data.key)
+        $('inputbox.phone input').val(data.phone)
+        $('inputbox.name input').val(data.name)
+        $('inputbox.key input').val(data.key)
         $('.fa-mini').remove()
         $('#more-ul').html('')
     }
-
 }
-// Login
 $('#login input').on('focus', function() {
     event.target.parentElement.classList.add('theme')
 })
@@ -117,6 +116,11 @@ $('#login-name ~ i').on('click', function() {
 })
 $('#login-key').on('focus', function() {
     $('#login .text').text('请输入密码')
+})
+$('#login-key').on('keyup', function() {
+    if (event.keyCode === 13) {
+        $('#login-btn .dengl').click()
+    }
 })
 $('#login-key ~ i').on('click', function() {
     var i = $(event.target)
@@ -180,7 +184,7 @@ $('#login-btn .dengl').on('click', function() {
             $('#login .text').text(data.text)
             if (data.login) {
                 User = data.user
-                User.login = data.login
+                Mer.dengl = data.login
                 __init__(User)
                 Mer.login.show(data)
             }
@@ -207,7 +211,7 @@ $('#login-btn .zhuce').on('click', function() {
     if ($('#login-zhuce').css('display') === 'none') {
         $('#login-dengl').hide()
         $('#login-zhuce').animate({ height:'show' })
-        $('#login .text').text('请输入手机')
+        $('#login .text').text('暂未开放注册')
     } else {
         console.log('注册')
     }
