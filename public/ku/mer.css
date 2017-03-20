@@ -24,15 +24,15 @@ logo, tag, engine, top, li {
 #engine, #book, #login, #edit-cont, #login-zhuce {
     display: none;
 }
+#engine, #book {
+    margin: 3em auto 0;
+}
 .transparent {
     color: transparent !important;
     border-color: transparent !important;
 }
 .theme {
     color: #037DD8;
-}
-#engine, #book {
-    margin: 3em auto 0;
 }
 
 /* 字体栈 */
@@ -181,12 +181,14 @@ logo span {
 }
 .more-border {
     border-color: #037DD8 !important;
+    background-color: #FFF;
 }
 .more-radius {
     border-bottom-left-radius: 0 !important;
 }
+
 #more-ul li {
-    margin: 1px;
+    margin: 1px auto;
 }
 #more-ul, #more-button {
     vertical-align: top;
@@ -238,6 +240,10 @@ logo span {
 }
 
 /* engine */
+.kind {
+    border-bottom: 3px dashed rgba(15,32,65,.2);
+    border-top: 3px dashed rgba(15,32,65,.2);
+}
 tag {
     display: inline-block;
     width: 19%;
@@ -291,7 +297,7 @@ book {
     border-radius: 2px;
 }
 book:hover {
-    background-color: #F5F6F9;
+    background-color: rgba(230, 231, 236, 0.66);
     border-color: #E6E7EC;
 }
 
@@ -332,17 +338,14 @@ book:hover {
     border-radius: 2px;
     background-color: #333;
     color: #D1D1D1;
-    box-shadow: 0 1px 4px 0 rgba(15,32,65,.2);
+    box-shadow: 0 1px 4px 0 rgba(15,32,65,0.2);
 }
 #edit-ul i {
     display: inline-block;
     width: 30px;
 }
-#edit-ul li {
-    /*padding: 0 0 0 30px;*/
-}
 #edit-ul li:hover {
-    background-color: rgba(59,147,255,.06);
+    background-color: rgba(59,147,255,0.06);
 }
 #edit-val {
     border: 3px dashed #8590A6;
