@@ -116,7 +116,7 @@ var __initBookEngine = function(tag) {
     var def
     var first = true
     var tagHtml = ''
-    for (var cls in User[kind]) {
+    for (var cls of User.def.order[tag]) {
         if (first) {
             def = cls
             first = false
@@ -178,7 +178,7 @@ $('#top').on('click', '.book', function() {
             height: 'show'
         })
     } else {
-        $('#top .home').click()
+        $('top.home').click()
     }
 })
 $('#top').on('click', '.user', function() {
@@ -188,7 +188,7 @@ $('#top').on('click', '.user', function() {
             height: 'show'
         })
     } else {
-        $('#top .home').click()
+        $('top.home').click()
     }
 })
 

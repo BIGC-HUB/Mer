@@ -241,20 +241,19 @@ logo span {
 
 /* engine */
 .kind {
-    border-bottom: 3px dashed rgba(15,32,65,.2);
     border-top: 3px dashed rgba(15,32,65,.2);
+    border-bottom: 3px dashed rgba(15,32,65,.2);
 }
 tag {
     display: inline-block;
-    width: 19%;
+    width: 20%;
     font-size: 21px;
     padding: 1.5em 0;
     color: #666;
-    border-radius: 50%;
-    border: 1px solid transparent;
 }
 tag:hover {
-    border-color:#E6E7EC;
+    background-color:rgba(245, 246, 249, 0.76);
+    color: #555;
 }
 engine {
     vertical-align: bottom;

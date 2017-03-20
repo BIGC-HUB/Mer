@@ -36,7 +36,7 @@ var __initLogin = function() {
                 '<input type="tel" maxlength="11">' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
-            '<button class="exit btn btn-red" type="button">退出</button>' +
+            '<button class="enter btn btn-red" type="button">进入</button>' +
             '<inputbox class="key">' +
                 '<i class="iconfont icon-sms"></i>' +
                 '<input  type="password" maxlength="30">' +
@@ -103,6 +103,9 @@ $('#login-name').on('keydown', function() {
     }
 })
 $('#login-name').on('keyup', function() {
+    if (event.keyCode === 13) {
+        $('#login-key').focus()
+    }
     if (event.target.value) {
         $('#login-name ~ i').removeClass('transparent')
     } else {
@@ -216,9 +219,6 @@ $('#login-btn .zhuce').on('click', function() {
         console.log('注册')
     }
 })
-$('#login-information .exit').on('click', function() {
-    setCookie('name', '', 0)
-    setCookie('key', '', 0)
-    Mer.load()
-    Mer.login.hide()
+$('#login-information .enter').on('click', function() {
+    $('top.home').click()
 })
