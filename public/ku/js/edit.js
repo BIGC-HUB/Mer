@@ -319,6 +319,9 @@ Mer.send.amend = function(e) {
                 e.dataset.cls = newName
                 e.click()
                 $('#edit-btn .no').click()
+                if (cls === User.def.logo.cls) {
+                    User.def.logo.cls = newName
+                }
                 Mer.save()
             } else {
                 $('#edit .text').text('名字不能重复')

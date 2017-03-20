@@ -8,6 +8,13 @@ var app = express()
 
 // 引入 fs
 var fs = require('fs')
+
+// 配置 body-Parser
+app.use(bodyParser.json())
+
+// 公共 文件
+app.use(express.static('public'))
+
 var user = {
     cookie: function(req) {
         // Cookie
@@ -37,12 +44,6 @@ var user = {
         return keyObj[phone]
     }
 }
-
-// 配置 body-Parser
-app.use(bodyParser.json())
-
-// 公共 文件
-app.use(express.static('public'))
 
 // 读取 文件
 app.get('/', function(req, res) {

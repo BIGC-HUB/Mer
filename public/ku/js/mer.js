@@ -52,7 +52,7 @@ var setCookie = function(name, value, days) {
         date.setDate(date.getDate() + days)
         str = ";expires=" + date.toGMTString()
     } else {
-        str = ""
+        str = ''
     }
     document.cookie = name + "=" + encodeURIComponent(value) + str
 }

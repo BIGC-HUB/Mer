@@ -21,25 +21,25 @@ var __initLogin = function() {
             '</inputbox>' +
             '<inputbox>' +
                 '<i class="iconfont icon-sms"></i>' +
-                '<input id="login-sms" type="text" maxlength="4" placeholder="验证码">' +
+                '<input id="login-sms" type="tel" maxlength="4" placeholder="验证码">' +
                 '<span  id="login-sms-60">60</span>' +
             '</inputbox>' +
         '</div>' +
         '<div id="login-information">' +
             '<inputbox class="name">' +
                 '<i class="iconfont icon-login"></i>' +
-                '<input type="text" maxlength="16" disabled>' +
+                '<input type="text" maxlength="16">' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
             '<inputbox class="phone">' +
                 '<i class="iconfont icon-phone"></i>' +
-                '<input type="tel" maxlength="11" disabled>' +
+                '<input type="tel" maxlength="11">' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
             '<button class="exit btn btn-red" type="button">退出</button>' +
             '<inputbox class="key">' +
                 '<i class="iconfont icon-sms"></i>' +
-                '<input  type="password" maxlength="30" disabled>' +
+                '<input  type="password" maxlength="30">' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
         '</div>' +
@@ -50,7 +50,6 @@ var __initLogin = function() {
     $('#login').html(html)
 }()
 
-// Login
 Mer.login = {
     // 短信验证
     sms: function() {
@@ -74,6 +73,8 @@ Mer.login = {
         $('#more-ul').html('')
     }
 }
+// Login
+
 $('#login input').on('focus', function() {
     event.target.parentElement.classList.add('theme')
 })
