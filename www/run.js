@@ -6,6 +6,37 @@ var bodyParser = require('body-parser')
 var express = require('express')
 var app = express()
 
+// 引入 sms API
+const AliDaYu = require('super-alidayu')
+const client = new AliDaYu({
+  app_key: '23658012',
+  secret: '774c4d0876b01d83b58470809d1e8947',
+})
+
+var options = {
+  sms_free_sign_name: '大海',
+  sms_param: {
+    code: '0129',
+    product: '登录',
+  },
+  rec_num: '18966702120',
+  sms_template_code: 'SMS_51075001',
+}
+// 发送短信，promise方式调用
+client.sms(options)
+  .then(ret => console.log('success', ret))
+  .catch(err => console.log('error', err))
+
+// 发送短信，callback方式调用
+// client.sms(options, (err, ret) => {
+//   if (err) {
+//     console.log('error', err)
+//   } else {
+//     console.log('success', ret)
+//   }
+// })
+
+
 // 引入 fs
 var fs = require('fs')
 
