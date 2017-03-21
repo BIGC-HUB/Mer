@@ -26,22 +26,33 @@ var user = {
         }
         return cookie
     },
-    name: function (cookie) {
-        // Phone Number
+    data: function(cookie) {
+        var i = new Object
         var name = cookie.name
+        if (name === '') { return i }
+        var json = fs.readFileSync('user/phone.json', 'utf8')
+        var Obj = JSON.parse(json)
+        // Phone Number
         if (!isNaN(name) && name.length === 11) {
-            return name
+            i.phone = name
         } else {
-            var json = fs.readFileSync('user/name.json', 'utf8')
-            var nameObj = JSON.parse(json)
-            return nameObj[name]
+            for (var key in Obj) {
+                var re = new RegExp(name,'i')
+                // 忽略大小写
+                if (Obj[key].name.match(re)[0]) {
+                    i.phone = key
+                    break
+                } else {
+                    return i
+                }
+            }
         }
-    },
-    pass: function(phone) {
         // Key
-        var json = fs.readFileSync('user/key.json', 'utf8')
-        var keyObj = JSON.parse(json)
-        return keyObj[phone]
+        i.key =  Obj[i.phone].key
+        // Name
+        i.name = Obj[i.phone].name
+
+        return i
     }
 }
 
@@ -56,33 +67,32 @@ app.post('/user/load', function (req, res) {
         var data = fs.readFileSync('www/def.json', 'utf8')
         res.send({
             "user": JSON.parse(data),
-            "text": "请输入名字",
+            "text": '请输入名字',
             "login": false
         })
     }
     if (req.headers.cookie) {
         var cookie = user.cookie(req)
-        var phone = user.name(cookie)
-        if (phone) {
-            var key = user.pass(phone)
-            if (key === cookie.key){ // 登录成功
-                var url = 'user/' + phone + '.json'
+        var i = user.data(cookie)
+        if (i.phone) {
+            if (i.key === cookie.key){ // 登录成功
+                var url = 'user/' + i.phone + '.json'
                 var data = fs.readFileSync(url, 'utf8')
                 res.send({
                     "user": JSON.parse(data),
                     "text": "欢迎回来",
                     "login": true,
-                    "name": cookie.name,
-                    "phone": phone,
-                    "key": key
+                    "name": i.name,
+                    "phone": i.phone,
+                    "key": i.key
                 })
-            } else { // 账户密码不匹配
+            } else {
                 notLogin()
             }
         } else {
             notLogin()
         }
-    } else { // 未登录
+    } else {
         notLogin()
     }
 })
@@ -90,12 +100,11 @@ app.post('/user/load', function (req, res) {
 app.post('/user/save', function (req, res) {
     if (req.headers.cookie) {
         var cookie = user.cookie(req)
-        var phone = user.name(cookie)
-        if (phone) {
-            var key = user.pass(phone)
-            if (key === cookie.key){
+        var i = user.data(cookie)
+        if (i.phone) {
+            if (i.key === cookie.key){
                 var data = JSON.stringify(req.body)
-                var err = fs.writeFileSync('user/' + phone +'.json', data, 'utf8')
+                var err = fs.writeFileSync('user/' + i.phone +'.json', data, 'utf8')
                 res.send('写入成功！')
             }
         }
@@ -105,19 +114,18 @@ app.post('/user/save', function (req, res) {
 // 登录
 app.post('/user/login', function (req, res) {
     var cookie = user.cookie(req)
-    var phone = user.name(cookie)
-    if (phone) {
-        var key = user.pass(phone)
-        if (key === cookie.key){
-            var url = 'user/' + phone + '.json'
+    var i = user.data(cookie)
+    if (i.phone) {
+        if (i.key === cookie.key){
+            var url = 'user/' + i.phone + '.json'
             var data = fs.readFileSync(url, 'utf8')
             res.send({
                 "user": JSON.parse(data),
                 "text": '欢迎回来',
                 "login": true,
-                "name": cookie.name,
-                "phone": phone,
-                "key": key
+                "name": i.name,
+                "phone": i.phone,
+                "key": i.key
             })
         } else {
             res.send({

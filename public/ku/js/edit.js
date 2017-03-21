@@ -127,7 +127,7 @@ Mer.edit = {
         e = Mer.edit.init(e)
         $('#edit .text').text('移动·分组')
         var html = ''
-        for (var cls in User[e.kind]) {
+        for (var cls of User.def.order[e.tag]) {
             html += '<tag>' + cls + '</tag>'
         }
         $('#edit-val').html(html)
@@ -366,7 +366,7 @@ Mer.send = {
         } else if (newCls === cls) {
             $('#edit-btn .no').click()
         } else {
-            if (cls === User.def.logo.cls) {
+            if (cls === User.def.logo.cls && key === User.def.logo.key) {
                 User.def.logo.cls = newCls
             }
             User[kind][newCls][key] = JSON.parse(JSON.stringify(User[kind][cls][key]))

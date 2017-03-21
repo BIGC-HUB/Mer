@@ -76,9 +76,7 @@ var __initTop = function() {
 }()
 var __initMain = function() {
     var html =
-        '<logo>' +
-        '<i data-cls="综合" data-key="大海" style="color:#037DD8;" class="fa-5x iconfont icon-dahai"></i>' +
-        '</logo>' +
+        '<logo></logo>' +
         '<div class="search">' +
         '<input id="search-input" type="text" maxlength="70">' +
         '<a><i class="fa-1x iconfont icon-xclear"></i></a>' +
@@ -378,7 +376,7 @@ $('#more-ul').on('blur', '#more-note', function() {
 $('#more-button').on('click', function() {
     $('#more-ul').removeClass('more-border')
     $('#search-input').removeClass('more-radius')
-    Mer.Mini(User.engines, '综合')
+    Mer.Mini(User.engines, User.def.logo.cls)
     Mer.Note(User.note)
 })
 $('#more-button').on('mouseover', function() {

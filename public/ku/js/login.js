@@ -36,7 +36,7 @@ var __initLogin = function() {
                 '<input type="tel" maxlength="11">' +
                 '<i class="iconfont icon-go"></i>' +
             '</inputbox>' +
-            '<button class="enter btn btn-red" type="button">进入</button>' +
+            '<button class="enter btn btn-blue" type="button">进入</button>' +
             '<inputbox class="key">' +
                 '<i class="iconfont icon-sms"></i>' +
                 '<input  type="password" maxlength="30">' +
@@ -220,5 +220,7 @@ $('#login-btn .zhuce').on('click', function() {
     }
 })
 $('#login-information .enter').on('click', function() {
+    Mer.Note(User.note)
+    $('#more-button i').removeClass('transparent')
     $('top.home').click()
 })
