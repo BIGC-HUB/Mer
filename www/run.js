@@ -1,44 +1,30 @@
-var log = function() {
+const log = function() {
         console.log.apply(console, arguments)
 }
 // 引入 express 并且创建一个 express 实例赋值给 app
-var bodyParser = require('body-parser')
-var express = require('express')
-var app = express()
-
-// 引入 sms API
-const AliDaYu = require('super-alidayu')
-const client = new AliDaYu({
-  app_key: '23658012',
-  secret: '774c4d0876b01d83b58470809d1e8947',
-})
-
-var options = {
-  sms_free_sign_name: '大海',
-  sms_param: {
-    code: '0129',
-    product: '登录',
-  },
-  rec_num: '18966702120',
-  sms_template_code: 'SMS_51075001',
-}
-// 发送短信，promise方式调用
-client.sms(options)
-  .then(ret => console.log('success', ret))
-  .catch(err => console.log('error', err))
-
-// 发送短信，callback方式调用
-// client.sms(options, (err, ret) => {
-//   if (err) {
-//     console.log('error', err)
-//   } else {
-//     console.log('success', ret)
-//   }
-// })
-
-
+const bodyParser = require('body-parser')
+const express = require('express')
+const app = express()
 // 引入 fs
-var fs = require('fs')
+const fs = require('fs')
+// 引入 sms API
+const Alidayu = require('super-alidayu')
+const client = new Alidayu({app_key: '23658012', secret: '774c4d0876b01d83b58470809d1e8947'})
+// 发送短信 promise 方式调用
+// var options = {
+//         sms_free_sign_name: '大海',
+//         sms_param: {
+//             number: '1100'
+//         },
+//         rec_num: '18966702120',
+//         sms_template_code: 'SMS_51075001',
+//     }
+// client.sms(options)
+//     .then(function(data) {
+//         log('短信发送成功！')
+//     }).catch(function(err) {
+//         log('短信发送失败！')
+//     })
 
 // 配置 body-Parser
 app.use(bodyParser.json())
@@ -173,7 +159,6 @@ app.post('/user/login', function (req, res) {
 })
 
 // listen 函数监听端口
-// nodemon --ignore public/ --ignore user/ run.js
 var server = app.listen(80, function () {
   var host = server.address().address
   var port = server.address().port
