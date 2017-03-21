@@ -463,7 +463,14 @@ $('body').on('click', function() {
 })
 
 // 事件委托
+$('#edit-val').on('blur', '.icon', function() {
+    event.target.value = event.target.value.toLowerCase()
+})
 $('#edit-val').on('blur', '.color', function() {
+    var val = event.target.value.toUpperCase()
+    if (val.slice(0,1) === '#') {
+        event.target.value = val
+    }
     event.target.style.color = event.target.value
 })
 $('#edit-val').on('blur', 'input', function() {
