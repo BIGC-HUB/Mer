@@ -230,7 +230,7 @@ Mer.send = {
                         i.url = $('#edit-val .url').val()
                     }
                     log()
-                    var bool = new Set(Object.keys(User[kind][cls]).has(newName))
+                    var bool = new Set(Object.keys(User[kind][cls])).has(newName)
                     if (bool) {
                         $('#edit .text').text('名字不能重复')
                         $('#edit-cont .name').focus()
@@ -245,7 +245,7 @@ Mer.send = {
                     }
                 }
             } else { // kind
-                var bool = new Set(Object.keys(User[kind]).has(newName))
+                var bool = new Set(Object.keys(User[kind])).has(newName)
                 if (bool) {
                     $('#edit .text').text('名字不能重复')
                     $('#edit-cont .name').focus()
@@ -294,7 +294,7 @@ Mer.send = {
                         i.color = $('#edit-val .color').val()
                         i.url = $('#edit-val .url').val()
                     }
-                    var bool = new Set(Object.keys(User[kind][cls]).has(newName))
+                    var bool = new Set(Object.keys(User[kind][cls])).has(newName)
                     if (!bool) {
                         User[kind][cls][newName] = JSON.parse(JSON.stringify(User[kind][cls][key]))
                         delete User[kind][cls][key]
@@ -317,7 +317,7 @@ Mer.send = {
                     }
                 }
             } else { // kind
-                var bool = new Set(Object.keys(User[kind]).has(newName))
+                var bool = new Set(Object.keys(User[kind])).has(newName)
                 if (bool) {
                     $('#edit .text').text('名字不能重复')
                     $('#edit-cont .name').focus()
