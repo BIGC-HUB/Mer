@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 
 // 公共 文件
 app.use(express.static('public'))
-
+// User 保存注册未完成信息
 var User = {}
 const Mer = {
     SMS: function() {
@@ -237,6 +237,7 @@ app.post('/user/join-name', function (req, res) {
                 "text": '写入失败！'
             })
         } else {
+            delete User[req.body.phone]
             res.send({
                 "add": true,
                 "text": '注册成功！'

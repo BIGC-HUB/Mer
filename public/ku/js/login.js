@@ -211,6 +211,8 @@ $('#login-btn .zhuce').on('click', function() {
         Ajax('user/join', {"phone": phone, "sms": sms}, (data) => {
             var data = JSON.parse(data)
             if (data.join) {
+                $('#login-sms').val('')
+                $('#login-phone').val('')
                 Mer.edit.at = phone
                 $('#edit-val').html('<div><span>名　字</span><input class="name" placeholder="…"></div>')
                 $('#edit-btn').html('<button data-btn="name" class="yes btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>')
