@@ -51,10 +51,6 @@ var __initLogin = function() {
 }()
 
 Mer.login = {
-    // 短信验证
-    sms: function() {
-        return (parseInt(Math.random()*(10000-1000)+1000))
-    },
     hide: function() {
         $('#login-information').hide()
         $('#login-information input').val('')
@@ -137,6 +133,9 @@ $('#login-key ~ i').on('click', function() {
     }
 })
 // 注册
+$('#login-phone').on('focus', function() {
+    $('#login .text').text('注册手机号')
+})
 $('#login-phone').on('blur', function() {
     var str = ''
     for (var i of event.target.value) {
@@ -151,20 +150,15 @@ $('#login-phone').on('blur', function() {
         $('#login-phone-11').text(num)
     } else {
         $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
-        $('#login .text').text('发送验证码')
+        $('#login .text').text('短信验证码')
     }
 })
-$('#login-phone').on('keyup', function() {
+$('#login-phone').on('input', function() {
     var num = (11 - $('#login-phone')[0].value.length)
-    if (num) {
-        $('#login-phone-11').text(num)
-        $('#login .text').text('请输入手机')
-    } else {
-        $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
-    }
+    $('#login-phone-11').text(num)
 })
 $('#login-sms').on('focus', function() {
-    event.target.value = Mer.login.sms()
+    $('#login .text').text('短信验证码')
 })
 $('#login-sms').on('blur', function() {
     var str = ''

@@ -5,7 +5,6 @@ const log = function() {
 const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
-// 引入 fs
 const fs = require('fs')
 // 引入 sms API
 const Alidayu = require('super-alidayu')
@@ -32,7 +31,13 @@ app.use(bodyParser.json())
 // 公共 文件
 app.use(express.static('public'))
 
-var user = {
+var User = {
+    name: {}
+}
+const Mer = {
+    sms: function() {
+        return (parseInt(Math.random()*(10000-1000)+1000))
+    },
     cookie: function(req) {
         // Cookie
         var arr = req.headers.cookie.split('; ')
@@ -53,15 +58,15 @@ var user = {
         if (!isNaN(name) && name.length === 11) {
             i.phone = name
         } else {
-            for (var key in Obj) {
-                var re = new RegExp(name,'i')
+            for (var phone in Obj) {
                 // 忽略大小写
-                if (Obj[key].name.match(re)[0]) {
-                    i.phone = key
+                if (Obj[phone].name.toLowerCase() === name.toLowerCase()) {
+                    i.phone = phone
                     break
-                } else {
-                    return i
                 }
+            }
+            if (i.phone === undefined) {
+                return i
             }
         }
         // Key
@@ -89,8 +94,8 @@ app.post('/user/load', function (req, res) {
         })
     }
     if (req.headers.cookie) {
-        var cookie = user.cookie(req)
-        var i = user.data(cookie)
+        var cookie = Mer.cookie(req)
+        var i = Mer.data(cookie)
         if (i.phone) {
             if (i.key === cookie.key){ // 登录成功
                 var url = 'user/' + i.phone + '.json'
@@ -116,8 +121,8 @@ app.post('/user/load', function (req, res) {
 // 存储
 app.post('/user/save', function (req, res) {
     if (req.headers.cookie) {
-        var cookie = user.cookie(req)
-        var i = user.data(cookie)
+        var cookie = Mer.cookie(req)
+        var i = Mer.data(cookie)
         if (i.phone) {
             if (i.key === cookie.key){
                 var data = JSON.stringify(req.body)
@@ -130,8 +135,8 @@ app.post('/user/save', function (req, res) {
 })
 // 登录
 app.post('/user/login', function (req, res) {
-    var cookie = user.cookie(req)
-    var i = user.data(cookie)
+    var cookie = Mer.cookie(req)
+    var i = Mer.data(cookie)
     if (i.phone) {
         if (i.key === cookie.key){
             var url = 'user/' + i.phone + '.json'
@@ -156,6 +161,13 @@ app.post('/user/login', function (req, res) {
             "login": false
         })
     }
+})
+// 注册
+app.post('/user/join-sms', function (req, res) {
+    var cookie = Mer.cookie(req)
+})
+app.post('/user/join', function (req, res) {
+    var cookie = Mer.cookie(req)
 })
 
 // listen 函数监听端口

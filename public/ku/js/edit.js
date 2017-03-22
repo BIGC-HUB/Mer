@@ -154,15 +154,6 @@ Mer.edit = {
 
 // 增删改查 - 提交
 Mer.send = {
-    // if (bool) 重点
-    repeat: function(arr, cls) {
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i] === cls) {
-                return false
-            }
-        }
-        return true
-    },
     tag: $(),
     del: function(e) {
         //
@@ -238,8 +229,12 @@ Mer.send = {
                         i.color = $('#edit-val .color').val()
                         i.url = $('#edit-val .url').val()
                     }
-                    var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
+                    log()
+                    var bool = new Set(Object.keys(User[kind][cls]).has(newName))
                     if (bool) {
+                        $('#edit .text').text('名字不能重复')
+                        $('#edit-cont .name').focus()
+                    } else {
                         User[kind][cls][newName] = i
                         if (e.localName !== 'div') {
                             e = e.parentElement
@@ -247,14 +242,14 @@ Mer.send = {
                         $(e).html(Mer.showHtml(tag, cls))
                         $('#edit-btn .no').click()
                         Mer.save()
-                    } else {
-                        $('#edit .text').text('名字不能重复')
-                        $('#edit-cont .name').focus()
                     }
                 }
             } else { // kind
-                var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
+                var bool = new Set(Object.keys(User[kind]).has(newName))
                 if (bool) {
+                    $('#edit .text').text('名字不能重复')
+                    $('#edit-cont .name').focus()
+                } else {
                     User[kind][newName] = {}
                     if (e.localName !== 'div') {
                         e = e.parentElement
@@ -265,9 +260,6 @@ Mer.send = {
                     // 排序
                     User.def.order[tag].push(newName)
                     Mer.save()
-                } else {
-                    $('#edit .text').text('名字不能重复')
-                    $('#edit-cont .name').focus()
                 }
             }
         }
@@ -302,8 +294,8 @@ Mer.send = {
                         i.color = $('#edit-val .color').val()
                         i.url = $('#edit-val .url').val()
                     }
-                    var bool = Mer.send.repeat(Object.keys(User[kind][cls]), newName)
-                    if (bool) {
+                    var bool = new Set(Object.keys(User[kind][cls]).has(newName))
+                    if (!bool) {
                         User[kind][cls][newName] = JSON.parse(JSON.stringify(User[kind][cls][key]))
                         delete User[kind][cls][key]
                         // 没有重复才可以删除
@@ -325,8 +317,11 @@ Mer.send = {
                     }
                 }
             } else { // kind
-                var bool = Mer.send.repeat(Object.keys(User[kind]), newName)
+                var bool = new Set(Object.keys(User[kind]).has(newName))
                 if (bool) {
+                    $('#edit .text').text('名字不能重复')
+                    $('#edit-cont .name').focus()
+                } else {
                     User[kind][newName] = JSON.parse(JSON.stringify(User[kind][cls]))
                     delete User[kind][cls]
                     e.innerText = newName
@@ -346,9 +341,6 @@ Mer.send = {
                     }
                     // 保存
                     Mer.save()
-                } else {
-                    $('#edit .text').text('名字不能重复')
-                    $('#edit-cont .name').focus()
                 }
             }
         }
