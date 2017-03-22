@@ -78,25 +78,20 @@ $('#login input').on('blur', function() {
     event.target.parentElement.classList.remove('theme')
     var str = ''
     for (var i of event.target.value) {
-        if (!/ /.test(i)) {
+        if (!/　/.test(i)) {
             str += i
         }
     }
     event.target.value = str
 })
 $('#login input').on('keydown', function() {
-    if (/ /.test(event.key)) {
+    if (/ |　/.test(event.key)) {
         event.preventDefault()
     }
 })
 // 登录
 $('#login-name').on('focus', function() {
     $('#login .text').text('名字 | 手机号')
-})
-$('#login-name').on('keydown', function() {
-    if (!/[\u4E00-\u9FA5|\u30A0-\u30FF|\u3100-\u312F|\u3200-\u32FF|\uAC00-\uD7FF]|[\d|\w|\-|_]/.test(event.key)) {
-        event.preventDefault()
-    }
 })
 $('#login-name').on('keyup', function() {
     if (event.keyCode === 13) {
@@ -150,12 +145,17 @@ $('#login-phone').on('blur', function() {
         $('#login-phone-11').text(num)
     } else {
         $('#login-phone-11').html('<i class="sms iconfont icon-go"></i>')
-        $('#login .text').text('短信验证码')
+        $('#login .text').text('点击发送')
     }
 })
 $('#login-phone').on('input', function() {
     var num = (11 - $('#login-phone')[0].value.length)
     $('#login-phone-11').text(num)
+})
+$('#login-phone').on('keyup', function() {
+    if (event.keyCode === 13) {
+        event.target.blur()
+    }
 })
 $('#login-sms').on('focus', function() {
     $('#login .text').text('短信验证码')
@@ -208,7 +208,17 @@ $('#login-btn .zhuce').on('click', function() {
     var zhuce = function() {
         var phone = $('#login-phone').val()
         var sms  = $('#login-sms').val()
-        Ajax('user/join', {"phone": phone, "sms": sms})
+        Ajax('user/join', {"phone": phone, "sms": sms}, (data) => {
+            var data = JSON.parse(data)
+            if (data.join) {
+                $('#edit-val').html('<div><span>名　字</span><input class="name" placeholder="…"></div>')
+                $('#edit-btn').html('<button data-btn="name" class="yes btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>')
+                $('#edit .text').text('欢迎加入，在下大海西安人士，不知阁下如何称呼')
+                $('#edit-cont').animate({height: 'show'})
+            } else {
+                $('#login .text').text(data.text)
+            }
+        })
     }
     if ($('#login-zhuce').css('display') === 'none') {
         $('#login-dengl').hide()
@@ -227,40 +237,44 @@ $('#login-btn .zhuce').on('click', function() {
     }
 })
 $('#login-phone-11').on('click', '.sms', function() {
-    $('#login .text').text('短信已发送，请耐心等候')
     var input = $('#login-phone')
     var go = $('#login-phone-11')
     var time = $('#login-sms-60')
-    Ajax('user/join-sms', {phone: input.val()})
-    go.html('<i class="iconfont icon-more"></i>')
-    input.off('blur')
-    input.attr("readonly", "readonly")
-    var s = 60
-    var countTime = setInterval(function() {
-        s -= 1
-        time.text(s)
-        if (s == 0) {
-            time.text(60)
-            clearInterval(countTime)
-            input.removeAttr("readonly")
-            input.on('blur', function() {
-                var str = ''
-                for (var i of event.target.value) {
-                    if (/\d/.test(i)) {
-                        str += i
-                    }
+    Ajax('user/join-sms', {phone: input.val()}, (data) => {
+        var data = JSON.parse(data)
+        $('#login .text').text(data.text)
+        if (data.send) {
+            go.html('<i class="iconfont icon-more"></i>')
+            input.off('blur')
+            input.attr("readonly", "readonly")
+            var s = 60
+            var countTime = setInterval(function() {
+                s -= 1
+                time.text(s)
+                if (s == 0) {
+                    time.text(60)
+                    clearInterval(countTime)
+                    input.removeAttr("readonly")
+                    input.on('blur', function() {
+                        var str = ''
+                        for (var i of event.target.value) {
+                            if (/\d/.test(i)) {
+                                str += i
+                            }
+                        }
+                        event.target.value = str
+                        var num = 11 - str.length
+                        if (num) {
+                            go.text(num)
+                        } else {
+                            go.html('<i class="sms iconfont icon-go"></i>')
+                            $('#login .text').text('短信验证码')
+                        }
+                    })
                 }
-                event.target.value = str
-                var num = 11 - str.length
-                if (num) {
-                    go.text(num)
-                } else {
-                    go.html('<i class="sms iconfont icon-go"></i>')
-                    $('#login .text').text('短信验证码')
-                }
-            })
+            }, 1000)
         }
-    }, 1000)
+    })
 })
 
 // information

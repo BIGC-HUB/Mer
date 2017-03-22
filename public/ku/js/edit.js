@@ -367,6 +367,12 @@ Mer.send = {
             $('#edit-btn .no').click()
             Mer.save()
         }
+    },
+    name: () => {
+        var name = $('#edit-val .name').val()
+        if (name) {
+            Ajax('/user/join-name', {"name":name})
+        }
     }
 }
 

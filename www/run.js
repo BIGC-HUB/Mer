@@ -16,10 +16,7 @@ app.use(bodyParser.json())
 // 公共 文件
 app.use(express.static('public'))
 
-var User = {
-    sms: 0,
-    phone: 0
-}
+var User = {}
 const Mer = {
     SMS: function() {
         return String(parseInt(Math.random()*(10000-1000)+1000))
@@ -150,40 +147,60 @@ app.post('/user/login', function (req, res) {
 })
 // 注册
 app.post('/user/join-sms', function (req, res) {
-    User.sms = '1207' || Mer.SMS()
-    User.phone = req.body.phone
-    // 发送短信 promise 方式调用
-    var options = {
-            sms_free_sign_name: '大海',
-            sms_param: {
-                "number": User.sms
-            },
-            "rec_num": User.phone,
-            sms_template_code: 'SMS_51075001',
-        }
-    //// 花钱的地方来了 take money this
-    // client.sms(options)
-    //     .then(function(data) {
-    //         res.send(phone + ' 短信发送成功！')
-    //     }).catch(function(err) {
-    //         res.send(phone + ' 短信发送失败！')
-    //     })
+    var phone = req.body.phone
+    var json = fs.readFileSync('user/phone.json', 'utf8')
+    var Obj = JSON.parse(json)
+    if (Obj[phone]) {
+        res.send({send:false, text:'已注册，请登录'})
+    } else {
+        User[phone] = {}
+        User[phone].sms = Mer.SMS()
+        // 发送短信 promise 方式调用
+        var options = {
+                sms_free_sign_name: '大海',
+                sms_param: {
+                    "number": User[phone].sms
+                },
+                "rec_num": phone,
+                sms_template_code: 'SMS_51075001',
+            }
 
+        res.send({send:true, text:'短信已发送，请耐心等候' + User[req.body.phone].sms})
+        //// 花钱的地方来了 take money this
+        // client.sms(options)
+        //     .then(function(data) {
+        //         res.send({send:true, text:'短信已发送，请耐心等候'})
+        //     }).catch(function(err) {
+        //         res.send({send:true, text:'短信发送失败，请联系管理员'})
+        //     })
+    }
 })
 app.post('/user/join', function (req, res) {
     var phone = req.body.phone
     var sms = req.body.sms
-    if (phone === User.phone) {
-        if (sms === User.sms) {
-            res.send('注册成功！')
+    if (User[phone]) {
+        if (sms === User[phone].sms) {
+            res.send({
+                join: true,
+                text: '注册成功！'
+            })
         } else {
-            res.send('短信验证错误')
+            res.send({
+                join: false,
+                text: '短信验证错误'
+            })
         }
     } else {
-        res.send('手机号错误')
+        res.send({
+            join: false,
+            text: '手机号错误'
+        })
     }
 })
-
+app.post('/user/join-name', function (req, res) {
+    var name = req.body.name
+    res.send(User)
+})
 // listen 函数监听端口
 var server = app.listen(80, function () {
   var host = server.address().address
