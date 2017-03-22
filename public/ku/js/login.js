@@ -211,9 +211,10 @@ $('#login-btn .zhuce').on('click', function() {
         Ajax('user/join', {"phone": phone, "sms": sms}, (data) => {
             var data = JSON.parse(data)
             if (data.join) {
+                Mer.edit.at = phone
                 $('#edit-val').html('<div><span>名　字</span><input class="name" placeholder="…"></div>')
                 $('#edit-btn').html('<button data-btn="name" class="yes btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>')
-                $('#edit .text').text('欢迎加入，在下大海西安人士，不知阁下如何称呼')
+                $('#edit .text').text(data.text)
                 $('#edit-cont').animate({height: 'show'})
             } else {
                 $('#login .text').text(data.text)

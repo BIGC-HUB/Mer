@@ -368,10 +368,22 @@ Mer.send = {
             Mer.save()
         }
     },
-    name: () => {
+    name: (phone) => {
         var name = $('#edit-val .name').val()
         if (name) {
-            Ajax('/user/join-name', {"name":name})
+            Ajax('/user/join-name', {"name":name, "phone":phone}, (data) => {
+                var data = JSON.parse(data)
+                if (data.add) {
+                    // 隐藏
+                    $('#edit-cont').animate({ height: 'hide' })
+                    // 登录
+                    $('#login-zhuce').hide()
+                    $('#login-dengl').animate({ height:'show' })
+                    $('#login .text').text('请登录，初始密码：' + phone.slice(-4))
+                } else {
+                    $('#edit .text').text(data.text)
+                }
+            })
         }
     }
 }
@@ -529,9 +541,7 @@ $('#edit-btn').on('click', '.yes', function() {
     Mer.send[event.target.dataset.btn](Mer.edit.at)
 })
 $('#edit-btn').on('click', '.no', function() {
-    $('#edit-cont').animate({
-        height: 'hide'
-    })
+    $('#edit-cont').animate({ height: 'hide' })
 })
 $('#edit-btn').on('click', '.del', function() {
     Mer.send.del(Mer.edit.at)

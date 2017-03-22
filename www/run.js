@@ -33,8 +33,11 @@ const Mer = {
     },
     data: function(cookie) {
         var i = new Object
-        var name = cookie.name
-        if (name === '') { return i }
+        if (cookie.name) {
+            name = cookie.name
+        } else {
+            return i
+        }
         var json = fs.readFileSync('user/phone.json', 'utf8')
         var Obj = JSON.parse(json)
         // Phone Number
@@ -56,7 +59,6 @@ const Mer = {
         i.key =  Obj[i.phone].key
         // Name
         i.name = Obj[i.phone].name
-
         return i
     }
 }
@@ -69,9 +71,9 @@ app.get('/', function(req, res) {
 // 加载
 app.post('/user/load', function (req, res) {
     var notLogin = function() {
-        var data = fs.readFileSync('www/def.json', 'utf8')
+        var json = fs.readFileSync('www/def.json', 'utf8')
         res.send({
-            "user": JSON.parse(data),
+            "user": JSON.parse(json),
             "text": '请输入名字',
             "login": false
         })
@@ -114,7 +116,6 @@ app.post('/user/save', function (req, res) {
             }
         }
     }
-
 })
 // 登录
 app.post('/user/login', function (req, res) {
@@ -182,7 +183,7 @@ app.post('/user/join', function (req, res) {
         if (sms === User[phone].sms) {
             res.send({
                 join: true,
-                text: '注册成功！'
+                text: '欢迎加入，不知阁下如何称呼'
             })
         } else {
             res.send({
@@ -198,8 +199,48 @@ app.post('/user/join', function (req, res) {
     }
 })
 app.post('/user/join-name', function (req, res) {
-    var name = req.body.name
-    res.send(User)
+    var name = fs.readFileSync('user/name.json', 'utf8')
+    name = JSON.parse(name)
+    // 检查名字
+    if (new Set(name).has(req.body.name)) {
+        res.send({
+            "add": false,
+            "text": '该名已被占用'
+        })
+    } else {
+        // name
+        name.push(req.body.name)
+
+        // 读取
+        var data = fs.readFileSync('www/def.json', 'utf8')
+        var phone = fs.readFileSync('user/phone.json', 'utf8')
+        phone = JSON.parse(phone)
+
+        // phone
+        phone[req.body.phone] = {}
+        phone[req.body.phone].name = req.body.name
+        phone[req.body.phone].key  = req.body.phone.slice(-4)
+
+        // 写入
+        var errData  = fs.writeFileSync('user/' + req.body.phone +'.json', data,  'utf8')
+        var errName  = fs.writeFileSync('user/name.json',  JSON.stringify(name),  'utf8')
+        var errPhone = fs.writeFileSync('user/phone.json', JSON.stringify(phone), 'utf8')
+        if (errData || errName || errPhone) {
+            res.send({
+                "add": false,
+                "text": '写入失败！'
+            })
+        } else {
+            res.send({
+                "add": true,
+                "text": '注册成功！'
+            })
+        }
+    }
+
+
+
+
 })
 // listen 函数监听端口
 var server = app.listen(80, function () {
