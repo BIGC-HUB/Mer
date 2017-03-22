@@ -380,6 +380,7 @@ Mer.send = {
                     $('#login-zhuce').hide()
                     $('#login-dengl').animate({ height:'show' })
                     $('#login .text').text('请登录，初始密码：' + phone.slice(-4))
+                    $('#login-key').val( phone.slice(-4) )
                 } else {
                     $('#edit .text').text(data.text)
                 }

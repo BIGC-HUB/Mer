@@ -13,12 +13,6 @@
                 "wap": "wap.sogou.com/web/searchList.jsp?keyword=",
                 "url": "www.sogou.com/web?ie={inputEncoding}&query="
             },
-            "必应": {
-                "icon": "bing",
-                "color": "#FFB900",
-                "url": "cn.bing.com/search?q=",
-                "wap": ""
-            },
             "知乎": {
                 "icon": "zhihu",
                 "color": "#0F88EB",
@@ -31,6 +25,12 @@
                 "wap": "weixin.sogou.com/weixinwap?type=2&query=",
                 "url": "weixin.sogou.com/weixin?type=2&query="
             },
+            "必应": {
+                "icon": "bing",
+                "color": "#FFB900",
+                "url": "cn.bing.com/search?q=",
+                "wap": ""
+            },
             "百度": {
                 "icon": "baidu",
                 "color": "#2319dc",
@@ -38,38 +38,24 @@
                 "wap": ""
             }
         },
-        "编程": {
-            "w3school": {
-                "color": "#bd2d30",
-                "url": "cn.bing.com/search?q=site:w3school.com.cn+",
-                "icon": "",
-                "wap": ""
-            },
-            "MDN": {
-                "color": "#056B9F",
-                "url": "developer.mozilla.org/zh-CN/search?q=",
-                "icon": "",
-                "wap": ""
-            },
-            "阮一峰": {
-                "color": "#556677",
-                "url": "cn.bing.com/search?q=site:ruanyifeng.com+",
-                "icon": "",
-                "wap": ""
-            }
-        },
         "认知": {
-            "有道词典": {
-                "color": "#e31333",
-                "url": "m.youdao.com/dict?q=",
-                "icon": "",
-                "wap": ""
-            },
             "百度百科": {
                 "color": "#2319dc",
                 "url": "baike.baidu.com/item/",
                 "icon": "",
                 "wap": ""
+            },
+            "简书": {
+                "icon": "",
+                "color": "#EA6F5A",
+                "wap": "",
+                "url": "www.jianshu.com/search?q="
+            },
+            "有道词典": {
+                "icon": "",
+                "color": "#E31333",
+                "wap": "",
+                "url": "m.youdao.com/dict?q="
             }
         },
         "图片": {
@@ -101,12 +87,6 @@
             }
         },
         "网购": {
-            "amazon": {
-                "color": "#000",
-                "wap": "www.amazon.cn/gp/aw/s/ref=nb_sb_noss?k=",
-                "url": "www.amazon.cn/s/ref=nb_sb_noss?field-keywords=",
-                "icon": ""
-            },
             "淘宝": {
                 "color": "#ed4403",
                 "icon": "taobao",
@@ -118,6 +98,12 @@
                 "wap": "so.m.jd.com/ware/search.action?keyword=",
                 "url": "search.jd.com/Search?&enc=utf-8&keyword=",
                 "icon": ""
+            },
+            "亚马逊": {
+                "icon": "",
+                "color": "#333",
+                "wap": "www.amazon.cn/gp/aw/s/ref=nb_sb_noss?k=",
+                "url": "www.amazon.cn/s/ref=nb_sb_noss?field-keywords="
             }
         },
         "旅行": {
@@ -200,6 +186,26 @@
                 "icon": "",
                 "wap": ""
             }
+        },
+        "翻译": {
+            "谷歌翻译": {
+                "icon": "",
+                "color": "",
+                "wap": "",
+                "url": "translate.google.cn/m/translate#auto/en/"
+            },
+            "搜狗翻译": {
+                "icon": "",
+                "color": "#FD6853",
+                "wap": "",
+                "url": "fanyi.sogou.com/?fr=wapsearch_submit&pid=sogouwap&keyword="
+            },
+            "百度翻译": {
+                "icon": "",
+                "color": "#2319DC",
+                "wap": "",
+                "url": "fanyi.baidu.com/#zh/en/"
+            }
         }
     },
     "books": {
@@ -213,46 +219,26 @@
                 "color": ""
             },
             "知乎收藏夹": {
-                "url": "www.zhihu.com/collections",
-                "color": ""
-            }
-        },
-        "编程": {
-            "小甲鱼": {
-                "color": "",
-                "url": "www.zybuluo.com/iwangyang/note/460072"
-            },
-            "萧瓜": {
-                "color": "#08c",
-                "url": "www.zybuluo.com/iwangyang/note/519509"
-            },
-            "美化代码": {
-                "color": "",
-                "url": "jsbeautifier.org"
+                "color": "#08C",
+                "url": "www.zhihu.com/collections"
             }
         },
         "新闻": {
             "好奇心日报": {
-                "url": "www.qdaily.com/",
-                "color": ""
+                "color": "",
+                "url": "www.qdaily.com"
             },
             "澎湃新闻": {
-                "url": "www.thepaper.cn/",
-                "color": ""
-            }
-        },
-        "软件": {
-            "蓝灯": {
-                "url": "github.com/getlantern/forum/issues/833",
-                "color": ""
+                "color": "",
+                "url": "www.thepaper.cn"
             }
         }
     },
-    "note": "🍓记事本\n",
+    "note": "🍓记事本",
     "def": {
         "order": {
-            "engine": ["综合", "编程", "认知", "图片", "新闻", "网购", "旅行", "地图", "音乐", "视频"],
-            "book": ["常用", "编程", "新闻", "软件"]
+            "engine": ["综合", "翻译", "认知", "图片", "新闻", "网购", "旅行", "地图", "音乐", "视频"],
+            "book": ["常用", "新闻"]
         },
         "logo": {
             "cls": "综合",

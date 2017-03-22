@@ -158,22 +158,20 @@ app.post('/user/join-sms', function (req, res) {
         User[phone].sms = Mer.SMS()
         // 发送短信 promise 方式调用
         var options = {
-                sms_free_sign_name: '大海',
-                sms_param: {
-                    "number": User[phone].sms
-                },
-                "rec_num": phone,
-                sms_template_code: 'SMS_51075001',
-            }
-
-        res.send({send:true, text:'短信已发送，请耐心等候' + User[req.body.phone].sms})
-        //// 花钱的地方来了 take money this
-        // client.sms(options)
-        //     .then(function(data) {
-        //         res.send({send:true, text:'短信已发送，请耐心等候'})
-        //     }).catch(function(err) {
-        //         res.send({send:true, text:'短信发送失败，请联系管理员'})
-        //     })
+            sms_free_sign_name: '大海',
+            sms_param: {
+                "number": User[phone].sms
+            },
+            "rec_num": phone,
+            sms_template_code: 'SMS_51075001',
+        }
+        // 花钱的地方来了 take money this
+        client.sms(options)
+            .then(function(data) {
+                res.send({send:true, text:'短信已发送，请耐心等候'})
+            }).catch(function(err) {
+                res.send({send:true, text:'短信发送失败，请联系管理员'})
+            })
     }
 })
 app.post('/user/join', function (req, res) {
@@ -202,10 +200,18 @@ app.post('/user/join-name', function (req, res) {
     var name = fs.readFileSync('user/name.json', 'utf8')
     name = JSON.parse(name)
     // 检查名字
-    if (new Set(name).has(req.body.name)) {
+    var bool = false
+    for (var i of name) {
+        // 忽略大小写
+        if (i.toLowerCase() === req.body.name.toLowerCase()) {
+            bool = true
+            break
+        }
+    }
+    if (bool) {
         res.send({
             "add": false,
-            "text": '该名已被占用'
+            "text": (req.body.name + ' 已被占用')
         })
     } else {
         // name
@@ -237,11 +243,8 @@ app.post('/user/join-name', function (req, res) {
             })
         }
     }
-
-
-
-
 })
+
 // listen 函数监听端口
 var server = app.listen(80, function () {
   var host = server.address().address
