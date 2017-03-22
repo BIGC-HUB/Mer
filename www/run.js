@@ -9,21 +9,6 @@ const fs = require('fs')
 // 引入 sms API
 const Alidayu = require('super-alidayu')
 const client = new Alidayu({app_key: '23658012', secret: '774c4d0876b01d83b58470809d1e8947'})
-// 发送短信 promise 方式调用
-// var options = {
-//         sms_free_sign_name: '大海',
-//         sms_param: {
-//             number: '1100'
-//         },
-//         rec_num: '18966702120',
-//         sms_template_code: 'SMS_51075001',
-//     }
-// client.sms(options)
-//     .then(function(data) {
-//         log('短信发送成功！')
-//     }).catch(function(err) {
-//         log('短信发送失败！')
-//     })
 
 // 配置 body-Parser
 app.use(bodyParser.json())
@@ -32,11 +17,12 @@ app.use(bodyParser.json())
 app.use(express.static('public'))
 
 var User = {
-    name: {}
+    sms: 0,
+    phone: 0
 }
 const Mer = {
-    sms: function() {
-        return (parseInt(Math.random()*(10000-1000)+1000))
+    SMS: function() {
+        return String(parseInt(Math.random()*(10000-1000)+1000))
     },
     cookie: function(req) {
         // Cookie
@@ -164,10 +150,38 @@ app.post('/user/login', function (req, res) {
 })
 // 注册
 app.post('/user/join-sms', function (req, res) {
-    var cookie = Mer.cookie(req)
+    User.sms = '1207' || Mer.SMS()
+    User.phone = req.body.phone
+    // 发送短信 promise 方式调用
+    var options = {
+            sms_free_sign_name: '大海',
+            sms_param: {
+                "number": User.sms
+            },
+            "rec_num": User.phone,
+            sms_template_code: 'SMS_51075001',
+        }
+    //// 花钱的地方来了 take money this
+    // client.sms(options)
+    //     .then(function(data) {
+    //         res.send(phone + ' 短信发送成功！')
+    //     }).catch(function(err) {
+    //         res.send(phone + ' 短信发送失败！')
+    //     })
+
 })
 app.post('/user/join', function (req, res) {
-    var cookie = Mer.cookie(req)
+    var phone = req.body.phone
+    var sms = req.body.sms
+    if (phone === User.phone) {
+        if (sms === User.sms) {
+            res.send('注册成功！')
+        } else {
+            res.send('短信验证错误')
+        }
+    } else {
+        res.send('手机号错误')
+    }
 })
 
 // listen 函数监听端口

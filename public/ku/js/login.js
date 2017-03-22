@@ -149,7 +149,7 @@ $('#login-phone').on('blur', function() {
     if (num) {
         $('#login-phone-11').text(num)
     } else {
-        $('#login-phone-11').html('<i class="iconfont icon-go"></i>')
+        $('#login-phone-11').html('<i class="sms iconfont icon-go"></i>')
         $('#login .text').text('短信验证码')
     }
 })
@@ -205,14 +205,65 @@ $('#login-btn .dengl').on('click', function() {
     }
 })
 $('#login-btn .zhuce').on('click', function() {
+    var zhuce = function() {
+        var phone = $('#login-phone').val()
+        var sms  = $('#login-sms').val()
+        Ajax('user/join', {"phone": phone, "sms": sms})
+    }
     if ($('#login-zhuce').css('display') === 'none') {
         $('#login-dengl').hide()
         $('#login-zhuce').animate({ height:'show' })
-        $('#login .text').text('暂未开放注册')
+        $('#login .text').text('请输入手机 | 发送验证码')
     } else {
-        console.log('注册')
+        if ($('#login-phone').val().length === 11) {
+            if ($('#login-sms').val().length === 4) {
+                zhuce()
+            } else {
+                $('#login-sms').focus()
+            }
+        } else {
+            $('#login-phone').focus()
+        }
     }
 })
+$('#login-phone-11').on('click', '.sms', function() {
+    $('#login .text').text('短信已发送，请耐心等候')
+    var input = $('#login-phone')
+    var go = $('#login-phone-11')
+    var time = $('#login-sms-60')
+    Ajax('user/join-sms', {phone: input.val()})
+    go.html('<i class="iconfont icon-more"></i>')
+    input.off('blur')
+    input.attr("readonly", "readonly")
+    var s = 60
+    var countTime = setInterval(function() {
+        s -= 1
+        time.text(s)
+        if (s == 0) {
+            time.text(60)
+            clearInterval(countTime)
+            input.removeAttr("readonly")
+            input.on('blur', function() {
+                var str = ''
+                for (var i of event.target.value) {
+                    if (/\d/.test(i)) {
+                        str += i
+                    }
+                }
+                event.target.value = str
+                var num = 11 - str.length
+                if (num) {
+                    go.text(num)
+                } else {
+                    go.html('<i class="sms iconfont icon-go"></i>')
+                    $('#login .text').text('短信验证码')
+                }
+            })
+        }
+    }, 1000)
+})
+
+// information
 $('#login-information .enter').on('click', function() {
     Mer.Note(User.note)
     $('#more-button i').removeClass('transparent')

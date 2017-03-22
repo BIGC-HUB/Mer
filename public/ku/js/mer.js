@@ -164,9 +164,7 @@ $('#search').on('click', 'logo', function() {
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
         $('#engine,#book,#login,#edit-cont').hide()
-        $('#search').animate({
-            height: 'show'
-        })
+        $('#search').animate({height: 'show'})
     }
 })
 $('#top').on('click', '.book', function() {
@@ -409,7 +407,7 @@ $('#engine').on('click', 'engine', function() {
     if (Mer.rest.short) {
         Mer.Engine()
         $('#engine').hide()
-        $('#search').slideDown("slow")
+        $('top.home').click()
     }
 })
 
