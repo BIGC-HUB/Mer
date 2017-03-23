@@ -247,7 +247,7 @@ app.post('/user/join-name', function (req, res) {
 })
 
 // listen 函数监听端口
-var server = app.listen(80, function () {
+var server = app.listen(1207, function () {
   var host = server.address().address
   var port = server.address().port
   console.log("应用实例，访问地址为 http://%s:%s", host, port)

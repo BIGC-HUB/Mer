@@ -174,6 +174,11 @@ Mer.send = {
                 show.style.height = 'auto'
             }
             $('#edit-btn .no').click()
+            // logo
+            var logo = $('logo i,logo span').data()
+            if (logo.cls === cls && logo.key === key) {
+                __initLogo(User.def.logo)
+            }
             Mer.save()
         } else {
             if (Object.keys(User[kind][cls]).length) {
@@ -301,8 +306,14 @@ Mer.send = {
                         // 没有重复才可以删除
                         $(e.parentElement).html(Mer.showHtml(tag, cls))
                         $('#edit-btn .no').click()
+                        // def
                         if (key === User.def.logo.key && cls === User.def.logo.cls) {
                             User.def.logo.key = newName
+                        }
+                        // logo
+                        var logo = $('logo i,logo span').data()
+                        if (logo.cls === cls && logo.key === key) {
+                            __initLogo({"key":newName,"cls":cls})
                         }
                         Mer.save()
                     } else if (key == newName) {
@@ -365,6 +376,11 @@ Mer.send = {
             delete User[kind][cls][key]
             e.remove()
             $('#edit-btn .no').click()
+            // logo
+            var logo = $('logo i,logo span').data()
+            if (logo.cls === cls && logo.key === key) {
+                __initLogo({"key":key,"cls":newCls})
+            }
             Mer.save()
         }
     },
