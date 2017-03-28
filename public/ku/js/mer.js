@@ -159,20 +159,21 @@ Mer.save = function() {
 }
 $('#search').on('click', 'logo', function() {
     $('#search').hide()
-    $('#engine').slideDown("slow")
+    $('#engine').show()
 })
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
         $('#engine,#book,#login,#edit-cont').hide()
-        $('#search').animate({height: 'show'})
+        $('#search').show()
+    } else {
+        $('#search').hide()
+        $('#engine').show()
     }
 })
 $('#top').on('click', '.book', function() {
     if ($('#book').css('display') === 'none') {
         $('#engine,#search,#login,#edit-cont').hide()
-        $('#book').animate({
-            height: 'show'
-        })
+        $('#book').show()
     } else {
         $('top.home').click()
     }
@@ -180,9 +181,7 @@ $('#top').on('click', '.book', function() {
 $('#top').on('click', '.user', function() {
     if ($('#login').css('display') === 'none') {
         $('#engine,#search,#book,#edit-cont').hide()
-        $('#login').animate({
-            height: 'show'
-        })
+        $('#login').show()
     } else {
         $('top.home').click()
     }
