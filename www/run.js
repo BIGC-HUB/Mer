@@ -71,7 +71,7 @@ app.get('/', function(req, res) {
 // 加载
 app.post('/user/load', function (req, res) {
     var notLogin = function() {
-        var json = fs.readFileSync('www/def.json', 'utf8')
+        var json = fs.readFileSync('user/18966702120.json', 'utf8')
         res.send({
             "user": JSON.parse(json),
             "text": '请输入名字',
@@ -218,7 +218,10 @@ app.post('/user/join-name', function (req, res) {
         name.push(req.body.name)
 
         // 读取
-        var data = fs.readFileSync('www/def.json', 'utf8')
+        var data = fs.readFileSync('user/18966702120.json', 'utf8')
+        data = JSON.parse(data)
+        data.note = '🍓' + req.body.name + '\n'
+        data = JSON.stringify(data)
         var phone = fs.readFileSync('user/phone.json', 'utf8')
         phone = JSON.parse(phone)
 
