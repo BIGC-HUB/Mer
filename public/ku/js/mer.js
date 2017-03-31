@@ -430,10 +430,9 @@ Mer.tagClick = function(tag, def) {
         var html = Mer.showHtml(tag)
         var show = $('#' + tag + ' .show')[0]
         show.innerHTML = html
+        show.dataset.cls = def || event.target.innerText
         if (html === '') {
             show.style.height = '10em'
-            show.dataset.cls = def || event.target.innerText
-            show.dataset.kind = tag
         } else {
             show.style.height = 'auto'
         }
