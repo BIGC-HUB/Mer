@@ -42,7 +42,11 @@ const Mer = {
         var Obj = JSON.parse(json)
         // Phone Number
         if (!isNaN(name) && name.length === 11) {
-            i.phone = name
+            if (Obj[name] === undefined) {
+                return i
+            } else {
+                i.phone = name
+            }
         } else {
             for (var phone in Obj) {
                 // 忽略大小写
@@ -218,8 +222,8 @@ app.post('/user/join-name', function (req, res) {
         name.push(req.body.name)
 
         // 读取
-        var data = fs.readFileSync('user/18966702120.json', 'utf8')
-        data = JSON.parse(data)
+        var json = fs.readFileSync('user/18966702120.json', 'utf8')
+        var data = JSON.parse(json)
         data.note = '🍓' + req.body.name + '\n'
         data = JSON.stringify(data)
         var phone = fs.readFileSync('user/phone.json', 'utf8')

@@ -172,6 +172,8 @@ $('#login-sms').on('blur', function() {
 // 按钮
 $('#login-btn .dengl').on('click', function() {
     var send = function() {
+        $('#login .text').text('正在登录，请稍后')
+        $('#login-btn').css('pointer-events','none')
         var name = $('#login-name').val()
         var key  = $('#login-key').val()
         setCookie('name', name, 7)
@@ -179,6 +181,7 @@ $('#login-btn .dengl').on('click', function() {
         Ajax('user/login', null, function(data){
             var data = JSON.parse(data)
             $('#login .text').text(data.text)
+            $('#login-btn').css('pointer-events','auto')
             if (data.login) {
                 User = data.user
                 Mer.dengl = data.login

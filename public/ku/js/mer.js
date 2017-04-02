@@ -1,8 +1,8 @@
 // 定义 log enSure
-var log = function() {
+const log = function() {
     console.log.apply(console, arguments)
 }
-var ckXian = function() {
+const ckXian = function() {
     var body = document.querySelector('body')
     var style = '<style id="xm" media="screen"> * {outline: 1px red dashed!important} </style>'
     var i = false
@@ -19,7 +19,7 @@ var ckXian = function() {
         }
     })
 }()
-var Ajax = function(url, data, func, sync) {
+const Ajax = function(url, data, func, sync) {
     if (sync === undefined) { // false 同步
         sync = true // true  异步
     }
@@ -44,8 +44,8 @@ var Ajax = function(url, data, func, sync) {
     } // 发送 请求
 }
 
-// Cokie
-var setCookie = function(name, value, days) {
+// Cookie
+const setCookie = function(name, value, days) {
     var date = new Date()
     var str = ''
     if (days) {
@@ -56,7 +56,7 @@ var setCookie = function(name, value, days) {
     }
     document.cookie = name + "=" + encodeURIComponent(value) + str
 }
-var getCookie = function(name) {
+const getCookie = function(name) {
     var arr = document.cookie.split('; ')
     for (var i of arr) {
         var e = i.split('=')
