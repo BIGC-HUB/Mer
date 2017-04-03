@@ -353,7 +353,7 @@ Mer.Mini = function(engines, def) {
         }
     }
     $('#more-i').append(miniHtml)
-    $('style').append(styleHtml)
+    $('style').html(styleHtml)
 }
 Mer.Note = function(note) {
     if (Mer.dengl) {
