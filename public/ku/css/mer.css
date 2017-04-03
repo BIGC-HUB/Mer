@@ -5,7 +5,8 @@ body {
     user-select:none;
     -webkit-user-select:none;
     -moz-user-select:none;
-    background: white url(../img/paper.png) repeat center top;
+    background-color: #FFF;
+    color: #333;
 }
 span, i, #edit-btn div, #login-information input {
     pointer-events: none;
@@ -37,7 +38,6 @@ logo, tag, engine, top, li {
 
 /* 字体栈 */
 html, button, input, select, textarea{
-    color: #333;
     font-size: 1.17em;
     font-family: SF UI Text,Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
     letter-spacing: 0.01em;
@@ -74,7 +74,7 @@ input::-webkit-input-placeholder {
 .fa-mini {
     display: block;
     font-size: 2.8em;
-    color: rgba(15,32,65,.2);
+    color: rgba(15,32,65,0.2);
 }
 .fa-mini + .fa-mini {
     margin-top: 4px;
@@ -108,7 +108,7 @@ top {
     line-height: 3em;
 }
 top:hover {
-    color: #666;
+    color: #444;
 }
 
 /* logo */
@@ -227,6 +227,7 @@ logo span {
 
 /* note */
 #more-ul textarea {
+    border-radius: 4px;
     font-size: 1em;
     width: 100%;
     height: 15.666em;
@@ -236,6 +237,7 @@ logo span {
     outline: 0;
 }
 #more-ul textarea:focus {
+    background: rgba(245, 246, 249, 0.76);
     overflow: auto;
 }
 
@@ -253,7 +255,6 @@ tag {
 }
 tag:hover {
     background-color:rgba(245, 246, 249, 0.76);
-    color: #555;
 }
 engine {
     vertical-align: bottom;
@@ -262,7 +263,6 @@ engine {
     height: 6.5em;
     line-height: 6.5em;
     border-radius: 50%;
-    color: #666;
     border: 1px solid transparent;
 }
 engine:hover {
