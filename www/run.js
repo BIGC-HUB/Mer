@@ -8,7 +8,10 @@ const app = express()
 const fs = require('fs')
 // 引入 sms API
 const Alidayu = require('super-alidayu')
-const client = new Alidayu({app_key: '23658012', secret: '774c4d0876b01d83b58470809d1e8947'})
+const client = new Alidayu({
+    app_key: '23658012',
+    secret: '774c4d0876b01d83b58470809d1e8947'
+})
 
 // 配置 body-Parser
 app.use(bodyParser.json())
@@ -38,8 +41,7 @@ const Mer = {
         } else {
             return i
         }
-        var json = fs.readFileSync('user/phone.json', 'utf8')
-        var Obj = JSON.parse(json)
+        var Obj = JSON.parse(fs.readFileSync('user/phone.json', 'utf8'))
         // Phone Number
         if (!isNaN(name) && name.length === 11) {
             if (Obj[name] === undefined) {
@@ -75,9 +77,10 @@ app.get('/', function(req, res) {
 // 加载
 app.post('/user/load', function (req, res) {
     var notLogin = function() {
-        var json = fs.readFileSync('user/18966702120.json', 'utf8')
+        var data = JSON.parse(fs.readFileSync('user/18966702120.json', 'utf8'))
+        data.note = ''
         res.send({
-            "user": JSON.parse(json),
+            "user": data,
             "text": '请输入名字',
             "login": false
         })
@@ -88,9 +91,9 @@ app.post('/user/load', function (req, res) {
         if (i.phone) {
             if (i.key === cookie.key){ // 登录成功
                 var url = 'user/' + i.phone + '.json'
-                var data = fs.readFileSync(url, 'utf8')
+                var data = JSON.parse(fs.readFileSync(url, 'utf8'))
                 res.send({
-                    "user": JSON.parse(data),
+                    "user": data,
                     "text": "欢迎回来",
                     "login": true,
                     "name": i.name,
@@ -128,9 +131,9 @@ app.post('/user/login', function (req, res) {
     if (i.phone) {
         if (i.key === cookie.key){
             var url = 'user/' + i.phone + '.json'
-            var data = fs.readFileSync(url, 'utf8')
+            var data = JSON.parse(fs.readFileSync(url, 'utf8'))
             res.send({
-                "user": JSON.parse(data),
+                "user": data,
                 "text": '欢迎回来',
                 "login": true,
                 "name": i.name,
@@ -153,8 +156,7 @@ app.post('/user/login', function (req, res) {
 // 注册
 app.post('/user/join-sms', function (req, res) {
     var phone = req.body.phone
-    var json = fs.readFileSync('user/phone.json', 'utf8')
-    var Obj = JSON.parse(json)
+    var Obj = JSON.parse(fs.readFileSync('user/phone.json', 'utf8'))
     if (Obj[phone]) {
         res.send({send:false, text:'已注册，请登录'})
     } else {
@@ -201,8 +203,7 @@ app.post('/user/join', function (req, res) {
     }
 })
 app.post('/user/join-name', function (req, res) {
-    var name = fs.readFileSync('user/name.json', 'utf8')
-    name = JSON.parse(name)
+    var name = JSON.parse(fs.readFileSync('user/name.json', 'utf8'))
     // 检查名字
     var bool = false
     for (var i of name) {
@@ -222,12 +223,10 @@ app.post('/user/join-name', function (req, res) {
         name.push(req.body.name)
 
         // 读取
-        var json = fs.readFileSync('user/18966702120.json', 'utf8')
-        var data = JSON.parse(json)
+        var data = JSON.parse(fs.readFileSync('user/18966702120.json', 'utf8'))
         data.note = '🍓' + req.body.name + '\n'
         data = JSON.stringify(data)
-        var phone = fs.readFileSync('user/phone.json', 'utf8')
-        phone = JSON.parse(phone)
+        var phone = JSON.parse(fs.readFileSync('user/phone.json', 'utf8'))
 
         // phone
         phone[req.body.phone] = {}

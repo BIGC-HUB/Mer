@@ -244,7 +244,6 @@ logo span {
 
 /* engine */
 .kind {
-    border-top: 3px dashed rgba(15,32,65,.2);
     border-bottom: 3px dashed rgba(15,32,65,.2);
 }
 tag {
