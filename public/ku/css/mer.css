@@ -235,7 +235,7 @@ logo span {
     border-style: none;
     overflow-y: hidden;
     outline: 0;
-    color: #333;
+    color: #222;
 }
 #more-ul textarea:focus {
     background: rgba(245, 246, 249, 0.76);

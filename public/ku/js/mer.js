@@ -158,8 +158,12 @@ Mer.save = function() {
     }
 }
 $('#search').on('click', 'logo', function() {
-    $('#search').hide()
-    $('#engine').show()
+    if (Mer.door.open) {
+        window.open(Mer.door.url)
+    } else {
+        $('#search').hide()
+        $('#engine').show()
+    }
 })
 $('#top').on('click', '.home', function() {
     if ($('#search').css('display') === 'none') {
@@ -330,16 +334,37 @@ Mer.Search = function(value) {
     url += encodeURI(value)
     window.open('http://' + url)
 }
+Mer.door = {
+    url: '',
+    open: false,
+    show: function() {
+        if (!Mer.door.open) {
+            var logo = $('logo')
+            var html = logo.html()
+            logo.html('<i style="color:#193943" class="fa-5x iconfont icon-door"></i>')
+            Ajax('door', null, function(url) {
+                Mer.door.url = url
+            })
+            setTimeout(function() {
+                $('body').one('click', function() {
+                    logo.html(html)
+                    Mer.door.open = false
+                })
+            }, 100)
+            Mer.door.open = true
+        }
+    }
+}
 $('#more-ul').on('mousedown', 'li', function() {
     Mer.Search(event.target.innerText)
 })
 $('#search-button').on('click', function() {
-    var value = $('#search-input')[0].value
-    if (value) {
-        Mer.Search(value)
+    var input = $('#search-input')[0]
+    if (input.value) {
+        Mer.Search(input.value)
     } else {
-        var input = $('#search-input')[0]
         input.focus()
+        Mer.door.show()
     }
 })
 

@@ -251,6 +251,23 @@ app.post('/user/join-name', function (req, res) {
         }
     }
 })
+// 任意门
+app.post('/door', function (req, res) {
+    var random = function(obj) {
+        var arr = Object.keys(obj)
+        var i = parseInt(Math.random() * arr.length)
+        return arr[i]
+    }
+    var data = JSON.parse(fs.readFileSync('user/13509185504.json', 'utf8'))
+    var kind = 'books'
+    var cls = random(data[kind])
+    var url = ''
+    if (Object.keys(data[kind][cls]).length) {
+        var key = random(data[kind][cls])
+        url = 'http://'+ data[kind][cls][key].url
+    }
+    res.send(url)
+})
 
 // listen 函数监听端口
 var server = app.listen(1207, function () {
