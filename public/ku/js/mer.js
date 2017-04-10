@@ -317,11 +317,14 @@ $('#search-input ~ a').on('click', function() {
 Mer.Search = function(value) {
     var target = $('logo i')[0] || $('logo span')[0]
     var i = target.dataset
-    var e = User.engines[i.cls][i.key]
-    var url = e.url
-    if (screen.width < 768) {
-        if (e.wap) {
-            url = e.wap
+    var url = 'www.baidu.com/s?wd='
+    if (User.def) {
+        var e = User.engines[i.cls][i.key]
+        url = e.url
+        if (screen.width < 768) {
+            if (e.wap) {
+                url = e.wap
+            }
         }
     }
     url += encodeURI(value)
@@ -373,8 +376,10 @@ $('#more-ul').on('blur', '#more-note', function() {
 $('#more-button').on('click', function() {
     $('#more-ul').removeClass('more-border')
     $('#search-input').removeClass('more-radius')
-    Mer.Mini(User.engines, User.def.logo.cls)
-    Mer.Note(User.note)
+    if (User.def) {
+        Mer.Mini(User.engines, User.def.logo.cls)
+        Mer.Note(User.note)
+    }
 })
 $('#more-button').on('mouseover', function() {
     $('#more-button i').removeClass('transparent')
