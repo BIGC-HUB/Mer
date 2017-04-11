@@ -286,6 +286,6 @@ $('#login-phone-11').on('click', '.sms', function() {
 // information
 $('#login-information .enter').on('click', function() {
     Mer.Note(User.note)
-    $('#more-button i').removeClass('transparent')
+    $('#more-button').css('color', '#444')
     $('top.home').click()
 })

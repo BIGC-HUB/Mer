@@ -86,7 +86,7 @@ var __initMain = function() {
         '</div>' +
         '<div class="more"><ul id="more-ul"></ul><div id="more-i">' +
         '<button id="more-button">' +
-        '<i class="transparent fa-1x iconfont icon-down" aria-hidden="true"></i>' +
+        '<i class="fa-1x iconfont icon-down" aria-hidden="true"></i>' +
         '</button>' +
         '</div>' +
         '</div>'
@@ -265,7 +265,7 @@ $('#search-input').on('blur', function() {
 })
 $('#search-input').on('focus', function() {
     $('.fa-mini').remove()
-    $('#more-button i').addClass('transparent')
+    $('#more-button').css('color', 'transparent')
     // 智能联想
     if (Mer.ai.moreHtml && event.target.value) {
         $('#more-ul').html(Mer.ai.moreHtml)
@@ -339,15 +339,20 @@ Mer.door = {
     open: false,
     show: function() {
         if (!Mer.door.open) {
-            var logo = $('logo')
-            var html = logo.html()
-            logo.html('<i style="color:#193943" class="fa-5x iconfont icon-door"></i>')
             Ajax('door', null, function(url) {
                 Mer.door.url = url
             })
+            var logo = $('logo')
+            var obj = logo.children()[0].dataset
+            $('#top, #more-button').css('color', '#444')
+            $('.fa-mini').remove()
+            $('#more-ul').html('')
+            logo.html('<i style="color:#193943" class="fa-5x iconfont icon-door"></i>')
             setTimeout(function() {
                 $('body').one('click', function() {
-                    logo.html(html)
+                    __initLogo(obj)
+                    $('#top').css('color', 'transparent')
+                    $('#search-input')[0].placeholder = ''
                     Mer.door.open = false
                 })
             }, 100)
@@ -363,8 +368,8 @@ $('#search-button').on('click', function() {
     if (input.value) {
         Mer.Search(input.value)
     } else {
-        input.focus()
         Mer.door.show()
+        input.placeholder = '任意门'
     }
 })
 
@@ -399,6 +404,7 @@ $('#more-ul').on('blur', '#more-note', function() {
     Mer.save()
 })
 $('#more-button').on('click', function() {
+    $('#more-button').css('color', '#444')
     $('#more-ul').removeClass('more-border')
     $('#search-input').removeClass('more-radius')
     if (User.def) {
@@ -407,7 +413,7 @@ $('#more-button').on('click', function() {
     }
 })
 $('#more-button').on('mouseover', function() {
-    $('#more-button i').removeClass('transparent')
+    $('#more-button').css('color', '#444')
 })
 $('#more-i').on('click', '.fa-mini', function() {
     Mer.Engine()

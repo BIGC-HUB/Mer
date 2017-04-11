@@ -210,13 +210,11 @@ logo span {
     font-size: 21px;
 }
 #more-button {
+    color: transparent;
     width: 3.9em;
     border: 1px solid transparent;
     background-color: transparent;
     font-size: 25px;
-}
-#more-button:hover {
-    color: #037DD8;
 }
 #more-i {
     display: inline-block;
