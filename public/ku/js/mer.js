@@ -18,7 +18,8 @@ const ckXian = function() {
             }
         }
     })
-}()
+}
+ckXian()
 const Ajax = function(url, data, func, sync) {
     if (sync === undefined) { // false 同步
         sync = true // true  异步
@@ -345,13 +346,11 @@ Mer.door = {
             var logo = $('logo')
             var obj = logo.children()[0].dataset
             $('#top, #more-button').css('color', '#444')
-            $('.fa-mini').remove()
-            $('#more-ul').html('')
             logo.html('<i style="color:#193943" class="fa-5x iconfont icon-door"></i>')
             setTimeout(function() {
                 $('body').one('click', function() {
                     __initLogo(obj)
-                    $('#top').css('color', 'transparent')
+                    $('#top, #more-button').css('color', 'transparent')
                     $('#search-input')[0].placeholder = ''
                     Mer.door.open = false
                 })
@@ -404,7 +403,7 @@ $('#more-ul').on('blur', '#more-note', function() {
     Mer.save()
 })
 $('#more-button').on('click', function() {
-    $('#more-button').css('color', '#444')
+    $('#more-button').css('color', 'black')
     $('#more-ul').removeClass('more-border')
     $('#search-input').removeClass('more-radius')
     if (User.def) {

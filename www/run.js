@@ -76,6 +76,19 @@ app.get('/', function(req, res) {
 })
 // 加载
 app.post('/user/load', function (req, res) {
+
+    // res.cookie('name', '#', {
+    //     maxAge: 600000,
+    //     httpOnly: true,
+    //     path: '/',
+    // })
+    // res.cookie('key', '5504', {
+    //     maxAge: 600000,
+    //     httpOnly: true,
+    //     path: '/',
+    // })
+    // log(req.headers.cookie)
+
     var notLogin = function() {
         var data = JSON.parse(fs.readFileSync('user/18966702120.json', 'utf8'))
         data.note = ''
