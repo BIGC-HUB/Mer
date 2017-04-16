@@ -1,72 +1,3 @@
-// 定义 log enSure
-const log = function() {
-    console.log.apply(console, arguments)
-}
-const ckXian = function() {
-    var body = document.querySelector('body')
-    var style = '<style id="xm" media="screen"> * {outline: 1px red dashed!important} </style>'
-    var i = false
-    body.addEventListener('keydown', function(event) {
-        if (event.keyCode === 77 && event.ctrlKey) {
-            if (i) {
-                var styletog = document.querySelector('#xm')
-                styletog.remove()
-                i = false
-            } else {
-                body.insertAdjacentHTML('afterbegin', style)
-                i = true
-            }
-        }
-    })
-}
-ckXian()
-const Ajax = function(url, data, func, sync) {
-    if (sync === undefined) { // false 同步
-        sync = true // true  异步
-    }
-    if (func === undefined) {
-        func = function(err) {
-            console.log(err)
-        }
-    }
-    var r = new XMLHttpRequest() // 创建 AJAX 对象
-    r.open('POST', url, sync) // 请求方法 网址 同步
-    r.setRequestHeader('Content-Type', 'application/json')
-    r.onreadystatechange = function() {
-        if (r.readyState === 4) { // 完成
-            func(r.response) // 注册 响应函数 结果
-        }
-    }
-    if (data) { // POST
-        data = JSON.stringify(data)
-        r.send(data)
-    } else { // GET
-        r.send()
-    } // 发送 请求
-}
-
-// Cookie
-const setCookie = function(name, value, days) {
-    var date = new Date()
-    var str = ''
-    if (days) {
-        date.setDate(date.getDate() + days)
-        str = ";expires=" + date.toGMTString()
-    } else {
-        str = ''
-    }
-    document.cookie = name + "=" + encodeURIComponent(value) + str
-}
-const getCookie = function(name) {
-    var arr = document.cookie.split('; ')
-    for (var i of arr) {
-        var e = i.split('=')
-        if (e[0] === name) {
-            return e[1]
-        }
-    }
-}
-
 // Html
 var __initTop = function() {
     var html =
@@ -141,7 +72,7 @@ var User = {}
 
 // Top
 Mer.load = function() {
-    Ajax('user/load', null, function(data) {
+    c.Ajax('user/load', null, function(data) {
         var data = JSON.parse(data)
         User = data.user
         Mer.dengl = data.login
@@ -155,7 +86,7 @@ Mer.load = function() {
 }
 Mer.save = function() {
     if (Mer.dengl) {
-        Ajax('user/save', User)
+        c.Ajax('user/save', User)
     }
 }
 $('#search').on('click', 'logo', function() {
@@ -340,7 +271,7 @@ Mer.door = {
     open: false,
     show: function() {
         if (!Mer.door.open) {
-            Ajax('door', null, function(url) {
+            c.Ajax('door', null, function(url) {
                 Mer.door.url = url
             })
             var logo = $('logo')

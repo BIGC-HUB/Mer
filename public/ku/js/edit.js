@@ -145,8 +145,8 @@ Mer.edit = {
         log('修改', e.className)
     },
     exit: function() {
-        setCookie('name', '', 0)
-        setCookie('key', '', 0)
+        c.Cookie('name', '', 0)
+        c.Cookie('key', '', 0)
         Mer.load()
         Mer.login.hide()
     }
@@ -387,7 +387,7 @@ Mer.send = {
     name: (phone) => {
         var name = $('#edit-val .name').val()
         if (name) {
-            Ajax('/user/join-name', {"name":name, "phone":phone}, (data) => {
+            c.Ajax('/user/join-name', {"name":name, "phone":phone}, (data) => {
                 var data = JSON.parse(data)
                 if (data.add) {
                     // 隐藏

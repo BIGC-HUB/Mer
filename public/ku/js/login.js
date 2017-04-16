@@ -176,9 +176,9 @@ $('#login-btn .dengl').on('click', function() {
         $('#login-btn, #login-dengl').css('pointer-events','none')
         var name = $('#login-name').val()
         var key  = $('#login-key').val()
-        setCookie('name', name, 7)
-        setCookie('key', key, 7)
-        Ajax('user/login', null, function(data){
+        c.Cookie('name', name, 7)
+        c.Cookie('key', key, 7)
+        c.Ajax('user/login', null, function(data){
             var data = JSON.parse(data)
             $('#login .text').text(data.text)
             $('#login-btn, #login-dengl').css('pointer-events','auto')
@@ -211,7 +211,7 @@ $('#login-btn .zhuce').on('click', function() {
     var zhuce = function() {
         var phone = $('#login-phone').val()
         var sms  = $('#login-sms').val()
-        Ajax('user/join', {"phone": phone, "sms": sms}, (data) => {
+        c.Ajax('user/join', {"phone": phone, "sms": sms}, (data) => {
             var data = JSON.parse(data)
             if (data.join) {
                 $('#login-sms').val('')
@@ -246,7 +246,7 @@ $('#login-phone-11').on('click', '.sms', function() {
     var input = $('#login-phone')
     var go = $('#login-phone-11')
     var time = $('#login-sms-60')
-    Ajax('user/join-sms', {phone: input.val()}, (data) => {
+    c.Ajax('user/join-sms', {phone: input.val()}, (data) => {
         var data = JSON.parse(data)
         $('#login .text').text(data.text)
         if (data.send) {
