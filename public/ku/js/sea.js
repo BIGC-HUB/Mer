@@ -2,31 +2,52 @@
 const log = function() {
     console.log.apply(console, arguments)
 }
-window.c = new Object
-// url data 必填
-c.Ajax = function(url, data, func, sync, Method) {
-    sync = sync || true // true 异步
+window.c = function(select) {
+    var arr = []
+    if (select) {
+        // 检查 select
+        if (isNaN(Number(select.slice(0,1)))) {
+            arr = document.querySelectorAll(select)
+            if (arr.length === 1) {
+                return arr[0]
+            } else {
+                return arr
+            }
+        }
+    }
+    return arr
+}
+// seaAjax ( url, data, [func, sync, Method] )
+c.Ajax = (url, data, func, sync, Method) => {
+    // true 异步
+    sync = sync || true
+    // 注册 响应函数
     func = func || function(e) {
         console.log(e)
     }
     Method = Method || 'POST'
-    var r = new XMLHttpRequest() // 创建 AJAX 对象
-    r.open(Method, url, sync) // 请求方法 网址 同步异步
+    // 创建 AJAX 对象
+    var r = new XMLHttpRequest()
+    r.open(Method, url, sync)
     r.setRequestHeader('Content-Type', 'application/json')
     r.onreadystatechange = function() {
-        if (r.readyState === 4) { // 完成
-            func(r.response) // 注册 响应函数 结果
+        // 完成
+        if (r.readyState === 4) {
+            func(r.response)
         }
     }
-    if (data) { // POST
+    // POST
+    if (data) {
         data = JSON.stringify(data)
         r.send(data)
-    } else { // GET
+    // GET
+    } else {
+        // 发送 请求
         r.send()
-    } // 发送 请求
+    }
 }
-// name 必填
-c.Cookie = function(name, value, day) {
+// seaCookie ( name, [value, day] )
+c.Cookie = (name, value, day) => {
     if (value === undefined) {
         // GET Cookie
         var arr = document.cookie.split('; ')
