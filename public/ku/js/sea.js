@@ -2,23 +2,36 @@
 const log = function() {
     console.log.apply(console, arguments)
 }
-window.c = function(select) {
-    var arr = []
+// 选择器
+window.Sea = function(select) {
+    var obj = new Sea.init
     if (select) {
         // 检查 select
         if (isNaN(Number(select.slice(0,1)))) {
             arr = document.querySelectorAll(select)
-            if (arr.length === 1) {
-                return arr[0]
-            } else {
-                return arr
+            obj.length = arr.length
+            for (var i = 0; i < obj.length; i++) {
+                obj[i] = arr[i]
             }
         }
     }
-    return arr
+    return obj
 }
-// seaAjax ( url, data, [func, sync, Method] )
-c.Ajax = (url, data, func, sync, Method) => {
+// 原型链
+Sea.init = function() {
+    this.length = 0
+}
+Sea.init.prototype = {
+    css: function(key, value) {
+        for (var i = 0; i < this.length; i++) {
+            this[i].style[key] = value
+        }
+    }
+}
+
+// 方法
+// ( url, data, [func, sync, Method] )
+Sea.Ajax = (url, data, func, sync, Method) => {
     // true 异步
     sync = sync || true
     // 注册 响应函数
@@ -46,8 +59,8 @@ c.Ajax = (url, data, func, sync, Method) => {
         r.send()
     }
 }
-// seaCookie ( name, [value, day] )
-c.Cookie = (name, value, day) => {
+// ( name, [value, day] )
+Sea.Cookie = (name, value, day) => {
     if (value === undefined) {
         // GET Cookie
         var arr = document.cookie.split('; ')
@@ -68,3 +81,10 @@ c.Cookie = (name, value, day) => {
         document.cookie = name + "=" + encodeURIComponent(value) + str
     }
 }
+
+window.c = window.Sea
+window.c.prototype = window.Sea.prototype
+
+$(function(){
+    a = c('i')
+})
