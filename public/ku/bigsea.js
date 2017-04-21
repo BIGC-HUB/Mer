@@ -90,8 +90,3 @@ Sea.Cookie = (name, value, day) => {
 
 window.c = window.Sea
 window.c.prototype = window.Sea.prototype
-
-c(function(){
-    a = c('i')
-    log(a)
-})
