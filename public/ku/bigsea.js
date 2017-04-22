@@ -7,33 +7,38 @@ window.Sea = function(select) {
     if (typeof select === 'function') {
         window.onload = select
     } else {
+        var push = [].push
         var obj = new Sea.init
         if (select) {
             // 检查 select
             if (isNaN(Number(select.slice(0,1)))) {
-                arr = document.querySelectorAll(select)
-                obj.length = arr.length
-                for (var i = 0; i < obj.length; i++) {
-                    obj[i] = arr[i]
+                nodeList = document.querySelectorAll(select)
+                for (var i = 0; i < nodeList.length; i++) {
+                    push.call(obj, nodeList[i])
                 }
+                return obj
             }
         }
         return obj
     }
 }
 // 原型链
-Sea.init = function() {
-    this.length = 0
-}
-Sea.init.prototype = {
-    bigsea: '2017-04',
-    css: function(key, value) {
-        for (var i = 0; i < this.length; i++) {
-            this[i].style[key] = value
-        }
-        return this
+Sea.init = function() {}
+var initArr = function() {
+    var arr = new Array
+    Sea.init.prototype = {
+        css: function(key, value) {
+            for (var i = 0; i < this.length; i++) {
+                this[i].style[key] = value
+            }
+            return this
+        },
+        push: arr.push,
+        slice: arr.slice,
+        concat: arr.concat,
+        indexOf: arr.indexOf
     }
-}
+}()
 
 // 定制方法 / 函数
 // ( url, data, [func, sync, Method] )
