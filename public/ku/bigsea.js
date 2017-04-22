@@ -1,9 +1,21 @@
-// 定义 log c
-const log = function() {
-    console.log.apply(console, arguments)
-}
+(function(global, factory ) {
+	"use strict";
+	if ( typeof module === "object" && typeof module.exports === "object" ) {
+		module.exports = global.document ?
+			factory(global, true) :
+			function(w) {
+				if (!w.document) {
+					throw new Error("Sea requires a window with a document");
+				}
+				return factory(w);
+			};
+	} else {
+		factory(global);
+	}
+}) ( typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
+"use strict";
 // 选择器
-window.Sea = function(select) {
+var Sea = function(select) {
     if (typeof select === 'function') {
         window.onload = select
     } else {
@@ -12,7 +24,7 @@ window.Sea = function(select) {
         if (select) {
             // 检查 select
             if (isNaN(Number(select.slice(0,1)))) {
-                nodeList = document.querySelectorAll(select)
+                var nodeList = document.querySelectorAll(select)
                 for (var i = 0; i < nodeList.length; i++) {
                     push.call(obj, nodeList[i])
                 }
@@ -24,21 +36,14 @@ window.Sea = function(select) {
 }
 // 原型链
 Sea.init = function() {}
-var initArr = function() {
-    var arr = new Array
-    Sea.init.prototype = {
-        css: function(key, value) {
-            for (var i = 0; i < this.length; i++) {
-                this[i].style[key] = value
-            }
-            return this
-        },
-        push: arr.push,
-        slice: arr.slice,
-        concat: arr.concat,
-        indexOf: arr.indexOf
+Sea.init.prototype = {
+    css: function(key, value) {
+        for (var i = 0; i < this.length; i++) {
+            this[i].style[key] = value
+        }
+        return this
     }
-}()
+}
 
 // 定制方法 / 函数
 // ( url, data, [func, sync, Method] )
@@ -93,5 +98,12 @@ Sea.Cookie = (name, value, day) => {
     }
 }
 
-window.c = window.Sea
-window.c.prototype = window.Sea.prototype
+if ( !noGlobal ) {
+	window.c = Sea;
+    // 定义 log c
+    window.log = function() {
+        console.log.apply(console, arguments)
+    }
+}
+return Sea
+})
