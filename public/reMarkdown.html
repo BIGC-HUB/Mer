@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>MarkDown</title>
+    </head>
+    <style>
+        html, button, input, select, textarea{
+            font-size: 1.17em;
+            font-family: SF UI Text,Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
+            letter-spacing: 0.01em;
+        }
+        #md {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .md {
+            display: inline-block;
+            vertical-align: top;
+            width: calc(50% - 40px);
+            height: 100%;
+            overflow: hidden;
+            padding: 0 20px;
+        }
+        .md-left {
+            padding: 10px 20px;
+            background-color: #333;
+        }
+        #md-edit {
+            width: 100%;
+            height: 100%;
+            resize: none;
+            border-style: none;
+            outline-style: none;
+            overflow: auto;
+            background-color: #333;
+            color: #FFF;
+        }
+        #md-show {
+            overflow: auto;
+        }
+    </style>
+    <body>
+        <div id="md">
+            <div class="md md-left">
+                <textarea id="md-edit"></textarea>
+            </div><div class="md md-right" id="md-show"></div>
+
+        </div>
+    </body>
+    <script src="https://cdn.bootcss.com/remarkable/1.7.1/remarkable.min.js"></script>
+    <script>
+        var md = new Remarkable()
+        c('#md-edit').on('input', function() {
+            c('#md-show').html(md.render(event.target.value))
+        })
+    </script>
+</html>

@@ -42,7 +42,22 @@ Sea.init.prototype = {
             this[i].style[key] = value
         }
         return this
-    }
+    },
+	on: function(events, listen, func) {
+		if (typeof listen === 'function') {
+			func = listen
+			for (var i = 0; i < this.length; i++) {
+				this[i].addEventListener(events, func, false)
+			}
+		}
+	},
+	html: function(html) {
+		if (html) {
+			this[0].innerHTML = html
+		} else {
+			return this[0].innerHTML
+		}
+	}
 }
 
 // 定制方法 / 函数
