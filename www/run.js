@@ -70,13 +70,20 @@ const Mer = {
 }
 
 // 读取 文件
+app.get(/(.+)/, function(req, res) {
+    res.status(404).send(
+        '<div class="tanChuang" style="text-align:center;position:fixed;top:0px;left:0px;width:100%;height:100%;background:black;color:white;">' +
+            '<div class="tanCenter" style="position:relative;top:50%;transform:translateY(-61.8%);">' +
+            '<a href="https://bigc.cc" style="color:#037DD8;text-decoration:none;"><img src="https://bigc.cc/favicon.ico">文件不在，请回</a>' +
+        '</div></div>')
+})
 app.get('/', function(req, res) {
     var data
     var host = req.headers.host.split(':')[0]
     if (host === 'localhost' || host === '127.0.0.1') {
         data = fs.readFileSync('www/index.html', 'utf8')
     } else {
-        data = fs.readFileSync('www/sever.html', 'utf8')
+        data = fs.readFileSync('public/index.html', 'utf8')
     }
     res.send(data)
 })
