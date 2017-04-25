@@ -22,7 +22,12 @@
 			} else {
 				return this[0].innerHTML
 			}
-		}
+		},
+        remove: function() {
+            for (var i = 0; i < this.length; i++) {
+                this[i].remove()
+            }
+        }
 	}
     if (typeof module === "object" && typeof module.exports === "object") {
         module.exports = func(false, Sea)
@@ -262,6 +267,17 @@ if (web) {
     window.log = function() {
         console.log.apply(console, arguments)
     }
+    // 参考线
+    c('body').on('keyup', function(e) {
+        var style = '<style id="ckx">*{outline: 1px dashed red !important}</style>'
+        if (e.key === '*') {
+            if (Object.keys(c('#ckx')).length) {
+                c('#ckx').remove()
+            } else {
+                e.target.insertAdjacentHTML('beforeend', style)
+            }
+        }
+    })
 }
 return Sea
 })
