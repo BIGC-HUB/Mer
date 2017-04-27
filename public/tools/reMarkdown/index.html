@@ -9,24 +9,33 @@
         code {
             font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
         }
-
-        html {
+        body {
+            -webkit-user-select: none;
             background: rgba(15,32,65,0.1);
         }
-
-        html, button, input, select, textarea {
+        html, button, input, select, textarea, a {
             font-size: 1.17em;
             font-family: Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
             letter-spacing: 0.01em;
         }
-        #md {
+        input, button, textarea {
+            -webkit-appearance: none;
             margin: 0 auto;
-            width: 61.8%;
+            background-color: transparent;
+        }
+        #md {
+            margin: 1.7% auto;
+            padding: 5%;
+            width: 80%;
+            border: 1px solid #dadada;
+            border-top: 10px solid #788396;
+            box-sizing: border-box;
+            box-shadow: 0 1px 1px #dadada;
         }
         .c {
             text-align: left;
         }
-        /*.md {
+        .md {
             display: inline-block;
             vertical-align: top;
             width: 50%;
@@ -35,19 +44,23 @@
             box-sizing: border-box;
             padding: 20px;
         }
-        #md-edit {
+        #md textarea {
+            width: 100%;
             background-color: #333;
             color: #FFF;
             /* textarea */
             resize: none;
             border-style: none;
             outline-style: none;
-            overflow: auto;
-        }*/
+            overflow-y: auto;
+            height: auto;
+            border-radius: 3px;
+            padding: 4px;
+        }
     </style>
     <body>
         <div id="md">
-            <div name="c#0" class="c" contenteditable="true"><h1>123</h1></div>
+            <div name="c#0" class="c"><h1>123</h1></div>
         </div>
     </body>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
@@ -75,29 +88,51 @@
                 return ''
             }
         })
-        $('#md').on('focus', '.c', function() {
-            var li = $(this).attr('name').split('#')[1]
-            var str = localStorage.md || ''// load
-            var arr = str.split(',')
-            if (arr[li]) {
-                $(this).text(arr[li])
-            } else {
-                $(this).text('')
-            }
-        })
-        $('#md').on('blur', '.c', function() {
-            var li = $(this).attr('name').split('#')[1]
-            var str = localStorage.md || ''// load
-            var arr = str.split(',')
-            arr[li] = $(this).text()
-            localStorage.md = arr.join(',') // save
-            $(this).html(md.render(arr[li]))
-        })
-        $('#md').on('keydown', '.c', function(e) {
-            if (e.keyCode === 13) {
+        $('#md').on('click', '.c', function(e) {
+            var bool = Boolean(this.dataset.edit)
+            if (!bool) {
+                this.dataset.edit = true
                 e.preventDefault()
-                $('#md').append('<div name="c#0" class="c" contenteditable="true"><h1>#</h1></div>')
+                var li = $(this).attr('name').split('#')[1]
+                var str = localStorage.md || ''// load
+                var arr = JSON.parse(str)
+                var html = ''
+                if (arr[li]) {
+                    html = '<textarea rows="1" spellcheck="false">'+ arr[li] +'</textarea>'
+                } else {
+                    html = '<textarea rows="1" spellcheck="false"># new</textarea>'
+                }
+                $(this).html(html)
+                $(this).find('textarea').focus()
             }
+        })
+        $('#md').on('blur', 'textarea', function() {
+            var parent = this.parentElement
+            var bool = Boolean(parent.dataset.edit)
+            if (bool) {
+                this.parentElement.dataset.edit = ''
+                var li = $(parent).attr('name').split('#')[1]
+                var str = localStorage.md || ''// load
+                var arr = JSON.parse(str)
+                arr[li] = this.value
+                localStorage.md = JSON.stringify(arr) // save
+                $(parent).html(md.render(arr[li]))
+            }
+        })
+        $('#md').on('focus', 'textarea', function() {
+            var i = this
+            var dif = i.scrollHeight
+            i.value += '\n'
+            dif = i.scrollHeight - dif
+            var arr = i.value.split('')
+            arr.splice(-1, 1)
+            i.value = arr.join('')
+            i.rows = Math.round(i.scrollHeight / dif)
+            i.dataset.dif = dif
+        })
+        $('#md').on('input', 'textarea', function() {
+            var i = this
+            i.rows = Math.round(i.scrollHeight / i.dataset.dif)
         })
     </script>
 </html>
