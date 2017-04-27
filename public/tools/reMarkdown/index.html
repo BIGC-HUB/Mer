@@ -9,40 +9,69 @@
         code {
             font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
         }
-        body {
-            -webkit-user-select: none;
-            background: rgba(15,32,65,0.1);
-        }
         html, button, input, select, textarea, a {
             font-size: 1.17em;
             font-family: Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
             letter-spacing: 0.01em;
+        }
+        /* login */
+        .btn {
+            vertical-align: middle;
+            padding: 0 12px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .btn-top {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .btn-white {
+            color: #8590A6;
+            background-color: #FFF;
+            border-color: #9DA3A6;
+        }
+        .btn-white:hover {
+            background-color: #F5F6F9;
+        }
+        .btn-blue {
+            color: #FFF;
+            background-color: #037DD8;
+            border-color: #0771C1;
+        }
+        .btn-blue:hover {
+            background-color: #0771C1;
+            border-color: #0363AC;
+        }
+        .btn-red {
+            color: #FFF;
+            background-color: #D9534F;
+            border-color: #D43F3A;
+        }
+        .btn-red:hover {
+            background-color: #C9302C;
+            border-color: #AC2925;
+        }
+
+        body {
+            margin: 1.7% auto;
+            -webkit-user-select: none;
+            background: rgba(15,32,65,0.1);
+            width: 80%;
         }
         input, button, textarea {
             -webkit-appearance: none;
             margin: 0 auto;
             background-color: transparent;
         }
-        #md {
-            margin: 1.7% auto;
+        #zx {
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1.7%;
             padding: 5%;
-            width: 80%;
             border: 1px solid #dadada;
             border-top: 10px solid #788396;
             box-sizing: border-box;
             box-shadow: 0 1px 1px #dadada;
-        }
-        .c {
-            text-align: left;
-        }
-        .md {
-            display: inline-block;
-            vertical-align: top;
-            width: 50%;
-            height: 100%;
-            overflow: hidden;
-            box-sizing: border-box;
-            padding: 20px;
         }
         #md textarea {
             width: 100%;
@@ -57,11 +86,20 @@
             border-radius: 3px;
             padding: 4px;
         }
+        #md .c {
+            text-align: left;
+            margin: 8px auto;
+        }
     </style>
     <body>
-        <div id="md">
-            <div name="c#0" class="c"><h1>123</h1></div>
+        <button type="button" class="btn btn-top btn-red"> 保存 </button>
+        <button type="button" class="btn btn-top btn-blue"> 编辑 </button>
+        <div id="zx">
+            <div id="md"></div>
+            <button type="button" class="btn btn-blue"> + </button>
         </div>
+
+
     </body>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/remarkable/1.7.1/remarkable.min.js"></script>
@@ -88,6 +126,7 @@
                 return ''
             }
         })
+        // 渲染
         $('#md').on('click', '.c', function(e) {
             var bool = Boolean(this.dataset.edit)
             if (!bool) {
@@ -119,6 +158,7 @@
                 $(parent).html(md.render(arr[li]))
             }
         })
+        // 自适应
         $('#md').on('focus', 'textarea', function() {
             var i = this
             var dif = i.scrollHeight
@@ -134,5 +174,13 @@
             var i = this
             i.rows = Math.round(i.scrollHeight / i.dataset.dif)
         })
+        var __init__ = function() {
+            var arr = JSON.parse(localStorage.md)
+            for (var i = 0; i < arr.length; i++) {
+                var html = md.render(arr[i])
+                $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
+            }
+        }
+        __init__()
     </script>
 </html>
