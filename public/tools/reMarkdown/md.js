@@ -43,6 +43,9 @@ $('#md').on('blur', 'textarea', function() {
     var edit = Boolean(localStorage.edit)
     var bool = Boolean(parent.dataset.edit)
     if (bool) {
+        if (onlyNone(this.value)) {
+            parent.remove()
+        }
         parent.dataset.edit = ''
         parent.dataset.str = this.value
         $(parent).html(md.render(this.value))
@@ -90,21 +93,21 @@ $('#edit').on('click', function() {
         this.innerText = '编辑 on'
     }
 })
-var initMarkdown = function() {
-    var onlyNone = function(arr) {
-        if (arr) {
-            let temp = ''
-            for (let e of arr) {
-                if (e !== '#' && e !== ' ') {
-                    temp += e
-                }
-            }
-            if (temp) {
-                return false
+var onlyNone = function(arr) {
+    if (arr) {
+        let temp = ''
+        for (let e of arr) {
+            if (e !== '#' && e !== ' ') {
+                temp += e
             }
         }
-        return true
+        if (temp) {
+            return false
+        }
     }
+    return true
+}
+var initMarkdown = function() {
     var json = localStorage.md || '["# new"]'
     var arr = JSON.parse(json)
     for (var i = 0; i < arr.length; i++) {
