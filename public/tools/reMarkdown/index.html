@@ -4,183 +4,19 @@
         <meta charset="utf-8">
         <title>MarkDown</title>
         <link href="https://cdn.bootcss.com/highlight.js/9.11.0/styles/atom-one-light.min.css" rel="stylesheet">
+        <link href="md.css" rel="stylesheet">
     </head>
-    <style>
-        code {
-            font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-        }
-        html, button, input, select, textarea, a {
-            font-size: 1.17em;
-            font-family: Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
-            letter-spacing: 0.01em;
-        }
-        /* login */
-        .btn {
-            vertical-align: middle;
-            padding: 0 12px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-        }
-        .btn-top {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .btn-white {
-            color: #8590A6;
-            background-color: #FFF;
-            border-color: #9DA3A6;
-        }
-        .btn-white:hover {
-            background-color: #F5F6F9;
-        }
-        .btn-blue {
-            color: #FFF;
-            background-color: #037DD8;
-            border-color: #0771C1;
-        }
-        .btn-blue:hover {
-            background-color: #0771C1;
-            border-color: #0363AC;
-        }
-        .btn-red {
-            color: #FFF;
-            background-color: #D9534F;
-            border-color: #D43F3A;
-        }
-        .btn-red:hover {
-            background-color: #C9302C;
-            border-color: #AC2925;
-        }
-
-        body {
-            margin: 1.7% auto;
-            -webkit-user-select: none;
-            background: rgba(15,32,65,0.1);
-            width: 80%;
-        }
-        input, button, textarea {
-            -webkit-appearance: none;
-            margin: 0 auto;
-            background-color: transparent;
-        }
-        #zx {
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 1.7%;
-            padding: 5%;
-            border: 1px solid #dadada;
-            border-top: 10px solid #788396;
-            box-sizing: border-box;
-            box-shadow: 0 1px 1px #dadada;
-        }
-        #md textarea {
-            width: 100%;
-            background-color: #333;
-            color: #FFF;
-            /* textarea */
-            resize: none;
-            border-style: none;
-            outline-style: none;
-            overflow-y: auto;
-            height: auto;
-            border-radius: 3px;
-            padding: 4px;
-        }
-        #md .c {
-            text-align: left;
-            margin: 8px auto;
-        }
-    </style>
     <body>
-        <button type="button" class="btn btn-top btn-red"> 保存 </button>
-        <button type="button" class="btn btn-top btn-blue"> 编辑 </button>
-        <div id="zx">
+        <div id="box">
             <div id="md"></div>
-            <button type="button" class="btn btn-blue"> + </button>
+            <div id="zx">
+                <button id="edit"  class="btn btn-footer"> 编辑 on </button>
+                <button id="share" class="btn btn-footer"> 发布更新 </button>
+            </div>
         </div>
-
-
     </body>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/remarkable/1.7.1/remarkable.min.js"></script>
     <script src="highlight.pack.js"></script>
-    <script>
-        window.log = function() {
-            console.log.apply(console, arguments)
-        }
-        var md = new Remarkable({
-            html: true,
-            breaks: true,
-            linkify: true,
-            xhtmlOut: true,
-            typographer: true,
-            highlight: function(str, lang) {
-                if (lang && hljs.getLanguage(lang)) {
-                    try {
-                        return hljs.highlight(lang, str).value;
-                    } catch (err) {}
-                }
-                try {
-                    return hljs.highlightAuto(str).value;
-                } catch (err) {}
-                return ''
-            }
-        })
-        // 渲染
-        $('#md').on('click', '.c', function(e) {
-            var bool = Boolean(this.dataset.edit)
-            if (!bool) {
-                this.dataset.edit = true
-                e.preventDefault()
-                var li = $(this).attr('name').split('#')[1]
-                var str = localStorage.md || ''// load
-                var arr = JSON.parse(str)
-                var html = ''
-                if (arr[li]) {
-                    html = '<textarea rows="1" spellcheck="false">'+ arr[li] +'</textarea>'
-                } else {
-                    html = '<textarea rows="1" spellcheck="false"># new</textarea>'
-                }
-                $(this).html(html)
-                $(this).find('textarea').focus()
-            }
-        })
-        $('#md').on('blur', 'textarea', function() {
-            var parent = this.parentElement
-            var bool = Boolean(parent.dataset.edit)
-            if (bool) {
-                this.parentElement.dataset.edit = ''
-                var li = $(parent).attr('name').split('#')[1]
-                var str = localStorage.md || ''// load
-                var arr = JSON.parse(str)
-                arr[li] = this.value
-                localStorage.md = JSON.stringify(arr) // save
-                $(parent).html(md.render(arr[li]))
-            }
-        })
-        // 自适应
-        $('#md').on('focus', 'textarea', function() {
-            var i = this
-            var dif = i.scrollHeight
-            i.value += '\n'
-            dif = i.scrollHeight - dif
-            var arr = i.value.split('')
-            arr.splice(-1, 1)
-            i.value = arr.join('')
-            i.rows = Math.round(i.scrollHeight / dif)
-            i.dataset.dif = dif
-        })
-        $('#md').on('input', 'textarea', function() {
-            var i = this
-            i.rows = Math.round(i.scrollHeight / i.dataset.dif)
-        })
-        var __init__ = function() {
-            var arr = JSON.parse(localStorage.md)
-            for (var i = 0; i < arr.length; i++) {
-                var html = md.render(arr[i])
-                $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
-            }
-        }
-        __init__()
-    </script>
+    <script src="md.js"></script>
 </html>
