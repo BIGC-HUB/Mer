@@ -24,7 +24,7 @@ code {
 }
 .btn-new {
     position: absolute;
-    font-size: 25px;
+    font-weight: bold;
     width: 30px;
     height: 30px;
     margin: 0 0 0 -30px;

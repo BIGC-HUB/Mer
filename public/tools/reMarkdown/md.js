@@ -25,9 +25,10 @@ window.md = new Remarkable({
 $('#md').on('click', '.c', function(e) {
     var edit = Boolean(localStorage.edit)
     var bool = Boolean(this.dataset.edit)
-    if (!bool && edit) {
+    if (edit && !bool) {
         this.dataset.edit = true
         e.preventDefault()
+
         var html = ''
         var index = $(this).attr('name').split('#')[1]
         var json = localStorage.md || '["# new"]'
@@ -35,7 +36,7 @@ $('#md').on('click', '.c', function(e) {
         if (arr[index]) {
             html = '<textarea rows="1" spellcheck="false">'+ arr[index] +'</textarea><button class="btn btn-new">+</button>'
         } else {
-            html = '<textarea rows="1" spellcheck="false"># new</textarea><button class="btn btn-new">+</button>'
+            html = '<textarea rows="1" spellcheck="false"></textarea><button class="btn btn-new">+</button>'
         }
         $(this).html(html)
         $(this).find('textarea').focus()
@@ -43,25 +44,24 @@ $('#md').on('click', '.c', function(e) {
 })
 $('#md').on('blur', 'textarea', function() {
     var parent = this.parentElement
-    var edit = Boolean(localStorage.edit)
     var bool = Boolean(parent.dataset.edit)
     if (bool) {
         parent.dataset.edit = ''
-        if (onlyNone(this.value)) {
-            parent.remove()
-        }
-        var index = $(parent).attr('name').split('#')[1]
+
+        var id = parseInt($(parent).attr('name').split('#')[1])
         var json = localStorage.md || '["# new"]'
         var arr = JSON.parse(json)
-        arr[index] = this.value
-        // Save Temp
-        var temp = new Array
-        $('.c').each(function(i, e) {
-            var id = $(e).attr('name').split('#')[1]
-            var str = arr[id] || ''
-            temp.push(str)
-        })
-        localStorage.md = JSON.stringify(temp)
+        if (onlyNone(this.value)) {
+            arr.splice(id, 1)
+            var c = $('.c')
+            for (var i = id + 1; i < c.length; i++) {
+                $(c[i]).attr('name', 'c#' + (i - 1))
+            }
+            c[id].remove()
+        } else {
+            arr[id] = this.value
+        }
+        localStorage.md = JSON.stringify(arr)
         // Show Html
         $(parent).html(md.render(this.value))
     }
@@ -85,9 +85,30 @@ $('#md').on('input', 'textarea', function() {
 // 新建
 $('#md').on('mousedown', '.btn-new', function(e) {
     var parent = this.parentElement
+    var id = parseInt($(parent).attr('name').split('#')[1])
+    var c = $('.c')
+    $(c[id]).after('<div name="c#' + (id + 1) + '" class="c"><h4>#</h4></div>')
+    for (var i = id + 1; i < c.length; i++) {
+        $(c[i]).attr('name', 'c#' + (i + 1))
+    }
     var json = localStorage.md || '["# new"]'
     var arr = JSON.parse(json)
-    $(parent).after('<div name="c#' + arr.length + '" class="c"><h4>#</h4></div>')
+    arr.splice(id, 1, arr[id],'')
+    localStorage.md = JSON.stringify(arr)
+    // var parent = this.parentElement
+    // var index = $(parent).attr('name').split('#')[1]
+    // var json = localStorage.md || '["# new"]'
+    // var arr = JSON.parse(json)
+    // arr.splice(index, 1, arr[index],'new +')
+    // $('#md').empty()
+    // for (var i = 0; i < arr.length; i++) {
+    //     var html = '<h4>#<h4>'
+    //     if (!onlyNone(arr[i])) {
+    //         html = md.render(arr[i])
+    //     }
+    //     $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
+    // }
+    // log($('div[name$=' + index + ']'))
 })
 // 底栏
 $('#edit').on('click', function() {
@@ -101,11 +122,11 @@ $('#edit').on('click', function() {
     }
 })
 
-var onlyNone = function(arr) {
-    if (arr) {
+var onlyNone = function(str) {
+    if (str) {
         let temp = ''
-        for (let e of arr) {
-            if (e !== '#' && e !== ' ') {
+        for (let e of str) {
+            if (e !== '#' && e !== ' ' && e !== '\n') {
                 temp += e
             }
         }
