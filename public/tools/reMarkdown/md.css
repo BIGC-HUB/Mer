@@ -1,8 +1,18 @@
 /* global */
 html, button, input, select, textarea, a {
-    font-size: 1.17em;
-    font-family: Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+    /*font-family: Menlo, "Ubuntu Mono", Consolas, "Courier New", "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;*/
+    font-family: SF UI Text,Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
     letter-spacing: 0.01em;
+}
+body {
+    font-size: 1.17em;
+    margin: 1.7% auto;
+}
+input, button, textarea, a {
+    font-size: 1em;
+    -webkit-appearance: none;
+    margin: 0 auto;
+    background-color: transparent;
 }
 code {
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
@@ -35,16 +45,6 @@ code {
 }
 .btn-footer:hover {
     color: #dadada;
-}
-body {
-    margin: 1.7% auto;
-    /*-webkit-user-select: none;*/
-    background: rgba(15,32,65,0.1);
-}
-input, button, textarea {
-    -webkit-appearance: none;
-    margin: 0 auto;
-    background-color: transparent;
 }
 #box {
     width: 80%;

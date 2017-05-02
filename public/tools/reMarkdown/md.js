@@ -29,8 +29,11 @@ $('#md').on('click', '.c', function(e) {
         this.dataset.edit = true
         e.preventDefault()
         var html = ''
-        if (this.dataset.str) {
-            html = '<textarea rows="1" spellcheck="false">'+ this.dataset.str +'</textarea><button class="btn btn-new">+</button>'
+        var index = $(this).attr('name').split('#')[1]
+        var json = localStorage.md || '["# new"]'
+        var arr = JSON.parse(json)
+        if (arr[index]) {
+            html = '<textarea rows="1" spellcheck="false">'+ arr[index] +'</textarea><button class="btn btn-new">+</button>'
         } else {
             html = '<textarea rows="1" spellcheck="false"># new</textarea><button class="btn btn-new">+</button>'
         }
@@ -43,18 +46,24 @@ $('#md').on('blur', 'textarea', function() {
     var edit = Boolean(localStorage.edit)
     var bool = Boolean(parent.dataset.edit)
     if (bool) {
+        parent.dataset.edit = ''
         if (onlyNone(this.value)) {
             parent.remove()
         }
-        parent.dataset.edit = ''
-        parent.dataset.str = this.value
+        var index = $(parent).attr('name').split('#')[1]
+        var json = localStorage.md || '["# new"]'
+        var arr = JSON.parse(json)
+        arr[index] = this.value
+        // Save Temp
+        var temp = new Array
+        $('.c').each(function(i, e) {
+            var id = $(e).attr('name').split('#')[1]
+            var str = arr[id] || ''
+            temp.push(str)
+        })
+        localStorage.md = JSON.stringify(temp)
+        // Show Html
         $(parent).html(md.render(this.value))
-        // Save
-        var arr = new Array
-        for (let i of $('.c')) {
-            arr.push(i.dataset.str)
-        }
-        localStorage.md = JSON.stringify(arr)
     }
 })
 // 自适应
@@ -71,16 +80,14 @@ $('#md').on('focus', 'textarea', function() {
 })
 $('#md').on('input', 'textarea', function() {
     var i = this
-    if (i.value) {
-        i.rows = Math.round(i.scrollHeight / i.dataset.dif)
-    } else {
-        i.parentElement.remove()
-    }
+    i.rows = Math.round(i.scrollHeight / i.dataset.dif)
 })
 // 新建
 $('#md').on('mousedown', '.btn-new', function(e) {
     var parent = this.parentElement
-    $(parent).after('<div data-str="# new" class="c"><h4>#</h4></div>')
+    var json = localStorage.md || '["# new"]'
+    var arr = JSON.parse(json)
+    $(parent).after('<div name="c#' + arr.length + '" class="c"><h4>#</h4></div>')
 })
 // 底栏
 $('#edit').on('click', function() {
@@ -93,6 +100,7 @@ $('#edit').on('click', function() {
         this.innerText = '编辑 on'
     }
 })
+
 var onlyNone = function(arr) {
     if (arr) {
         let temp = ''
@@ -115,7 +123,7 @@ var initMarkdown = function() {
         if (!onlyNone(arr[i])) {
             html = md.render(arr[i])
         }
-        $('#md').append('<div data-str="' + arr[i] + '" class="c">' + html + '</div>')
+        $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
     }
 }
 var initButton = function() {
