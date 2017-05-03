@@ -55,11 +55,15 @@ let bindEvent = function() {
                 value: arr[index],
                 mode: 'gfm',
                 lineNumbers: true,
-                autofocus: true,
+                // 折叠
+                lineWrapping:true,
+                foldGutter: true,
+                gutters:["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 // 换行
                 lineWrapping: 'wrap',
                 theme: "material"
             })
+            editor.focus()
             $(this).append('<button class="btn btn-new"> + </button>')
 
             editor.on('blur', function(e) {

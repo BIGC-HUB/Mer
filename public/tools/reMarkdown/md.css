@@ -5,8 +5,12 @@ html, button, input, select, textarea, a {
     letter-spacing: 0.01em;
 }
 body {
-    margin: 1.7% auto;
+    font-family: "lucida Grande",Verdana,"Microsoft YaHei";
+    letter-spacing: .01em;
+    margin: 0 auto;
+    font-size: 1.06em;
 }
+
 input, button, textarea, a {
     font-size: 1em;
     -webkit-appearance: none;
@@ -35,13 +39,10 @@ pre {
     border: 1px solid transparent;
 }
 .btn-new {
-    position: absolute;
     font-weight: bold;
     width: 30px;
     height: 30px;
-    float: right;
     padding: 0;
-    margin: -30px 0 0 -30px;
     color: #537F7E;
     outline-style: none;
 }
@@ -67,18 +68,14 @@ pre {
 }
 /* box */
 #box {
+    margin: 1.7% auto;
     width: 95%;
-    font-size: 1.5em;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1.7%;
-    padding: 5%;
-    overflow: hidden;
     border: 1px solid #dadada;
-    border-top: 10px solid #2C3E50;
+    border-top: 10px solid #788396;
+    padding: 5%;
     box-sizing: border-box;
     box-shadow: 0 1px 1px #dadada;
-    background-color: #EEEEF2;
+    overflow: hidden;
 }
 #md textarea {
     width: calc(100% - 30px);
@@ -108,8 +105,14 @@ pre {
 }
 /* self-adaption */
 @media (min-width: 768px) {
+    body {
+        font-size: 1.17em;
+    }
     #box {
         width: 80%;
-        font-size: 1.17em;
+    }
+    .btn-new {
+        position: absolute;
+        margin: -30px 0 0 -30px;
     }
 }
