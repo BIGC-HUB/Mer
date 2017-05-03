@@ -1,25 +1,29 @@
 // global
-const log = function() {
+window.log = function() {
     console.log.apply(console, arguments)
 }
-const md = new Remarkable({
+window.md = new Remarkable({
     html: true,
     breaks: true,
     linkify: true,
+    linkTarget: '_blank',
     xhtmlOut: true,
     typographer: true,
     highlight: function(str, lang) {
         if (lang && hljs.getLanguage(lang)) {
             try {
                 return hljs.highlight(lang, str).value;
-            } catch (err) {}
+            } catch (__) {}
         }
         try {
             return hljs.highlightAuto(str).value;
-        } catch (err) {}
-        return ''
+        } catch (__) {}
+        return '';
     }
 })
+md.core.ruler.enable(['abbr'])
+md.block.ruler.enable(['footnote','deflist'])
+md.inline.ruler.enable(['footnote_inline','ins','mark','sub','sup'])
 let onlyNone = function(str) {
     if (str) {
         let temp = ''
@@ -42,59 +46,67 @@ let bindEvent = function() {
         if (edit && !bool) {
             this.dataset.edit = true
             e.preventDefault()
-            let html = ''
+
             let index = $(this).attr('name').split('#')[1]
             let json = localStorage.md || '["# new"]'
             let arr = JSON.parse(json)
-            if (arr[index]) {
-                html = '<textarea rows="1" spellcheck="false">'+ arr[index] +'</textarea><button class="btn btn-new">+</button>'
-            } else {
-                html = '<textarea rows="1" spellcheck="false"></textarea><button class="btn btn-new">+</button>'
-            }
-            $(this).html(html)
-            $(this).find('textarea').focus()
-        }
-    })
-    $('#md').on('blur', 'textarea', function() {
-        let parent = this.parentElement
-        let bool = Boolean(parent.dataset.edit)
-        if (bool) {
-            parent.dataset.edit = ''
+            $(this).html('')
 
-            let id = parseInt($(parent).attr('name').split('#')[1])
-            let json = localStorage.md || '["# new"]'
-            let arr = JSON.parse(json)
-            if (onlyNone(this.value)) {
-                arr.splice(id, 1)
-                let c = $('.c')
-                for (let i = id + 1; i < c.length; i++) {
-                    $(c[i]).attr('name', 'c#' + (i - 1))
+            let editor = CodeMirror(this, {
+                value: arr[index],
+                mode: 'gfm',
+                lineNumbers: true,
+                theme: "material"
+            })
+            editor.focus()
+            editor.on('blur', function(e) {
+                let parent = e.display.wrapper.parentElement
+                let value = e.options.value
+                parent.dataset.edit = ''
+
+                let id = parseInt($(parent).attr('name').split('#')[1])
+                let json = localStorage.md || '["# new"]'
+                let arr = JSON.parse(json)
+                if (onlyNone(value)) {
+                    arr.splice(id, 1)
+                    let c = $('.c')
+                    for (let i = id + 1; i < c.length; i++) {
+                        $(c[i]).attr('name', 'c#' + (i - 1))
+                    }
+                    c[id].remove()
+                } else {
+                    arr[id] = value
                 }
-                c[id].remove()
-            } else {
-                arr[id] = this.value
-            }
-            localStorage.md = JSON.stringify(arr)
-            // Show Html
-            $(parent).html(md.render(this.value))
+                localStorage.md = JSON.stringify(arr)
+                // Show Html
+                $(parent).html(md.render(value))
+            })
         }
     })
-    // textarea
-    $('#md').on('focus', 'textarea', function() {
-        let i = this
-        let dif = i.scrollHeight
-        i.value += '\n'
-        dif = i.scrollHeight - dif
-        let arr = i.value.split('')
-        arr.splice(-1, 1)
-        i.value = arr.join('')
-        i.rows = Math.round(i.scrollHeight / dif)
-        i.dataset.dif = dif
-    })
-    $('#md').on('input', 'textarea', function() {
-        let i = this
-        i.rows = Math.round(i.scrollHeight / i.dataset.dif)
-    })
+    // $('#md').on('blur', 'textarea', function() {
+    //     let parent = this.parentElement
+    //     let bool = Boolean(parent.dataset.edit)
+    //     if (bool) {
+    //         parent.dataset.edit = ''
+    //
+    //         let id = parseInt($(parent).attr('name').split('#')[1])
+    //         let json = localStorage.md || '["# new"]'
+    //         let arr = JSON.parse(json)
+    //         if (onlyNone(this.value)) {
+    //             arr.splice(id, 1)
+    //             let c = $('.c')
+    //             for (let i = id + 1; i < c.length; i++) {
+    //                 $(c[i]).attr('name', 'c#' + (i - 1))
+    //             }
+    //             c[id].remove()
+    //         } else {
+    //             arr[id] = this.value
+    //         }
+    //         localStorage.md = JSON.stringify(arr)
+    //         // Show Html
+    //         $(parent).html(md.render(this.value))
+    //     }
+    // })
     // btn-new
     $('#md').on('mousedown', '.btn-new', function(e) {
         let parent = this.parentElement

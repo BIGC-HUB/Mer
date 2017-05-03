@@ -5,7 +5,6 @@ html, button, input, select, textarea, a {
     letter-spacing: 0.01em;
 }
 body {
-    font-size: 1.17em;
     margin: 1.7% auto;
 }
 input, button, textarea, a {
@@ -17,12 +16,25 @@ input, button, textarea, a {
 code {
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
 }
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+
+    padding: 9.5px 0;
+    margin: 0 auto 10px;
+    line-height: 1.5em;
+
+    background-color: #F5F5F5;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+/* button */
 .btn {
     cursor: pointer;
     vertical-align: middle;
     border: 1px solid transparent;
 }
-.btn-new {
+/*.btn-new {
     position: absolute;
     font-weight: bold;
     width: 30px;
@@ -37,7 +49,7 @@ code {
 .btn-new:hover {
     color: white;
     background-color: #446688;
-}
+}*/
 .btn-footer {
     color: #BBB;
     padding: 0 12px;
@@ -46,8 +58,19 @@ code {
 .btn-footer:hover {
     color: #dadada;
 }
+/* eidt */
+.CodeMirror {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  height: auto;
+  border-radius: 5px;
+}
+.cm-link {
+    text-decoration: none;
+}
+/* box */
 #box {
-    width: 80%;
+    width: 95%;
+    font-size: 1.5em;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1.7%;
@@ -82,4 +105,11 @@ code {
     height: 40px;
     line-height: 40px;
     text-align: center;
+}
+/* self-adaption */
+@media (min-width: 768px) {
+    #box {
+        width: 80%;
+        font-size: 1.17em;
+    }
 }
