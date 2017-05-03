@@ -50,22 +50,22 @@ let bindEvent = function() {
             let index = $(this).attr('name').split('#')[1]
             let json = localStorage.md || '["# new"]'
             let arr = JSON.parse(json)
+            let val = arr[index] || ''
             $(this).html('')
             let editor = CodeMirror(this, {
-                value: arr[index],
+                value: val,
                 mode: 'gfm',
                 lineNumbers: true,
-                // 折叠
-                lineWrapping:true,
-                foldGutter: true,
-                gutters:["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 // 换行
+                lineWiseCopyCut: true,
                 lineWrapping: 'wrap',
                 theme: "material"
             })
             editor.focus()
             $(this).append('<button class="btn btn-new"> + </button>')
-
+            editor.on('input', function(e) {
+                log(123)
+            })
             editor.on('blur', function(e) {
                 let parent = e.display.wrapper.parentElement
                 let value = e.getValue()
