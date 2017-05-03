@@ -34,22 +34,20 @@ pre {
     vertical-align: middle;
     border: 1px solid transparent;
 }
-/*.btn-new {
+.btn-new {
     position: absolute;
     font-weight: bold;
     width: 30px;
     height: 30px;
-    margin: 0 0 0 -30px;
+    float: right;
     padding: 0;
-    color: #D6DBDF;
-    vertical-align: bottom;
+    margin: -30px 0 0 -30px;
+    color: #537F7E;
     outline-style: none;
-    border-radius: 3px;
 }
 .btn-new:hover {
-    color: white;
-    background-color: #446688;
-}*/
+    color: #DF4751;
+}
 .btn-footer {
     color: #BBB;
     padding: 0 12px;
@@ -75,10 +73,12 @@ pre {
     margin-right: auto;
     margin-bottom: 1.7%;
     padding: 5%;
+    overflow: hidden;
     border: 1px solid #dadada;
     border-top: 10px solid #2C3E50;
     box-sizing: border-box;
     box-shadow: 0 1px 1px #dadada;
+    background-color: #EEEEF2;
 }
 #md textarea {
     width: calc(100% - 30px);

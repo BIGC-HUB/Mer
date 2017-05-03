@@ -51,19 +51,21 @@ let bindEvent = function() {
             let json = localStorage.md || '["# new"]'
             let arr = JSON.parse(json)
             $(this).html('')
-
             let editor = CodeMirror(this, {
                 value: arr[index],
                 mode: 'gfm',
                 lineNumbers: true,
+                autofocus: true,
+                // 换行
+                lineWrapping: 'wrap',
                 theme: "material"
             })
-            editor.focus()
+            $(this).append('<button class="btn btn-new"> + </button>')
+
             editor.on('blur', function(e) {
                 let parent = e.display.wrapper.parentElement
-                let value = e.options.value
+                let value = e.getValue()
                 parent.dataset.edit = ''
-
                 let id = parseInt($(parent).attr('name').split('#')[1])
                 let json = localStorage.md || '["# new"]'
                 let arr = JSON.parse(json)
@@ -83,36 +85,12 @@ let bindEvent = function() {
             })
         }
     })
-    // $('#md').on('blur', 'textarea', function() {
-    //     let parent = this.parentElement
-    //     let bool = Boolean(parent.dataset.edit)
-    //     if (bool) {
-    //         parent.dataset.edit = ''
-    //
-    //         let id = parseInt($(parent).attr('name').split('#')[1])
-    //         let json = localStorage.md || '["# new"]'
-    //         let arr = JSON.parse(json)
-    //         if (onlyNone(this.value)) {
-    //             arr.splice(id, 1)
-    //             let c = $('.c')
-    //             for (let i = id + 1; i < c.length; i++) {
-    //                 $(c[i]).attr('name', 'c#' + (i - 1))
-    //             }
-    //             c[id].remove()
-    //         } else {
-    //             arr[id] = this.value
-    //         }
-    //         localStorage.md = JSON.stringify(arr)
-    //         // Show Html
-    //         $(parent).html(md.render(this.value))
-    //     }
-    // })
     // btn-new
     $('#md').on('mousedown', '.btn-new', function(e) {
         let parent = this.parentElement
         let id = parseInt($(parent).attr('name').split('#')[1])
         let c = $('.c')
-        $(c[id]).after('<div name="c#' + (id + 1) + '" class="c"><h4>#</h4></div>')
+        $(c[id]).after('<div name="c#' + (id + 1) + '" class="c">在此输入内容…</div>')
         for (let i = id + 1; i < c.length; i++) {
             $(c[i]).attr('name', 'c#' + (i + 1))
         }
@@ -140,7 +118,7 @@ let initMarkdown = function() {
         arr = ["# new"]
     }
     for (let i = 0; i < arr.length; i++) {
-        let html = '<h4>#<h4>'
+        let html = '在此输入内容…'
         if (!onlyNone(arr[i])) {
             html = md.render(arr[i])
         }
