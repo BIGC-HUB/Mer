@@ -62,8 +62,8 @@ let bindEvent = function() {
                 // 高度自适应
                 maxLines: 40,
                 // 是否自动补全 联想提示
+                // enableSnippets: true,
                 enableBasicAutocompletion: true,
-                enableSnippets: true,
                 enableLiveAutocompletion: true,
                 // 折叠
                 showFoldWidgets: false,
@@ -83,27 +83,27 @@ let bindEvent = function() {
         }
     })
     // hide
-    // $('#md').on('blur', '#editor', function() {
-    //     let parent = this.parentElement
-    //     let value = md.editor.getValue()
-    //     parent.dataset.edit = ''
-    //     let id = parseInt($(parent).attr('name').split('#')[1])
-    //     let json = localStorage.md || '["# new"]'
-    //     let arr = JSON.parse(json)
-    //     if (onlyNone(value)) {
-    //         arr.splice(id, 1)
-    //         let c = $('.c')
-    //         for (let i = id + 1; i < c.length; i++) {
-    //             $(c[i]).attr('name', 'c#' + (i - 1))
-    //         }
-    //         c[id].remove()
-    //     } else {
-    //         arr[id] = value
-    //     }
-    //     localStorage.md = JSON.stringify(arr)
-    //     // Show Html
-    //     $(parent).html(md.render(value))
-    // })
+    $('#md').on('blur', '#editor', function() {
+        let parent = this.parentElement
+        let value = md.editor.getValue()
+        parent.dataset.edit = ''
+        let id = parseInt($(parent).attr('name').split('#')[1])
+        let json = localStorage.md || '["# new"]'
+        let arr = JSON.parse(json)
+        if (onlyNone(value)) {
+            arr.splice(id, 1)
+            let c = $('.c')
+            for (let i = id + 1; i < c.length; i++) {
+                $(c[i]).attr('name', 'c#' + (i - 1))
+            }
+            c[id].remove()
+        } else {
+            arr[id] = value
+        }
+        localStorage.md = JSON.stringify(arr)
+        // Show Html
+        $(parent).html(md.render(value))
+    })
     // btn-new
     $('#md').on('mousedown', '.btn-new', function(e) {
         let parent = this.parentElement
