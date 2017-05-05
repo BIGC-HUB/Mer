@@ -63,6 +63,7 @@ pre {
     box-sizing: border-box;
     box-shadow: 0 1px 1px #dadada;
     overflow: hidden;
+    background-color: #fafafa;
 }
 #md .c {
     margin: 8px auto;

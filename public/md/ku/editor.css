@@ -11,6 +11,7 @@
 .ace-tomorrow-night .ace_gutter {
     background-color: #263238;
     color: rgb(83,127,126);
+
 }
 /* 背景 */
 .ace-tomorrow-night .ace_marker-layer .ace_active-line {
@@ -20,7 +21,7 @@
     background-color: #2e3c44;
 }
 .ace-tomorrow-night .ace_marker-layer .ace_selection {
-    background: #2e3c44;
+    background-color: #20292e;
 }
 /* 注释 */
 .ace-tomorrow-night .ace_comment {

@@ -1,1 +1,1 @@
-["# new\n\n1123\n```13123\n\nfsadfasdf"]
+["H~2~O\n\n```js\n// ## 作业 3.1\n// 更新 User 类的 validateLogin\n// 实现真正的验证\n// 提示, 先读取所有 users, 然后验证用户名和密码是否匹配\n// 提示\n// 先找到所有 users 实例\n// 然后验证这些实例中是否有一个实例的用户名和密码与当前 user 的用户名和密码相匹配\n\n// 比如当前 user 为 u\n// 调用方式如下:\n// u.validateLogin() \n// 返回的是 true 或者 false\n\nclass User extends Model {\n    validateLogin() {\n        // 获取所有 users 实例\n        // 循环每一个实例\n        // 判断该实例与 u 的用户名和密码是否匹配\n    }\n}\n```"]

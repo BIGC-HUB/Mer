@@ -84,8 +84,8 @@ let bindEvent = function() {
             ace.require("ace/ext/language_tools");
             // 创建编辑器
             md.editor = ace.edit("editor")
-            md.editor.setValue(val)
             md.editor.$blockScrolling = Infinity
+            md.editor.setValue(val)
             md.editor.setOptions({
                 // 高度自适应
                 maxLines: 40,
