@@ -82,7 +82,7 @@ pre {
 }
 /* self-adaption */
 @media (min-width: 768px) {
-    body {
+    body, .ace_editor {
         font-size: 1.17em;
     }
     #box {

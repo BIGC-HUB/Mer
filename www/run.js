@@ -296,11 +296,11 @@ app.post('/door', function (req, res) {
 })
 // MarkDown
 app.get('/md', function(req, res) {
-    let data = fs.readFileSync('public/md/index.html', 'utf8')
+    var data = fs.readFileSync('public/md/index.html', 'utf8')
     res.send(data)
 })
 app.post('/md/load', function(req, res) {
-    let data = fs.readFileSync('public/md/data.json', 'utf8')
+    var data = fs.readFileSync('public/md/data.json', 'utf8')
     res.send(data)
 })
 app.post('/md/save', function(req, res) {
