@@ -2,6 +2,34 @@
 window.log = function() {
     console.log.apply(console, arguments)
 }
+window.Ajax = (url, data, func, sync, Method) => {
+    // true 异步
+    sync = sync || true
+    // 注册 响应函数
+    func = func || function(e) {
+        console.log(e)
+    }
+    Method = Method || 'POST'
+    // 创建 AJAX 对象
+    var r = new XMLHttpRequest()
+    r.open(Method, url, sync)
+    r.setRequestHeader('Content-Type', 'application/json')
+    r.onreadystatechange = function() {
+        // 完成
+        if (r.readyState === 4) {
+            func(r.response)
+        }
+    }
+    // POST
+    if (data) {
+        data = JSON.stringify(data)
+        r.send(data)
+        // GET
+    } else {
+        // 发送 请求
+        r.send()
+    }
+}
 window.md = new Remarkable({
     html: true,
     breaks: true,
@@ -105,7 +133,7 @@ let bindEvent = function() {
         $(parent).html(md.render(value))
     })
     // btn-new
-    $('#md').on('click', '.btn-new', function(e) {
+    $('#md').on('mousedown', '.btn-new', function(e) {
         let parent = this.parentElement
         let id = parseInt($(parent).attr('name').split('#')[1])
         let c = $('.c')
@@ -129,20 +157,32 @@ let bindEvent = function() {
             this.innerText = '编辑 on'
         }
     })
+    // save
+    $('#share').on('click', function() {
+        var ok = confirm('是否发布')
+        if (ok) {
+            Ajax('save', {json: localStorage.md}, function(e) {
+                log(e)
+            })
+        }
+    })
 }
 let initMarkdown = function() {
-    let json = localStorage.md || '["# new"]'
-    let arr = JSON.parse(json)
-    if (arr.length === 0) {
-        arr = ["# new"]
-    }
-    for (let i = 0; i < arr.length; i++) {
-        let html = '在此输入内容…'
-        if (!onlyNone(arr[i])) {
-            html = md.render(arr[i])
+    Ajax('load', null, function(data) {
+        let json = data || '["# new"]'
+        localStorage.md = json
+        let arr = JSON.parse(json)
+        if (arr.length === 0) {
+            arr = ["# new"]
         }
-        $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
-    }
+        for (let i = 0; i < arr.length; i++) {
+            let html = '在此输入内容…'
+            if (!onlyNone(arr[i])) {
+                html = md.render(arr[i])
+            }
+            $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
+        }
+    })
 }
 let initButton = function() {
     let edit = Boolean(localStorage.edit)

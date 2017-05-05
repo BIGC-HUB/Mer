@@ -294,6 +294,23 @@ app.post('/door', function (req, res) {
     }
     res.send(url)
 })
+// MarkDown
+app.get('/md', function(req, res) {
+    let data = fs.readFileSync('public/md/index.html', 'utf8')
+    res.send(data)
+})
+app.post('/md/load', function(req, res) {
+    let data = fs.readFileSync('public/md/data.json', 'utf8')
+    res.send(data)
+})
+app.post('/md/save', function(req, res) {
+    var err = fs.writeFileSync('public/md/data.json', req.body.json, 'utf8')
+    if (err === undefined) {
+        res.send('写入成功！')
+    } else {
+        res.send('写入失败！')
+    }
+})
 
 // listen 函数监听端口
 var server = app.listen(1207, function () {
