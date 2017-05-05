@@ -1,0 +1,37 @@
+/* eidt */
+.ace_editor {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  font-size: 1.17em;
+  border-radius: 5px;
+}
+.ace-tomorrow-night {
+    background-color: #263238;
+    color: rgba(233, 237, 237, 1);
+}
+.ace-tomorrow-night .ace_gutter {
+    background-color: #263238;
+    color: rgb(83,127,126);
+}
+/* 背景 */
+.ace-tomorrow-night .ace_marker-layer .ace_active-line {
+    background-color: #2e3c44;
+}
+.ace-tomorrow-night .ace_gutter-active-line {
+    background-color: #2e3c44;
+}
+.ace-tomorrow-night .ace_marker-layer .ace_selection {
+    background: #2e3c44;
+}
+/* 注释 */
+.ace-tomorrow-night .ace_comment {
+    color: #546E7A;
+}
+/* 字符串 */
+.ace-tomorrow-night .ace_string {
+    color: #C3E88D
+}
+/* 链接 */
+.ace_underline {
+    color: #546E7A;
+    text-decoration: underline;
+}
