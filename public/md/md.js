@@ -56,8 +56,8 @@ let bindEvent = function() {
             ace.require("ace/ext/language_tools");
             // 创建编辑器
             md.editor = ace.edit("editor")
-            md.editor.$blockScrolling = Infinity
             md.editor.setValue(val)
+            md.editor.$blockScrolling = Infinity
             md.editor.setOptions({
                 // 高度自适应
                 maxLines: 40,
@@ -105,7 +105,7 @@ let bindEvent = function() {
         $(parent).html(md.render(value))
     })
     // btn-new
-    $('#md').on('mousedown', '.btn-new', function(e) {
+    $('#md').on('click', '.btn-new', function(e) {
         let parent = this.parentElement
         let id = parseInt($(parent).attr('name').split('#')[1])
         let c = $('.c')
