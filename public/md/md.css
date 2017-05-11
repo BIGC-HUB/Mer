@@ -3,31 +3,87 @@ html, button, input, select, textarea, a {
     font-family: SF UI Text,Hiragino Sans GB,Roboto,Segoe UI,Microsoft Yahei,sans-serif;
     letter-spacing: 0.01em;
 }
-body {
-    letter-spacing: .01em;
-    margin: 0 auto;
-    font-size: 1.06em;
-}
-
-input, button, textarea, a {
+button, input, select, textarea, a {
     font-size: 1em;
     -webkit-appearance: none;
     margin: 0 auto;
     background-color: transparent;
 }
+body {
+    margin: 0 auto;
+    font-size: 1.06em;
+    background-color: black;
+}
+a {
+    color: #08c;
+    text-decoration: none;
+}
+a:hover {
+    border-bottom: 1px solid rgba(23,81,153,.72);
+}
+
+
+/* code */
 code {
+    border: 0;
+    background-color: #D6DBDF;
+    border-radius: 4px;
+    color: #2C3E50;
+    font-size: 90%;
+    padding: 2px 4px;
+    white-space: nowrap;
+}
+pre, code {
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
 }
 pre {
-    white-space: pre-wrap;
+    display: block;
+    padding: 9.5px;
+    font-size: 1.06em;
+    letter-spacing: 0.02em;
+
+    word-break: break-all;
     word-wrap: break-word;
+    white-space: pre;
+    white-space: pre-wrap;
 
-    padding: 9.5px 0;
-    margin: 0 auto 10px;
-    line-height: 1.5em;
-
+    background-color: rgba(102,128,153,.05);
+    border: 1px solid #ddd;
     border-radius: 5px;
 }
+pre code {
+    padding: 0;
+    color: inherit;
+    white-space: pre;
+    white-space: pre-wrap;
+    background-color: transparent;
+}
+
+/* table */
+table {
+    width: 100%;
+    margin-bottom: 20px;
+    max-width: 100%;
+    background-color: #F9F9F5;
+    border: 1px solid #ddd;
+    border-collapse: separate;
+    border-radius: 4px;
+}
+table td {
+    border-top: 1px solid #ddd;
+}
+table td, table th {
+    padding: 8px;
+    line-height: 20px;
+    vertical-align: top;
+}
+tbody>tr:nth-child(2n+1)>td, tbody>tr:nth-child(2n+1)>th {
+    background-color: rgba(102,128,153,.05);
+}
+td + td, th + th {
+    border-left: 1px solid #ddd;
+}
+
 /* button */
 .btn {
     cursor: pointer;
@@ -55,7 +111,7 @@ pre {
 }
 /* box */
 #box {
-    margin: 1.7% auto;
+    margin: 1.7% auto 3%;
     width: 95%;
     border: 1px solid #dadada;
     border-top: 10px solid #788396;
