@@ -70,20 +70,13 @@ const Mer = {
 }
 
 // 读取 文件
-app.get(/(.+)/, function(req, res) {
-    res.status(404).send(
-        '<div class="tanChuang" style="text-align:center;position:fixed;top:0px;left:0px;width:100%;height:100%;background:black;color:white;">' +
-            '<div class="tanCenter" style="position:relative;top:50%;transform:translateY(-61.8%);">' +
-            '<a href="https://bigc.cc" style="color:#037DD8;text-decoration:none;"><img src="https://bigc.cc/favicon.ico">文件不在，请回</a>' +
-        '</div></div>')
-})
 app.get('/', function(req, res) {
     var data
     var host = req.headers.host.split(':')[0]
     if (host === 'localhost' || host === '127.0.0.1') {
-        data = fs.readFileSync('www/index.html', 'utf8')
+        data = fs.readFileSync('www/server.html', 'utf8')
     } else {
-        data = fs.readFileSync('public/index.html', 'utf8')
+        data = fs.readFileSync('www/index.html', 'utf8')
     }
     res.send(data)
 })
@@ -295,23 +288,41 @@ app.post('/door', function (req, res) {
     res.send(url)
 })
 // MarkDown
-app.get('/md', function(req, res) {
-    var data = fs.readFileSync('public/md/index.html', 'utf8')
-    res.send(data)
-})
 app.post('/md/load', function(req, res) {
-    var data = fs.readFileSync('public/md/data.json', 'utf8')
+    let id = req.body.id
+    let path = 'public/md/db/' + id + '.json'
+    let data
+    if (fs.existsSync(path)) {
+        data = fs.readFileSync(path, 'utf8')
+    } else {
+        data = fs.readFileSync('public/md/db/default.json', 'utf8')
+    }
     res.send(data)
 })
 app.post('/md/save', function(req, res) {
-    var err = fs.writeFileSync('public/md/data.json', req.body.json, 'utf8')
-    if (err === undefined) {
+    let id = req.body.id
+    let path
+    if (id) {
+        path = 'public/md/db/' + id + '.json'
+    } else {
+        path = 'public/md/db/default.json'
+    }
+    let data = JSON.stringify(req.body.json, null, 2)
+    if (fs.existsSync(path)) {
+        fs.writeFileSync(path, data, 'utf8')
         res.send('写入成功！')
     } else {
         res.send('写入失败！')
     }
 })
-
+// 404
+app.get(/(.+)/, function(req, res) {
+    res.status(404).send(
+        '<div class="tanChuang" style="text-align:center;position:fixed;top:0px;left:0px;width:100%;height:100%;background:black;color:white;">' +
+            '<div class="tanCenter" style="position:relative;top:50%;transform:translateY(-61.8%);">' +
+            '<a href="https://bigc.cc" style="color:#037DD8;text-decoration:none;"><img src="https://bigc.cc/favicon.ico">文件不在，请回</a>' +
+        '</div></div>')
+})
 // listen 函数监听端口
 var server = app.listen(1207, function () {
   var host = server.address().address

@@ -75,7 +75,7 @@ let bindEvent = function() {
             this.dataset.edit = true
             e.preventDefault()
             let index = $(this).attr('name').split('#')[1]
-            let json = localStorage.md || '["# new"]'
+            let json = md.data || '["# new"]'
             let arr = JSON.parse(json)
             let val = arr[index] || ''
             let normal = Boolean(localStorage.normal)
@@ -123,7 +123,7 @@ let bindEvent = function() {
         let value = md.editor.getValue()
         parent.dataset.edit = ''
         let id = parseInt($(parent).attr('name').split('#')[1])
-        let json = localStorage.md || '["# new"]'
+        let json = md.data || '["# new"]'
         let arr = JSON.parse(json)
         if (onlyNone(value)) {
             arr.splice(id, 1)
@@ -135,7 +135,7 @@ let bindEvent = function() {
         } else {
             arr[id] = value
         }
-        localStorage.md = JSON.stringify(arr)
+        md.data = JSON.stringify(arr)
         // Show Html
         $(parent).html(md.render(value))
     })
@@ -144,7 +144,7 @@ let bindEvent = function() {
         let value = this.value
         parent.dataset.edit = ''
         let id = parseInt($(parent).attr('name').split('#')[1])
-        let json = localStorage.md || '["# new"]'
+        let json = md.data || '["# new"]'
         let arr = JSON.parse(json)
         if (onlyNone(value)) {
             arr.splice(id, 1)
@@ -156,7 +156,7 @@ let bindEvent = function() {
         } else {
             arr[id] = value
         }
-        localStorage.md = JSON.stringify(arr)
+        md.data = JSON.stringify(arr)
         // Show Html
         $(parent).html(md.render(value))
     })
@@ -169,10 +169,10 @@ let bindEvent = function() {
         for (let i = id + 1; i < c.length; i++) {
             $(c[i]).attr('name', 'c#' + (i + 1))
         }
-        let json = localStorage.md || '["# new"]'
+        let json = md.data || '["# new"]'
         let arr = JSON.parse(json)
         arr.splice(id, 1, arr[id],'')
-        localStorage.md = JSON.stringify(arr)
+        md.data = JSON.stringify(arr)
     })
     // footer
     $('#edit').on('click', function() {
@@ -198,9 +198,17 @@ let bindEvent = function() {
     })
     // save
     $('#share').on('click', function() {
-        var ok = confirm('是否发布')
+        let search = {}
+        if (location.search) {
+            let arr = location.search.slice(1).split('&')
+            for (let i of arr) {
+                let e = i.split('=')
+                search[e[0]] = e[1]
+            }
+        }
+        let ok = confirm('是否发布')
         if (ok) {
-            Ajax('save', {json: localStorage.md}, function(e) {
+            Ajax('save', {id:search.id, json: JSON.parse(md.data)}, function(e) {
                 log(e)
             })
         }
@@ -252,9 +260,18 @@ let bindEvent = function() {
 
 }
 let initMarkdown = function() {
-    Ajax('load', null, function(data) {
+    let search = {}
+    if (location.search) {
+        let arr = location.search.slice(1).split('&')
+        for (let i of arr) {
+            let e = i.split('=')
+            search[e[0]] = e[1]
+        }
+    }
+    Ajax('load', search, function(data) {
+        log('load')
         let json = data || '["# new"]'
-        localStorage.md = json
+        md.data = json
         let arr = JSON.parse(json)
         if (arr.length === 0) {
             arr = ["# new"]
