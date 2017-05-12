@@ -1,7 +1,7 @@
 /* ace_eidt */
 .ace_editor {
   font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-  font-size: 1.06em;
+  font-size: 1em;
   border-radius: 5px;
 }
 .ace-tomorrow-night {
@@ -12,10 +12,6 @@
     background-color: #263238;
     color: rgb(83,127,126);
 
-}
-/* 标题 */
-.ace-tomorrow-night .ace_heading, .ace-tomorrow-night .ace_markup.ace_heading, .ace-tomorrow-night .ace_string {
-    color: #F25D8E;
 }
 /* 背景 */
 .ace-tomorrow-night .ace_marker-layer .ace_active-line {

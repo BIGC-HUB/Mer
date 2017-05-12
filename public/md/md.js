@@ -286,21 +286,10 @@ let initMarkdown = function() {
     })
 }
 let initButton = function() {
-    let e
     // edit
-    e = $('#edit')
-    if (Boolean(localStorage.edit)) {
-        e.text('编辑 on')
-    } else {
-        e.text('编辑 off')
-    }
+    delete localStorage.edit
     // normal
-    e = $('#normal')
-    if (Boolean(localStorage.normal)) {
-        e.text('普通 on')
-    } else {
-        e.text('普通 off')
-    }
+    delete localStorage.normal
     // toggle > hide edit btn
     delete localStorage.toggle
 }
