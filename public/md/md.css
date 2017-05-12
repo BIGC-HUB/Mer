@@ -12,7 +12,7 @@ button, input, select, textarea, a {
 body {
     margin: 0 auto;
     font-size: 1.06em;
-    background-color: rgb(67, 67, 67);
+    background-color: #F7F8FA;
 }
 a {
     color: #08c;
@@ -120,6 +120,7 @@ td + td, th + th {
     box-shadow: 0 1px 1px #dadada;
     overflow: hidden;
     background-color: #fafafa;
+    color: #262626;
 }
 #md .c {
     margin: 8px auto;
@@ -129,12 +130,22 @@ td + td, th + th {
     z-index: 6;
     bottom: 0;
     right: 0;
-    background-color: rgb(67, 67, 67);
-    opacity: 0.6;
     width: 100%;
+    text-align: center;
+}
+#zx-toggle {
+    cursor: pointer;
+    text-align: right;
+    padding: 0 3%;
+}
+#toggle {
+    height: 20px;
+}
+#zx-button {
+    display: none;
+    background-color: #333;
     height: 40px;
     line-height: 40px;
-    text-align: center;
 }
 
 textarea.normal {

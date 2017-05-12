@@ -221,6 +221,34 @@ let bindEvent = function() {
         let i = this
         i.rows = Math.round(i.scrollHeight / i.dataset.dif)
     })
+    // toggle
+    $('#zx').on('mouseenter', function() {
+        if (md.hide) {
+            clearTimeout(md.hide)
+            md.hide = undefined
+        }
+        if ($('#zx-button').css('display') === 'none') {
+            $('#zx-button').slideDown()
+        }
+    })
+    $('#zx').on('mouseleave', function() {
+        if (!localStorage.toggle) {
+            md.hide = setTimeout(function(){
+                $('#zx-button').slideUp()
+            }, 2000)
+        }
+    })
+    $('#zx-toggle').on('click', function() {
+        let e = $('#toggle')
+        let normal = Boolean(localStorage.toggle)
+        if (normal) {
+            delete localStorage.toggle
+            e.text('▲')
+        } else {
+            localStorage.toggle = true
+            e.text('▼')
+        }
+    })
 
 }
 let initMarkdown = function() {
@@ -241,17 +269,27 @@ let initMarkdown = function() {
     })
 }
 let initButton = function() {
+    let e
     // edit
+    e = $('#edit')
     if (Boolean(localStorage.edit)) {
-        $('#edit').text('编辑 on')
+        e.text('编辑 on')
     } else {
-        $('#edit').text('编辑 off')
+        e.text('编辑 off')
     }
     // normal
-    if (Boolean(localStorage.edit)) {
-        $('#normal').text('普通 on')
+    e = $('#normal')
+    if (Boolean(localStorage.normal)) {
+        e.text('普通 on')
     } else {
-        $('#normal').text('普通 off')
+        e.text('普通 off')
+    }
+    // toggle
+    e = $('#toggle')
+    if (Boolean(localStorage.toggle)) {
+        e.text('▼')
+    } else {
+        e.text('▲')
     }
 }
 let __init__ = function() {
