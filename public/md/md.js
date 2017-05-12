@@ -301,13 +301,8 @@ let initButton = function() {
     } else {
         e.text('普通 off')
     }
-    // toggle
-    e = $('#toggle')
-    if (Boolean(localStorage.toggle)) {
-        e.text('▼')
-    } else {
-        e.text('▲')
-    }
+    // toggle > hide edit btn
+    delete localStorage.toggle
 }
 let __init__ = function() {
     initMarkdown() // 渲染
