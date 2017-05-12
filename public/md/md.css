@@ -11,7 +11,6 @@ button, input, select, textarea, a {
 }
 body {
     margin: 0 auto;
-    font-size: 1.06em;
     background-color: #F7F8FA;
 }
 a {
@@ -22,16 +21,13 @@ a:hover {
     border-bottom: 1px solid rgba(23,81,153,.72);
 }
 
-
 /* code */
 code {
     border: 0;
     background-color: #D6DBDF;
     border-radius: 4px;
     color: #2C3E50;
-    font-size: 90%;
     padding: 2px 4px;
-    white-space: nowrap;
 }
 pre, code {
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
@@ -39,13 +35,12 @@ pre, code {
 pre {
     display: block;
     padding: 9.5px;
-    font-size: 1.06em;
     letter-spacing: 0.02em;
 
-    word-break: break-all;
+    /*word-break: break-all;
     word-wrap: break-word;
     white-space: pre;
-    white-space: pre-wrap;
+    white-space: pre-wrap;*/
 
     background-color: rgba(102,128,153,.05);
     border: 1px solid #ddd;
@@ -109,6 +104,7 @@ td + td, th + th {
 .btn-footer:hover {
     color: #dadada;
 }
+
 /* box */
 #box {
     margin: 1.7% auto 50px;
@@ -158,9 +154,9 @@ textarea.normal {
     outline-style: none;
     height: auto;
     border-radius: 3px;
-    /*overflow-y: hidden;  overflow与padding相关 */
     padding: 5px;
 }
+
 /* self-adaption */
 @media (min-width: 768px) {
     body, .ace_editor {
