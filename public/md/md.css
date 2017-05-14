@@ -11,7 +11,7 @@ button, input, select, textarea, a {
 }
 body {
     margin: 0 auto;
-    background-color: #F7F8FA;
+    background: white url(ku/bg.png) repeat;
 }
 a {
     color: #08c;
@@ -59,7 +59,6 @@ table {
     width: 100%;
     margin-bottom: 20px;
     max-width: 100%;
-    background-color: #F9F9F5;
     border: 1px solid #ddd;
     border-collapse: separate;
     border-radius: 4px;
@@ -113,10 +112,10 @@ td + td, th + th {
     border-top: 10px solid #788396;
     padding: 5%;
     box-sizing: border-box;
-    box-shadow: 0 1px 1px #dadada;
+    box-shadow: 0 1px 3px #dadada;
     overflow: hidden;
-    background-color: #fafafa;
     color: #262626;
+    /*background-color: #fafafa;*/
 }
 #md .c {
     margin: 8px auto;
