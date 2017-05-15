@@ -208,8 +208,18 @@ let bindEvent = function() {
         }
         let ok = confirm('是否发布')
         if (ok) {
-            Ajax('save', {id:search.id, json: JSON.parse(md.data)}, function(e) {
-                log(e)
+            Ajax('save', {id:search.id, json: JSON.parse(md.data)}, function(data) {
+                log(data)
+                // edit off
+                delete localStorage.edit
+                $('#edit').text('编辑 off')
+                // lock off
+                if (!localStorage.edit) {
+                    delete localStorage.lock
+                    $('#lock').text('▲')
+                    $('#zx').css('opacity','')
+                    $('#zx-button').animate({ height:'hide' })
+                }
             })
         }
     })
@@ -229,32 +239,34 @@ let bindEvent = function() {
         let i = this
         i.rows = Math.round(i.scrollHeight / i.dataset.dif)
     })
-    // toggle
+    // lock
     $('#zx').on('mouseenter', function() {
         if (md.hide) {
             clearTimeout(md.hide)
             md.hide = undefined
         }
         if ($('#zx-button').css('display') === 'none') {
-            $('#zx-button').animate({ opacity:'show' })
+            $('#zx-button').animate({ height:'show' })
         }
     })
     $('#zx').on('mouseleave', function() {
-        if (!localStorage.toggle) {
+        if (!localStorage.lock) {
             md.hide = setTimeout(function(){
-                $('#zx-button').animate({ opacity:'hide' })
+                $('#zx-button').animate({ height:'hide' })
             }, 2000)
         }
     })
-    $('#toggle').on('click', function() {
+    $('#lock').on('click', function() {
         let e = $(this)
-        let normal = Boolean(localStorage.toggle)
+        let normal = Boolean(localStorage.lock)
         if (normal) {
-            delete localStorage.toggle
+            delete localStorage.lock
             e.text('▲')
+            $('#zx').css('opacity','')
         } else {
-            localStorage.toggle = true
+            localStorage.lock = true
             e.text('▼')
+            $('#zx').css('opacity','0.618')
         }
     })
 
@@ -290,8 +302,8 @@ let initButton = function() {
     delete localStorage.edit
     // normal
     delete localStorage.normal
-    // toggle > hide edit btn
-    delete localStorage.toggle
+    // lock > hide edit btn
+    delete localStorage.lock
 }
 let __init__ = function() {
     initMarkdown() // 渲染
