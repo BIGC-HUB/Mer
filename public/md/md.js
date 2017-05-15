@@ -236,18 +236,18 @@ let bindEvent = function() {
             md.hide = undefined
         }
         if ($('#zx-button').css('display') === 'none') {
-            $('#zx-button').slideDown()
+            $('#zx-button').animate({ opacity:'show' })
         }
     })
     $('#zx').on('mouseleave', function() {
         if (!localStorage.toggle) {
             md.hide = setTimeout(function(){
-                $('#zx-button').slideUp()
+                $('#zx-button').animate({ opacity:'hide' })
             }, 2000)
         }
     })
-    $('#zx-toggle').on('click', function() {
-        let e = $('#toggle')
+    $('#toggle').on('click', function() {
+        let e = $(this)
         let normal = Boolean(localStorage.toggle)
         if (normal) {
             delete localStorage.toggle

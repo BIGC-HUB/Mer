@@ -130,10 +130,6 @@ td + td, th + th {
 }
 #zx-toggle {
     cursor: pointer;
-    text-align: right;
-    padding: 0 3%;
-}
-#toggle {
     height: 20px;
 }
 #zx-button {
