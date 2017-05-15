@@ -40,13 +40,13 @@ window.md = new Remarkable({
     highlight: function(str, lang) {
         if (lang && hljs.getLanguage(lang)) {
             try {
-                return hljs.highlight(lang, str).value;
+                return hljs.highlight(lang, str).value
             } catch (__) {}
         }
         try {
-            return hljs.highlightAuto(str).value;
+            return hljs.highlightAuto(str).value
         } catch (__) {}
-        return '';
+        return ''
     }
 })
 md.core.ruler.enable(['abbr'])
@@ -266,7 +266,7 @@ let bindEvent = function() {
         } else {
             localStorage.lock = true
             e.text('▼')
-            $('#zx').css('opacity','0.618')
+            $('#zx').css('opacity','0.86')
         }
     })
 
