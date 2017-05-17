@@ -20,7 +20,12 @@ a {
 a:hover {
     border-bottom: 1px solid rgba(23,81,153,.72);
 }
-
+img {
+    height: auto;
+    max-width: 100%;
+    vertical-align: top;
+    border-radius: 4px;
+}
 /* code */
 code {
     border: 0;
@@ -28,23 +33,21 @@ code {
     border-radius: 4px;
     color: #2C3E50;
     padding: 2px 4px;
+
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 pre, code {
     font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
 }
 pre {
     padding: 9.5px;
-
-    word-break: break-all;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-
     background-color: rgba(102,128,153,.05);
     border: 1px solid #ddd;
     border-radius: 5px;
 }
 pre code {
-    white-space: pre-wrap;
     padding: 0;
     color: inherit;
     background-color: transparent;
@@ -74,11 +77,27 @@ td + td, th + th {
     border-left: 1px solid #ddd;
 }
 /* mark */
-mark {
-    border-radius: 6px;
+em {
+    color: #a0a1a7;
+    /*font-style: normal;*/
+    background-color: rgba(102,128,153,.05);
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 5px;
+}
+mark, ins, strong {
     padding: 0 2px;
-    background-color: rgba(0, 190, 103, 0.68);
+}
+mark {
+    border-radius: 5px;
+    background-color: #262626;
     color: snow;
+
+    margin: 0 1px;
+}
+ins {
+    border-bottom: 2px solid #ff5e5e;
+    text-decoration: none;
 }
 
 /* button */

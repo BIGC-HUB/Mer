@@ -15,13 +15,13 @@
 }
 /* 背景 */
 .ace-tomorrow-night .ace_marker-layer .ace_active-line {
-    background-color: #2e3c44;
+    background-color: #2E3E44;
 }
 .ace-tomorrow-night .ace_gutter-active-line {
-    background-color: #2e3c44;
+    background-color: #2E3C44;
 }
 .ace-tomorrow-night .ace_marker-layer .ace_selection {
-    background-color: #20292e;
+    background-color: #1D1F21;
 }
 /* 注释 */
 .ace-tomorrow-night .ace_comment {
