@@ -1,6 +1,4 @@
-const log = function() {
-        console.log.apply(console, arguments)
-}
+const log = console.log.bind(console)
 // 引入 express 并且创建一个 express 实例赋值给 app
 const bodyParser = require('body-parser')
 const express = require('express')
@@ -12,7 +10,36 @@ const client = new Alidayu({
     app_key: '23658012',
     secret: '774c4d0876b01d83b58470809d1e8947'
 })
-
+// 摘要 算法
+const crypto = require('crypto')
+const salt = '夶塰'
+const sha1 = (password,salt='') => {
+    const mode = 'sha1'
+    let _init = function(str) {
+        let hash = crypto.createHash(mode)
+        hash.update(str)
+        let hex = hash.digest('hex')
+        return hex
+    }
+    let hash = _init(password)
+    if (salt) {
+        return _init(hash + salt)
+    } else {
+        return hash
+    }
+}
+const enAes256 = (str, salt='') => {
+    const mode = 'aes-256-cbc'
+    let aes = crypto.createCipher(mode, salt)
+    let result = aes.update(str, 'utf8', 'hex')
+    return result + aes.final('hex')
+}
+const deAes256 = (str, salt='') => {
+    const mode = 'aes-256-cbc'
+    let deAes = crypto.createDecipher(mode, salt)
+    let result = deAes.update(str, 'hex', 'utf8')
+    return result + deAes.final('utf8')
+}
 // 配置 body-Parser
 app.use(bodyParser.json())
 
