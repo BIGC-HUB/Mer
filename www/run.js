@@ -12,7 +12,7 @@ const client = new Alidayu({
 })
 // 摘要 算法
 const crypto = require('crypto')
-const salt = '夶塰'
+const salt = 'wy&py'
 const sha1 = (password,salt='') => {
     const mode = 'sha1'
     let _init = function(str) {
@@ -21,12 +21,8 @@ const sha1 = (password,salt='') => {
         let hex = hash.digest('hex')
         return hex
     }
-    let hash = _init(password)
-    if (salt) {
-        return _init(hash + salt)
-    } else {
-        return hash
-    }
+    let hash = _init(password)// hash
+    return _init(hash + salt) // 加盐
 }
 const enAes256 = (str, salt='') => {
     const mode = 'aes-256-cbc'
