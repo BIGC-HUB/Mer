@@ -30,6 +30,40 @@ window.Ajax = (url, data, func, sync, Method) => {
         r.send()
     }
 }
+window.md = new Remarkable({
+    html: true,
+    breaks: true,
+    linkify: true,
+    linkTarget: '_blank',
+    xhtmlOut: true,
+    typographer: true,
+    highlight: function(str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(lang, str).value
+            } catch (__) {}
+        }
+        try {
+            return hljs.highlightAuto(str).value
+        } catch (__) {}
+        return ''
+    }
+})
+md.core.ruler.enable([
+  'abbr'
+]);
+md.block.ruler.enable([
+  'footnote',
+  'deflist'
+]);
+md.inline.ruler.enable([
+  'footnote_inline',
+  'ins',
+  'mark',
+  'sub',
+  'sup'
+]);
+
 let onlyNone = function(str) {
     if (str) {
         let temp = ''
