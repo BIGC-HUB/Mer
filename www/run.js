@@ -1,9 +1,28 @@
-const log = console.log.bind(console)
-// 引入 express 并且创建一个 express 实例赋值给 app
-const bodyParser = require('body-parser')
-const express = require('express')
-const app = express()
 const fs = require('fs')
+// 引入 express 并且创建一个 express 实例赋值给 app
+const express = require('express')
+const bodyParser = require('body-parser')
+const session = require('cookie-session')
+
+const log = console.log.bind(console)
+const config = require('../data/config')
+
+// 引入路由文件
+// const todo = require('./routes/todo')
+// const index = require('./routes/index')
+
+// 先初始化一个 express 实例
+const app = express()
+
+// 设置 bodyParser
+app.use(bodyParser.urlencoded({
+    extended: true,
+}))
+// 设置 session, 这里的 config 是从 config.js 文件中拿到的
+app.use(session({
+    secret: config.key,
+}))
+
 // 引入 sms API
 const Alidayu = require('super-alidayu')
 const client = new Alidayu({
@@ -12,7 +31,6 @@ const client = new Alidayu({
 })
 // 摘要 算法
 const crypto = require('crypto')
-const salt = 'wy&py'
 const sha1 = (password,salt='') => {
     const mode = 'sha1'
     let _init = function(str) {
@@ -22,22 +40,20 @@ const sha1 = (password,salt='') => {
         return hex
     }
     let hash = _init(password)// hash
-    return _init(hash + salt) // 加盐
+    return _init(hash + config.key) // 加盐
 }
 const enAes256 = (str, salt='') => {
     const mode = 'aes-256-cbc'
-    let aes = crypto.createCipher(mode, salt)
+    let aes = crypto.createCipher(mode, config.key)
     let result = aes.update(str, 'utf8', 'hex')
     return result + aes.final('hex')
 }
 const deAes256 = (str, salt='') => {
     const mode = 'aes-256-cbc'
-    let deAes = crypto.createDecipher(mode, salt)
+    let deAes = crypto.createDecipher(mode, config.key)
     let result = deAes.update(str, 'hex', 'utf8')
     return result + deAes.final('utf8')
 }
-// 配置 body-Parser
-app.use(bodyParser.json())
 
 // 公共 文件
 app.use(express.static('public'))
