@@ -1,4 +1,5 @@
 // 引入 express 并且创建一个 express 实例赋值给 app
+const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('cookie-session')
@@ -25,6 +26,18 @@ app.use(express.static('public'))
 app.use('/', require('./route/index'))
 app.use('/user', require('./route/user'))
 app.use('/md', require('./route/markdown'))
+
+// 404
+app.use((req, res) => {
+    res.status(404)
+    res.send(fs.readFileSync('public/404.html', 'utf8'))
+})
+// 500
+app.use((err, req, res) => {
+    console.error(err.stack);
+    res.status(500)
+    res.send('<h1>500</h1>')
+})
 
 // listen 函数监听端口
 var server = app.listen(1207, function () {
