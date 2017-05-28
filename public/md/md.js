@@ -210,17 +210,10 @@ let bindEvent = function() {
     })
     // save
     $('#share').on('click', function() {
-        let search = {}
-        if (location.search) {
-            let arr = location.search.slice(1).split('&')
-            for (let i of arr) {
-                let e = i.split('=')
-                search[e[0]] = e[1]
-            }
-        }
+        let id = location.pathname.split('/').reverse()[0]
         let ok = confirm('是否发布')
         if (ok) {
-            Ajax('save', {id:search.id, json: JSON.parse(md.data)}, function(data) {
+            Ajax('save', {id:id, json: JSON.parse(md.data)}, function(data) {
                 log(data)
                 // edit off
                 delete localStorage.edit

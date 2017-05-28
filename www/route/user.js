@@ -58,7 +58,7 @@ const Mer = {
         } else {
             return i
         }
-        var Obj = JSON.parse(fs.readFileSync('user/phone.json', 'utf8'))
+        var Obj = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
         // Phone Number
         if (!isNaN(name) && name.length === 11) {
             if (Obj[name] === undefined) {
@@ -105,7 +105,7 @@ user.post('/load', function (req, res) {
     // log(req.headers.cookie)
 
     var notLogin = function() {
-        var data = JSON.parse(fs.readFileSync('user/18966702120.json', 'utf8'))
+        var data = JSON.parse(fs.readFileSync('data/user/18966702120.json', 'utf8'))
         data.note = ''
         res.send({
             "user": data,
@@ -118,7 +118,7 @@ user.post('/load', function (req, res) {
         var i = Mer.data(cookie)
         if (i.phone) {
             if (i.key === cookie.key){ // 登录成功
-                var url = 'user/' + i.phone + '.json'
+                var url = 'data/user/' + i.phone + '.json'
                 var data = JSON.parse(fs.readFileSync(url, 'utf8'))
                 res.send({
                     "user": data,
@@ -145,8 +145,8 @@ user.post('/save', function (req, res) {
         var i = Mer.data(cookie)
         if (i.phone) {
             if (i.key === cookie.key){
-                var data = JSON.stringify(req.body)
-                var err = fs.writeFileSync('user/' + i.phone +'.json', data, 'utf8')
+                var data = JSON.stringify(req.body, null, 2)
+                var err = fs.writeFileSync('data/user/' + i.phone +'.json', data, 'utf8')
                 res.send('写入成功！')
             }
         }
@@ -158,7 +158,7 @@ user.post('/login', function (req, res) {
     var i = Mer.data(cookie)
     if (i.phone) {
         if (i.key === cookie.key){
-            var url = 'user/' + i.phone + '.json'
+            var url = 'data/user/' + i.phone + '.json'
             var data = JSON.parse(fs.readFileSync(url, 'utf8'))
             res.send({
                 "user": data,
@@ -184,7 +184,7 @@ user.post('/login', function (req, res) {
 // 注册
 user.post('/join-sms', function (req, res) {
     var phone = req.body.phone
-    var Obj = JSON.parse(fs.readFileSync('user/phone.json', 'utf8'))
+    var Obj = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
     if (Obj[phone]) {
         res.send({send:false, text:'已注册，请登录'})
     } else {
@@ -231,7 +231,7 @@ user.post('/join', function (req, res) {
     }
 })
 user.post('/join-name', function (req, res) {
-    var name = JSON.parse(fs.readFileSync('user/name.json', 'utf8'))
+    var name = JSON.parse(fs.readFileSync('data/user/name.json', 'utf8'))
     // 检查名字
     var bool = false
     for (var i of name) {
@@ -251,10 +251,10 @@ user.post('/join-name', function (req, res) {
         name.push(req.body.name)
 
         // 读取
-        var data = JSON.parse(fs.readFileSync('user/18966702120.json', 'utf8'))
+        var data = JSON.parse(fs.readFileSync('data/user/18966702120.json', 'utf8'))
         data.note = '🍓' + req.body.name + '\n'
-        data = JSON.stringify(data)
-        var phone = JSON.parse(fs.readFileSync('user/phone.json', 'utf8'))
+        data = JSON.stringify(data, null, 2)
+        var phone = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
 
         // phone
         phone[req.body.phone] = {}
@@ -262,9 +262,9 @@ user.post('/join-name', function (req, res) {
         phone[req.body.phone].key  = req.body.phone.slice(-4)
 
         // 写入
-        var errData  = fs.writeFileSync('user/' + req.body.phone +'.json', data,  'utf8')
-        var errName  = fs.writeFileSync('user/name.json',  JSON.stringify(name),  'utf8')
-        var errPhone = fs.writeFileSync('user/phone.json', JSON.stringify(phone), 'utf8')
+        var errData  = fs.writeFileSync('data/user/' + req.body.phone +'.json', data,  'utf8')
+        var errName  = fs.writeFileSync('data/user/name.json',  JSON.stringify(name, null, 2),  'utf8')
+        var errPhone = fs.writeFileSync('data/user/phone.json', JSON.stringify(phone, null, 2), 'utf8')
         if (errData || errName || errPhone) {
             res.send({
                 "add": false,

@@ -37,10 +37,10 @@ index.post('/door', function (req, res) {
     res.send(url)
 })
 
-// 404 路由
-index.get('/:any?', function(req, res) {
-    let data = fs.readFileSync('public/404.html', 'utf8')
-    res.status(404).send(data)
-})
+// 404
+// index.get('/:any?', function(req, res) {
+//     let data = fs.readFileSync('public/404.html', 'utf8')
+//     res.status(404).send(data)
+// })
 
 module.exports = index

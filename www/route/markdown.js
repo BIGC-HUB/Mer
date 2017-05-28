@@ -6,29 +6,30 @@ const log = console.log.bind(console)
 const md = express.Router()
 
 // MarkDown
-md.get('/:id?', function(req, res) {
+md.get( '/:id?', function(req, res) {
     let data = fs.readFileSync('public/md/md.html', 'utf8')
     res.send(data)
 })
 md.post('/:id?', function(req, res) {
+    log( req.params)
     let id = req.params.id
-    let path = 'public/md/db/' + id + '.json'
+    let path = 'data/note/' + id + '.json'
     let data
     if (fs.existsSync(path)) {
         data = fs.readFileSync(path, 'utf8')
     } else {
-        data = fs.readFileSync('public/md/db/default.json', 'utf8')
+        data = fs.readFileSync('data/note/default.json', 'utf8')
     }
     res.send(data)
 })
 
-md.post('/save', function(req, res) {
+md.post('save', function(req, res) {
     let id = req.body.id
     let path
     if (id) {
-        path = 'public/md/db/' + id + '.json'
+        path = 'data/note/' + id + '.json'
     } else {
-        path = 'public/md/db/default.json'
+        path = 'data/note/default.json'
     }
     let data = JSON.stringify(req.body.json, null, 2)
     if (fs.existsSync(path)) {
