@@ -284,15 +284,8 @@ let bindEvent = function() {
 
 }
 let initMarkdown = function() {
-    let search = {}
-    if (location.search) {
-        let arr = location.search.slice(1).split('&')
-        for (let i of arr) {
-            let e = i.split('=')
-            search[e[0]] = e[1]
-        }
-    }
-    Ajax('load', search, function(data) {
+    let id = location.pathname.split('/').reverse()[0]
+    Ajax(id, null, function(data) {
         log('load')
         let json = data || '["# new"]'
         md.data = json
