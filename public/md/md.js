@@ -213,8 +213,8 @@ let bindEvent = function() {
         let id = location.pathname.split('/').reverse()[0]
         let ok = confirm('是否发布')
         if (ok) {
-            Ajax('save', {id:id, json: JSON.parse(md.data)}, function(data) {
-                log(data)
+            Ajax('save', {id: id, json: JSON.parse(md.data)}, function(text) {
+                log(text)
                 // edit off
                 delete localStorage.edit
                 $('#edit').text('编辑 off')
@@ -278,8 +278,7 @@ let bindEvent = function() {
 }
 let initMarkdown = function() {
     let id = location.pathname.split('/').reverse()[0]
-    Ajax(id, null, function(data) {
-        log('load')
+    Ajax('load/' + id, null, function(data) {
         let json = data || '["# new"]'
         md.data = json
         let arr = JSON.parse(json)

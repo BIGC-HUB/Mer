@@ -73,7 +73,6 @@ var User = {}
 // Top
 Mer.load = function() {
     c.Ajax('user/load', null, function(data) {
-        log(data)
         var data = JSON.parse(data)
         User = data.user
         Mer.dengl = data.login
