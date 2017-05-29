@@ -26,7 +26,7 @@ index.post('/door', function (req, res) {
         var i = parseInt(Math.random() * arr.length)
         return arr[i]
     }
-    var data = JSON.parse(fs.readFileSync('user/13509185504.json', 'utf8'))
+    var data = JSON.parse(fs.readFileSync('data/user/13509185504.json', 'utf8'))
     var kind = 'books'
     var cls = random(data[kind])
     var url = ''
