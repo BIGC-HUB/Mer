@@ -86,24 +86,11 @@ const Mer = {
     }
 }
 
-// 把 express.Router 的实例赋值给 index
+// 把 express.Router 的实例赋值给 user
 const user = express.Router()
 
 // 加载
 user.post('/load', function (req, res) {
-
-    // res.cookie('name', '#', {
-    //     maxAge: 600000,
-    //     httpOnly: true,
-    //     path: '/',
-    // })
-    // res.cookie('key', '5504', {
-    //     maxAge: 600000,
-    //     httpOnly: true,
-    //     path: '/',
-    // })
-    // log(req.headers.cookie)
-
     var notLogin = function() {
         var data = JSON.parse(fs.readFileSync('data/user/18966702120.json', 'utf8'))
         data.note = ''

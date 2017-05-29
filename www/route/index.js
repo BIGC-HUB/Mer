@@ -14,7 +14,7 @@ index.get('/', (req, res) => {
     if (host === 'localhost' || host === '127.0.0.1') {
         data = fs.readFileSync('www/server.html', 'utf8')
     } else {
-        data = fs.readFileSync('www/index.html', 'utf8')
+        data = fs.readFileSync('public/index.html', 'utf8')
     }
     res.send(data)
 })
