@@ -11,12 +11,10 @@ const config = require('../data/config')
 const app = express()
 
 // 设置 bodyParser
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-// 设置 session, 这里的 config 是从 config.js 文件中拿到的
-app.use(session({
-    secret: config.key,
-}))
+// 设置 session
+app.use(session({ secret: config.key, }))
 
 // 公共 文件
 app.use(express.static('public'))
