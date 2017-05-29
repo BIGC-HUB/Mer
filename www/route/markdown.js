@@ -11,7 +11,6 @@ md.get( '/:id?', function(req, res) {
     res.send(data)
 })
 md.post('/:id?', function(req, res) {
-    log( req.params)
     let id = req.params.id
     let path = 'data/note/' + id + '.json'
     let data
