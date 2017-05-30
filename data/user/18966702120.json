@@ -71,12 +71,6 @@
         "url": "huaban.com/search/?q=",
         "wap": ""
       },
-      "Topit.me": {
-        "color": "#FC6B96",
-        "url": "www.topit.me/items/search?query=",
-        "icon": "",
-        "wap": ""
-      },
       "搜狗图片": {
         "icon": "",
         "color": "#FD6853",
@@ -88,6 +82,12 @@
         "color": "#2319DC",
         "wap": "",
         "url": "image.baidu.com/search/index?tn=baiduimage&fm=result&ie=utf-8&word="
+      },
+      "Topitme": {
+        "color": "#FC6B96",
+        "url": "www.topit.me/items/search?query=",
+        "icon": "",
+        "wap": ""
       }
     },
     "网购": {

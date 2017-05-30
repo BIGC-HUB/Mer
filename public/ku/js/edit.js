@@ -490,24 +490,33 @@ $('body').on('click', function() {
 })
 
 // 事件委托
+$('#edit-val').on('blur', '.name', function() {
+    let str = ''
+    for (let i of this.value) {
+        if (!/[/\\. "$]/.test(i)) {
+            str += i
+        }
+    }
+    this.value = str
+})
 $('#edit-val').on('blur', '.icon', function() {
-    event.target.value = event.target.value.toLowerCase()
+    this.value = this.value.toLowerCase()
 })
 $('#edit-val').on('blur', '.color', function() {
-    var val = event.target.value.toUpperCase()
+    var val = this.value.toUpperCase()
     if (val.slice(0,1) === '#') {
         event.target.value = val
     }
-    event.target.style.color = event.target.value
+    this.style.color = this.value
 })
 $('#edit-val').on('blur', 'input', function() {
     var str = ''
-    for (var i of event.target.value) {
+    for (var i of this.value) {
         if (!/ /.test(i)) {
             str += i
         }
     }
-    event.target.value = str
+    this.value = str
 })
 $('#edit-val').on('blur', 'textarea', function() {
     event.target.rows = 1
