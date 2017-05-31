@@ -3,7 +3,7 @@ const fs = require('fs')
 // 添加 Path 环境变量 C:\Program Files\MongoDB\Server\3.4\bin
 // 运行数据库 $ mongod --dbpath C:\Users\iwang\Documents\Github\mer\data\db
 const mongodb = require('mongodb')
-const config = require('./config')
+const config = require('../data/config')
 // 启动 mongodb
 const startdb = async () => {
     // config.url 数据库的地址 + 默认端口
@@ -23,114 +23,79 @@ const startdb = async () => {
 }
 
 // 条件查询参考 http://www.jianshu.com/p/d8406b1cb028
-
-// 增删改查
-class MongoDB {
-    static async add(e, obj) {
+const mongo = {
+    load: async (query) => {
         const e = await startdb()
-        const result = await e.insertOne(obj)
-        log('添加成功！', result.ops)
-        // await this.find(e, {name: obj.name})
-    }
-
-    static async addAll(arr) {
+        const arr = await e.find(query,{"_id":false}).toArray()
+        if (arr.length === 0) {
+            return '尚未注册！'
+        } else if (arr.length === 1) {
+            return arr
+        } else {
+            return '存在多个！'
+        }
+    },
+    save: async (obj) => {
         const e = await startdb()
-        const result = await e.insertMany(arr)
-        log('添加成功！addAll', result.ops)
-    }
-
-    static async remove(query) {
-        const e = await startdb()
-        // deleteOne 删除第一条 deleteMany 删除所有
-        const before = await e.find(query).toArray()
-        log('删除前：', before)
-
-        await e.deleteOne(query)
-
-        const after = await e.find(query).toArray()
-        log('删除后：', after)
-    }
-
-    static async removeAll(query) {
-        const e = await startdb()
-        // deleteOne 删除第一条 deleteMany 删除所有
-        const before = await e.find(query).toArray()
-        log('删除前：', before)
-
-        await e.deleteMany(query)
-
-        const after = await e.find(query).toArray()
-        log('删除后：', after)
-    }
-
-    static async update(query, form) {
-        const e = await startdb()
-        // updateOne 更新第一条 updateMany 更新所有
-        const before = await e.find(query).toArray()
-        log('更新前：', before)
-
-        await e.updateOne(query, form)
-
-        const after = await e.find(query).toArray()
-        log('更新后：', after)
-    }
-
-    static async updateAll(query, form) {
-        const e = await startdb()
-        const before = await e.find(query).toArray()
-        log('更新前：', before)
-
-        await e.updateMany(query, form)
-
-        const after = await e.find(query).toArray()
-        log('更新后：', after)
-    }
-
-    static async find(query) {
-        const e = await startdb()
-        const result = await e.find(query).toArray()
-        log('查找完成！', result)
-        return result
+        let query = {
+            $or: [
+                {name: obj.name},
+                {phone: obj.phone}
+            ]
+        }
+        let data = {
+            $set: {
+                mer: obj.mer
+            }
+        }
+        let arr = await e.find(query, {"_id":false}).toArray()
+        let send = {
+            message: '',
+            ok: true
+        }
+        if (arr.length === 0) {
+            await e.insertOne(obj)
+            send.message = '注册成功！'
+            return send
+        } else if (arr.length === 1) {
+            let err = await e.updateOne(query, data)
+            send.message = '写入成功！'
+            return send
+        } else {
+            send.message = '存在多个！'
+            send.ok = false
+            return send
+        }
     }
 }
 
 const test = async () => {
-    // const json = fs.readFileSync('user/18966702120.json', 'utf8')
-    // const data = {
-    //     // data: json,
-    //     name: '大海',
-    //     phone: '1899702120',
-    //     key: '2120'
-    // }
-    // // MongoDB.add(e, data)
-    //
-    // const query = {
-    //     // 查找 random 不等于 dudu 的 （就是全部）
-    //
-    //     random: {$ne: 'dudu'},
-    // }
-    // // MongoDB.remove(e, query)
-    // // MongoDB.removeAll(e, query)
-    //
-    const query1 = {
-        // 查找 username 等于 'gua' 的
-        name: '大海',
+    // $set 新增 | $or 或
+    let _init = async () => {
+        const arr = JSON.parse(fs.readFileSync('../data/user/phone.json', 'utf8'))
+        for (let i of Object.keys(arr)) {
+            let e = arr[i]
+            const obj = JSON.parse(fs.readFileSync(`../data/user/${i}.json`, 'utf8'))
+            const data = {
+                mer: obj,
+                name: e.name,
+                phone: i,
+                key: e.key,
+                mark: e.mark || ''
+            }
+            let err = await  mongo.save(data)
+            log(err)
+        }
     }
-    MongoDB.find(query1)
-    //
-    // const query2 = {
-    //     // 查找 content 等于 '睡觉' 的
-    //     content: '睡觉',
-    // }
-    // const form1 = {
-    //     // $set 新增 updated_time
-    //     $set: {
-    //         updated_time: Date.now()
-    //     }
-    // }
-    // MongoDB.update(e, query2, form1)
+    // _init()
+    let data = await mongo.load({
+        name: '大海',
+        phone: '18966702120'
+    })
+    // log(data)
 }
-
 if (require.main === module) {
     test()
 }
+
+module.exports = mongo
