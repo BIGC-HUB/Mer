@@ -27,17 +27,20 @@ const startdb = async () => {
 // 增删改查
 class MongoDB {
     static async add(e, obj) {
-        log(await this.find(e, {name: obj.name}))
-        // const result = await e.insertOne(obj)
-        // log('添加成功！', result.ops)
+        const e = await startdb()
+        const result = await e.insertOne(obj)
+        log('添加成功！', result.ops)
+        // await this.find(e, {name: obj.name})
     }
 
-    static async addAll(e, arr) {
+    static async addAll(arr) {
+        const e = await startdb()
         const result = await e.insertMany(arr)
         log('添加成功！addAll', result.ops)
     }
 
-    static async remove(e, query) {
+    static async remove(query) {
+        const e = await startdb()
         // deleteOne 删除第一条 deleteMany 删除所有
         const before = await e.find(query).toArray()
         log('删除前：', before)
@@ -48,7 +51,8 @@ class MongoDB {
         log('删除后：', after)
     }
 
-    static async removeAll(e, query) {
+    static async removeAll(query) {
+        const e = await startdb()
         // deleteOne 删除第一条 deleteMany 删除所有
         const before = await e.find(query).toArray()
         log('删除前：', before)
@@ -59,7 +63,8 @@ class MongoDB {
         log('删除后：', after)
     }
 
-    static async update(e, query, form) {
+    static async update(query, form) {
+        const e = await startdb()
         // updateOne 更新第一条 updateMany 更新所有
         const before = await e.find(query).toArray()
         log('更新前：', before)
@@ -70,7 +75,8 @@ class MongoDB {
         log('更新后：', after)
     }
 
-    static async updateAll(e, query, form) {
+    static async updateAll(query, form) {
+        const e = await startdb()
         const before = await e.find(query).toArray()
         log('更新前：', before)
 
