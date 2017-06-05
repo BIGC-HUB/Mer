@@ -103,7 +103,7 @@
 
         .CodeMirror {
             border: 1px solid #ccc;
-            height: 61.8%;
+            height: calc(100% - 80px);
             margin: 6px 0;
             background: white;
         }
@@ -133,8 +133,8 @@
         }
     </style>
 
-    <script src="web/third-party/jquery/jquery.js"></script>
-    <script src="web/third-party/jquery/jquery.cookie.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
     <script src="js/lib/beautify.js"></script>
     <script src="js/lib/beautify-css.js"></script>
@@ -326,7 +326,7 @@
             <br>and we have a command-line version, python library and a <a href="https://npmjs.org/package/js-beautify">node package</a> as well.
         </p>
     </div> -->
-    <table id="options">
+    <!-- <table id="options">
         <tr>
             <td>
                 <select name="tabsize" id="tabsize">
@@ -412,7 +412,7 @@
 
             </td>
         </tr>
-    </table>
+    </table> -->
 
     <script>
         $(function() {
@@ -456,7 +456,6 @@
             })
             $('.submit').click(beautify);
             $('select').change(beautify);
-
 
         });
     </script>
