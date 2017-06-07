@@ -345,17 +345,17 @@ app.post('/md/save', function(req, res) {
     }
 })
 
-// // 404
-// app.use((req, res) => {
-//     res.status(404)
-//     res.send(fs.readFileSync('public/404.html', 'utf8'))
-// })
-// // 500
-// app.use((err, req, res) => {
-//     console.error(err.stack);
-//     res.status(500)
-//     res.send('<h1>500</h1>')
-// })
+// 404
+app.use((req, res) => {
+    res.status(404)
+    res.send(fs.readFileSync('public/404.html', 'utf8'))
+})
+// 500
+app.use((err, req, res) => {
+    console.error(err.stack);
+    res.status(500)
+    res.send('<h1>500</h1>')
+})
 
 // listen 函数监听端口
 var server = app.listen(1207, function () {

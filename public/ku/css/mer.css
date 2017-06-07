@@ -5,8 +5,8 @@ body {
     user-select:none;
     -webkit-user-select:none;
     -moz-user-select:none;
-    background-color: #FFF;
-    color: #333;
+    background: white url(../../md/ku/bg.png) repeat;
+    color: #262626;
 }
 span, i, #edit-btn div, #login-information input {
     pointer-events: none;

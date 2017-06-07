@@ -283,7 +283,7 @@ $('#login-phone-11').on('click', '.sms', function() {
     })
 })
 
-// information
+// 进入 按钮
 $('#login-information .enter').on('click', function() {
     Mer.Note(User.note)
     $('#more-button').css('color', '#444')
