@@ -1,5 +1,10 @@
 // 定制方法 / 函数
 const log = console.log.bind(console)
+// 去空格
+String.prototype.html = function() {
+    let html = this.slice(this.indexOf('<'))
+    return html.replace(/>(\s+)</img, '><')
+}
 class c {
     // ( url, data, [func, sync, Method] )
     static Ajax(url, data, func, sync, Method) {

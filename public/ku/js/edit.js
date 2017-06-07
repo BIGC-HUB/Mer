@@ -1,13 +1,13 @@
 var __initEdit = function() {
-    var html =
-        '<div id="edit-full"></div><ul id="edit-ul"></ul>' +
-        '<div id="edit-cont">' +
-            '<div class="tan">' +
-                '<div class="text"></div>' +
-                '<div id="edit-val"></div>' +
-                '<div id="edit-btn"></div>' +
-            '</div>' +
-        '</div>'
+    var html = `
+    <div id="edit-full"></div><ul id="edit-ul"></ul>
+    <div id="edit-cont">
+        <div class="tan">
+            <div class="text"></div>
+            <div id="edit-val"></div>
+            <div id="edit-btn"></div>
+        </div>
+    </div>`.html()
     $('#edit').html(html)
 }()
 
@@ -25,21 +25,47 @@ Mer.edit = {
         i.kind = i.tag + 's'
         // init
         i.label = '引擎'
-        var valHtml =
-            '<div><span>名　字</span><input class="name" placeholder="…"></div>' +
-            '<div><span>网　址</span><textarea spellcheck="false" class="url" rows="1" placeholder="…"></textarea></div>' +
-            '<div class="half"><span>颜　色</span><input class="color" placeholder="…"></div>' +
-            '<div class="half"><span>图　标</span><input class="icon" placeholder="…"></div>' +
-            '<div><span>移动端</span><textarea spellcheck="false" class="wap" rows="1" placeholder="…"></textarea></div>'
-        var btnHtml =
-            '<button class="yes btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>' +
-            '<button class="no  btn btn-white"><div class="fa-2x iconfont icon-no"></div>取消</button>'
+        var valHtml = `
+            <div>
+                <span>名　字</span><input class="name" placeholder="…">
+            </div>
+            <div>
+                <span>网　址</span>
+                <textarea spellcheck="false" class="url" rows="1" placeholder="…"></textarea>
+            </div>
+            <div class="half">
+                <span>颜　色</span>
+                <input class="color" placeholder="…">
+            </div>
+            <div class="half">
+                <span>图　标</span>
+                <input class="icon" placeholder="…">
+            </div>
+            <div>
+                <span>移动端</span>
+                <textarea spellcheck="false" class="wap" rows="1" placeholder="…"></textarea>
+            </div>`.html()
+        var btnHtml = `
+            <button class="yes btn btn-blue">
+                <div class="fa-2x iconfont icon-yes"></div>确认
+            </button>
+            <button class="no  btn btn-white">
+                <div class="fa-2x iconfont icon-no"></div>取消
+            </button>`.html()
         if (i.key) { // show
             if (i.tag === 'book') {
-                valHtml =
-                    '<div><span>名　字</span><input class="name" placeholder="…"></div>' +
-                    '<div><span>网　址</span><textarea spellcheck="false" class="url" rows="1" placeholder="…"></textarea></div>' +
-                    '<div><span>颜　色</span><input class="color" placeholder="…"></div>'
+                valHtml = `
+                    <div>
+                        <span>名　字</span><input class="name" placeholder="…">
+                    </div>
+                    <div>
+                        <span>网　址</span>
+                        <textarea spellcheck="false" class="url" rows="1" placeholder="…"></textarea>
+                    </div>
+                    <div>
+                        <span>颜　色</span>
+                        <input class="color" placeholder="…">
+                    </div>`.html()
                 i.label = '书签'
             }
         } else { // kind
@@ -428,25 +454,45 @@ Mer.rest = {
     html: function(e) {
         var html = ''
         if (Mer.rest.tag(e, ['book', 'engine'])) {
-            html =
-                '<li data-btn="new"   class="edit"><span>添加</span></li>' +
-                '<li data-btn="amend" class="edit"><span>编辑</span></li>' +
-                '<li data-btn="move"  class="edit"><span>移动</span></li>'
+            html = `
+                <li data-btn="new"   class="edit">
+                    <span>添加</span>
+                </li>
+                <li data-btn="amend" class="edit">
+                    <span>编辑</span>
+                </li>
+                <li data-btn="move"  class="edit">
+                    <span>移动</span>
+                </li>`.html()
         } else if (Mer.rest.tag(e, ['tag'])) {
-            html =
-                '<li data-btn="new"   class="edit"><span>添加</span></li>' +
-                '<li data-btn="amend" class="edit"><span>重命名</span></li>'
+            html = `
+                <li data-btn="new" class="edit">
+                    <span>添加</span>
+                </li>
+                <li data-btn="amend" class="edit">
+                    <span>重命名</span>
+                </li>`.html()
         } else if (Mer.rest.cls(e, ['show', 'kind'])) {
-            html =
-                '<li data-btn="new"   class="edit"><span>添加</span></li>'
+            html = `
+                <li data-btn="new"   class="edit">
+                    <span>添加</span>
+                </li>`.html()
         } else if (Mer.rest.tag(e, ['textarea', 'input'])) {
-            html =
-                '<li data-btn="copy"  class="edit"><span>复制</span></li>' +
-                '<li data-btn="select" class="edit"><span>全选</span></li>'
+            html = `
+                <li data-btn="copy"   class="edit">
+                    <span>复制</span>
+                </li>
+                <li data-btn="select" class="edit">
+                    <span>全选</span>
+                </li>`.html()
         } else if (Mer.rest.cls(e, ['name', 'phone', 'key'])) {
-            html =
-                '<li data-btn="change"  class="edit"><span>修改</span></li>' +
-                '<li data-btn="exit" class="edit"><span>退出登录</span></li>'
+            html = `
+                <li data-btn="change"  class="edit">
+                    <span>修改</span>
+                </li>
+                <li data-btn="exit" class="edit">
+                    <span>退出登录</span>
+                </li>`.html()
         }
         return html
     }

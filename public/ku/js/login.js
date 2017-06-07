@@ -1,52 +1,53 @@
-var __initLogin = function() {
-    var html = '<div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon-star"></div>' +
-        '<div class="text"></div>' +
-        '<div id="login-dengl">' +
-            '<inputbox>' +
-                '<i class="iconfont icon-login"></i>' +
-                '<input id="login-name" type="text" placeholder="名字" maxlength="16">' +
-                '<i class="transparent iconfont icon-xclear"></i>' +
-            '</inputbox>' +
-            '<inputbox>' +
-                '<i class="iconfont icon-lock"></i>' +
-                '<input id="login-key"  type="password" placeholder="密码" maxlength="30">' +
-                '<i class="iconfont icon-biyan"></i>' +
-            '</inputbox>' +
-        '</div>' +
-        '<div id="login-zhuce">' +
-            '<inputbox>' +
-                '<i class="iconfont icon-phone"></i>' +
-                '<input id="login-phone" type="tel" maxlength="11" placeholder="手机">' +
-                '<span  id="login-phone-11">11</span>' +
-            '</inputbox>' +
-            '<inputbox>' +
-                '<i class="iconfont icon-sms"></i>' +
-                '<input id="login-sms" type="tel" maxlength="4" placeholder="验证码">' +
-                '<span  id="login-sms-60">60</span>' +
-            '</inputbox>' +
-        '</div>' +
-        '<div id="login-information">' +
-            '<inputbox class="name">' +
-                '<i class="iconfont icon-login"></i>' +
-                '<input type="text" maxlength="16">' +
-                '<i class="iconfont icon-go"></i>' +
-            '</inputbox>' +
-            '<inputbox class="phone">' +
-                '<i class="iconfont icon-phone"></i>' +
-                '<input type="tel" maxlength="11">' +
-                '<i class="iconfont icon-go"></i>' +
-            '</inputbox>' +
-            '<button class="enter btn btn-blue" type="button">进入</button>' +
-            '<inputbox class="key">' +
-                '<i class="iconfont icon-sms"></i>' +
-                '<input  type="password" maxlength="30">' +
-                '<i class="iconfont icon-go"></i>' +
-            '</inputbox>' +
-        '</div>' +
-        '<div id="login-btn">' +
-            '<button class="zhuce  btn btn-white" type="button">注册</button>' +
-            '<button class="dengl btn btn-blue"  type="button">登录</button>' +
-        '</div>'
+const __initLogin = function() {
+    let html = `
+        <div style="color: rgba(207,216,230,0.1)" class="fa-5x iconfont icon-star"></div>
+        <div class="text"></div>
+        <div id="login-dengl">
+            <inputbox>
+                <i class="iconfont icon-login"></i>
+                <input id="login-name" type="text" placeholder="名字" maxlength="16">
+                <i class="transparent iconfont icon-xclear"></i>
+            </inputbox>
+            <inputbox>
+                <i class="iconfont icon-lock"></i>
+                <input id="login-key"  type="password" placeholder="密码" maxlength="30">
+                <i class="iconfont icon-biyan"></i>
+            </inputbox>
+        </div>
+        <div id="login-zhuce">
+            <inputbox>
+                <i class="iconfont icon-phone"></i>
+                <input id="login-phone" type="tel" maxlength="11" placeholder="手机">
+                <span  id="login-phone-11">11</span>
+            </inputbox>
+            <inputbox>
+                <i class="iconfont icon-sms"></i>
+                <input id="login-sms" type="tel" maxlength="4" placeholder="验证码">
+                <span  id="login-sms-60">60</span>
+            </inputbox>
+        </div>
+        <div id="login-information">
+            <inputbox class="name">
+                <i class="iconfont icon-login"></i>
+                <input type="text" maxlength="16">
+                <i class="iconfont icon-go"></i>
+            </inputbox>
+            <inputbox class="phone">
+                <i class="iconfont icon-phone"></i>
+                <input type="tel" maxlength="11">
+                <i class="iconfont icon-go"></i>
+            </inputbox>
+            <button class="enter btn btn-blue" type="button">进入</button>
+            <inputbox class="key">
+                <i class="iconfont icon-sms"></i>
+                <input  type="password" maxlength="30">
+                <i class="iconfont icon-go"></i>
+            </inputbox>
+        </div>
+        <div id="login-btn">
+            <button class="zhuce  btn btn-white" type="button">注册</button>
+            <button class="dengl btn btn-blue"  type="button">登录</button>
+        </div>`.html()
     $('#login').html(html)
 }()
 

@@ -351,10 +351,10 @@ app.use((req, res) => {
     res.send(fs.readFileSync('public/404.html', 'utf8'))
 })
 // 500
-app.use((err, req, res) => {
-    console.error(err.stack);
+app.use((err, req, res, next) => {
+    console.error('出现错误', err.stack)
     res.status(500)
-    res.send('<h1>500</h1>')
+    res.send('<h1>出现错误 Status:500</h1>')
 })
 
 // listen 函数监听端口

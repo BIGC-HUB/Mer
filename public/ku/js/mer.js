@@ -1,27 +1,32 @@
 // Html
 var __initTop = function() {
-    var html =
-        '<top data-id="user" class="user"><i class="iconfont icon-login fa-lg"></i>登录</top>' +
-        '<top class="home"></top>' +
-        '<top data-id="book" class="book"><i class="iconfont icon-books fa-lg"></i>书架</top>'
+    var html = `
+        <top data-id="user" class="user">
+            <i class="iconfont icon-login fa-lg"></i>登录
+        </top>
+        <top class="home"></top>
+        <top data-id="book" class="book">
+            <i class="iconfont icon-books fa-lg"></i>书架
+        </top>`.html()
     $('#top').html(html)
 }()
 var __initMain = function() {
-    var html =
-        '<logo></logo>' +
-        '<div class="search">' +
-        '<input id="search-input" type="text" maxlength="70">' +
-        '<a><i class="fa-1x iconfont icon-xclear"></i></a>' +
-        '<button id="search-button">' +
-        '<i class="fa-lg iconfont icon-search" aria-hidden="true"></i>' +
-        '</button>' +
-        '</div>' +
-        '<div class="more"><ul id="more-ul"></ul><div id="more-i">' +
-        '<button id="more-button">' +
-        '<i class="fa-1x iconfont icon-down" aria-hidden="true"></i>' +
-        '</button>' +
-        '</div>' +
-        '</div>'
+    var html =`<logo></logo>
+        <div class="search">
+            <input id="search-input" type="text" maxlength="70">
+            <a><i class="fa-1x iconfont icon-xclear"></i></a>
+            <button id="search-button">
+                <i class="fa-lg iconfont icon-search" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="more">
+            <ul id="more-ul"></ul>
+            <div id="more-i">
+                <button id="more-button">
+                    <i class="fa-1x iconfont icon-down" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>`.html()
     $('#search').html(html)
 }()
 var __initLogo = function(logo) {
@@ -56,7 +61,7 @@ var __initBookEngine = function(tag) {
     var showHtml = Mer.showHtml(tag, def)
     var html = `
     <div class="kind" data-kind="${tag}" data-cls="${def}">${tagHtml}</div>
-    <div class="show" data-cls="${def}"  data-key="${tag}">${showHtml}</div>`
+    <div class="show" data-cls="${def}"  data-key="${tag}">${showHtml}</div>`.html()
     element.html(html)
 }
 var __init__ = function(User) {
