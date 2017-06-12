@@ -80,7 +80,7 @@ Mer.load = function() {
     c.Ajax({
         url: 'user/load',
         callback: function(data) {
-            var data = JSON.parse(data)
+            data = JSON.parse(data)
             User = data.user
             Mer.dengl = data.login
             __init__(User)

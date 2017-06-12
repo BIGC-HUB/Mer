@@ -518,7 +518,7 @@ $('#edit-full').on('click', function() {
 
 // PC右键菜单 + 移动端长按
 $('body').on('click', function() {
-    document.oncontextmenu = function() {
+    document.oncontextmenu = function(event) {
         var e = event.target
         if (Mer.rest.tag(e, ['textarea', 'input']) && !Mer.pc) {
             return true
@@ -529,7 +529,7 @@ $('body').on('click', function() {
             return false
         }
     }
-    var e = event.target
+    var e = this
     if (!Mer.rest.short) {
         if (!Mer.rest.tag(e, ['textarea', 'input'])) {
             if (Mer.dengl) {

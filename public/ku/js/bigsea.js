@@ -1,5 +1,5 @@
 // 定制方法 / 函数
-const log = console.log.bind(console)
+const log = console.log.bind(console,'>>>')
 // 去空格
 String.prototype.html = function() {
     let html = this.slice(this.indexOf('<'))
@@ -7,11 +7,17 @@ String.prototype.html = function() {
 }
 class c {
     // ( url, data, [func, sync, Method] )
+    static guaSync(func) {
+        setTimeout(function() {
+            func()
+        }, 0)
+    }
     static Ajax(request) {
         var req = {
             url: request.url,
             data: request.data || null,
-            sync: request.sync || true,
+            // 若不设置 则为异步 设置则为同步
+            sync: (request.sync === undefined) ? true : false,
             method: request.method || 'POST',
             header: request.header || {},
             contentType: request.contentType || 'application/json',
