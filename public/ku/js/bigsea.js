@@ -7,33 +7,34 @@ String.prototype.html = function() {
 }
 class c {
     // ( url, data, [func, sync, Method] )
-    static Ajax(url, data, func, sync, Method) {
-        // true 异步
-        sync = sync || true
-        // 注册 响应函数
-        func = func || function(e) {
-            console.log(e)
-        }
-        Method = Method || 'POST'
-        // 创建 AJAX 对象
-        var r = new XMLHttpRequest()
-        r.open(Method, url, sync)
-        r.setRequestHeader('Content-Type', 'application/json')
-        r.onreadystatechange = function() {
-            // 完成
-            if (r.readyState === 4) {
-                func(r.response)
+    static Ajax(request) {
+        var req = {
+            url: request.url,
+            data: request.data || null,
+            sync: request.sync || true,
+            method: request.method || 'POST',
+            contentType: request.contentType || 'application/json',
+            func: request.callback || function(res) {
+                console.log('读取成功！')
             }
         }
-        // POST
-        if (data) {
-            data = JSON.stringify(data)
-            r.send(data)
-            // GET
-        } else {
-            // 发送 请求
-            r.send()
+        var res = null
+        var r = new XMLHttpRequest()
+        r.open(req.method, req.url, req.sync)
+        r.setRequestHeader('Content-Type', req.contentType)
+        r.onreadystatechange = function() {
+            if (r.readyState === 4) {
+                res = r.response
+                req.func(res)
+            }
         }
+        if (req.method === 'GET') {
+            r.send()
+        } else {
+            // POST
+            r.send(req.data)
+        }
+        return res
     }
     // ( name, [value, day] )
     static Cookie(name, value, day) {

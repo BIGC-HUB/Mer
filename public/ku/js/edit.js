@@ -413,18 +413,22 @@ Mer.send = {
     name: (phone) => {
         var name = $('#edit-val .name').val()
         if (name) {
-            c.Ajax('/user/join-name', {"name":name, "phone":phone}, (data) => {
-                var data = JSON.parse(data)
-                if (data.add) {
-                    // 隐藏
-                    $('#edit-cont').animate({ height: 'hide' })
-                    // 登录
-                    $('#login-zhuce').hide()
-                    $('#login-dengl').animate({ height:'show' })
-                    $('#login .text').text('请登录，初始密码：' + phone.slice(-4))
-                    $('#login-key').val( phone.slice(-4) )
-                } else {
-                    $('#edit .text').text(data.text)
+            c.Ajax({
+                url: '/user/join-name',
+                data:{"name":name, "phone":phone},
+                callback: (data) => {
+                    var data = JSON.parse(data)
+                    if (data.add) {
+                        // 隐藏
+                        $('#edit-cont').animate({ height: 'hide' })
+                        // 登录
+                        $('#login-zhuce').hide()
+                        $('#login-dengl').animate({ height:'show' })
+                        $('#login .text').text('请登录，初始密码：' + phone.slice(-4))
+                        $('#login-key').val( phone.slice(-4) )
+                    } else {
+                        $('#edit .text').text(data.text)
+                    }
                 }
             })
         }

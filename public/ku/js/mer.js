@@ -77,21 +77,27 @@ var User = {}
 
 // Top
 Mer.load = function() {
-    c.Ajax('user/load', null, function(data) {
-        var data = JSON.parse(data)
-        User = data.user
-        Mer.dengl = data.login
-        __init__(User)
-        $('body').click()
-        $('#login .text').text(data.text)
-        if (Mer.dengl) {
-            Mer.login.show(data)
+    c.Ajax({
+        url: 'user/load',
+        callback: function(data) {
+            var data = JSON.parse(data)
+            User = data.user
+            Mer.dengl = data.login
+            __init__(User)
+            $('body').click()
+            $('#login .text').text(data.text)
+            if (Mer.dengl) {
+                Mer.login.show(data)
+            }
         }
     })
 }
 Mer.save = function() {
     if (Mer.dengl) {
-        c.Ajax('user/save', User)
+        c.Ajax({
+            url: 'user/save',
+            data: User
+        })
     }
 }
 $('#search').on('click', 'logo', function() {
@@ -276,8 +282,11 @@ Mer.door = {
     open: false,
     show: function() {
         if (!Mer.door.open) {
-            c.Ajax('door', null, function(url) {
-                Mer.door.url = url
+            c.Ajax({
+                url: 'door',
+                callback: function() {
+                    Mer.door.url = url
+                }
             })
             var logo = $('logo')
             var obj = logo.children()[0].dataset

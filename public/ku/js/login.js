@@ -179,15 +179,18 @@ $('#login-btn .dengl').on('click', function() {
         var key  = $('#login-key').val()
         c.Cookie('name', name, 7)
         c.Cookie('key', key, 7)
-        c.Ajax('user/login', null, function(data){
-            var data = JSON.parse(data)
-            $('#login .text').text(data.text)
-            $('#login-btn, #login-dengl').css('pointer-events','auto')
-            if (data.login) {
-                User = data.user
-                Mer.dengl = data.login
-                __init__(User)
-                Mer.login.show(data)
+        c.Ajax({
+            url: 'user/login',
+            callback: function(data){
+                var data = JSON.parse(data)
+                $('#login .text').text(data.text)
+                $('#login-btn, #login-dengl').css('pointer-events','auto')
+                if (data.login) {
+                    User = data.user
+                    Mer.dengl = data.login
+                    __init__(User)
+                    Mer.login.show(data)
+                }
             }
         })
     }
@@ -212,18 +215,22 @@ $('#login-btn .zhuce').on('click', function() {
     var zhuce = function() {
         var phone = $('#login-phone').val()
         var sms  = $('#login-sms').val()
-        c.Ajax('user/join', {"phone": phone, "sms": sms}, (data) => {
-            var data = JSON.parse(data)
-            if (data.join) {
-                $('#login-sms').val('')
-                $('#login-phone').val('')
-                Mer.edit.at = phone
-                $('#edit-val').html('<div><span>名　字</span><input class="name" placeholder="…"></div>')
-                $('#edit-btn').html('<button data-btn="name" class="yes btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>')
-                $('#edit .text').text(data.text)
-                $('#edit-cont').animate({height: 'show'})
-            } else {
-                $('#login .text').text(data.text)
+        c.Ajax({
+            url: 'user/join',
+            data: {"phone": phone, "sms": sms},
+            callback: (data) => {
+                var data = JSON.parse(data)
+                if (data.join) {
+                    $('#login-sms').val('')
+                    $('#login-phone').val('')
+                    Mer.edit.at = phone
+                    $('#edit-val').html('<div><span>名　字</span><input class="name" placeholder="…"></div>')
+                    $('#edit-btn').html('<button data-btn="name" class="yes btn btn-blue"><div class="fa-2x iconfont icon-yes"></div>确认</button>')
+                    $('#edit .text').text(data.text)
+                    $('#edit-cont').animate({height: 'show'})
+                } else {
+                    $('#login .text').text(data.text)
+                }
             }
         })
     }
@@ -247,39 +254,43 @@ $('#login-phone-11').on('click', '.sms', function() {
     var input = $('#login-phone')
     var go = $('#login-phone-11')
     var time = $('#login-sms-60')
-    c.Ajax('user/join-sms', {phone: input.val()}, (data) => {
-        var data = JSON.parse(data)
-        $('#login .text').text(data.text)
-        if (data.send) {
-            go.html('<i class="iconfont icon-more"></i>')
-            input.off('blur')
-            input.attr("readonly", "readonly")
-            var s = 60
-            var countTime = setInterval(function() {
-                s -= 1
-                time.text(s)
-                if (s == 0) {
-                    time.text(60)
-                    clearInterval(countTime)
-                    input.removeAttr("readonly")
-                    input.on('blur', function() {
-                        var str = ''
-                        for (var i of event.target.value) {
-                            if (/\d/.test(i)) {
-                                str += i
+    c.Ajax({
+        url: 'user/join-sms',
+        data: {phone: input.val()},
+        callback: (data) => {
+            var data = JSON.parse(data)
+            $('#login .text').text(data.text)
+            if (data.send) {
+                go.html('<i class="iconfont icon-more"></i>')
+                input.off('blur')
+                input.attr("readonly", "readonly")
+                var s = 60
+                var countTime = setInterval(function() {
+                    s -= 1
+                    time.text(s)
+                    if (s == 0) {
+                        time.text(60)
+                        clearInterval(countTime)
+                        input.removeAttr("readonly")
+                        input.on('blur', function() {
+                            var str = ''
+                            for (var i of event.target.value) {
+                                if (/\d/.test(i)) {
+                                    str += i
+                                }
                             }
-                        }
-                        event.target.value = str
-                        var num = 11 - str.length
-                        if (num) {
-                            go.text(num)
-                        } else {
-                            go.html('<i class="sms iconfont icon-go"></i>')
-                            $('#login .text').text('短信验证码')
-                        }
-                    })
-                }
-            }, 1000)
+                            event.target.value = str
+                            var num = 11 - str.length
+                            if (num) {
+                                go.text(num)
+                            } else {
+                                go.html('<i class="sms iconfont icon-go"></i>')
+                                $('#login .text').text('短信验证码')
+                            }
+                        })
+                    }
+                }, 1000)
+            }
         }
     })
 })
