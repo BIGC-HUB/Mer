@@ -13,8 +13,9 @@ class c {
             data: request.data || null,
             sync: request.sync || true,
             method: request.method || 'POST',
+            header: request.header || {},
             contentType: request.contentType || 'application/json',
-            func: request.callback || function(res) {
+            callback: request.callback || function(res) {
                 console.log('读取成功！')
             }
         }
@@ -22,10 +23,14 @@ class c {
         var r = new XMLHttpRequest()
         r.open(req.method, req.url, req.sync)
         r.setRequestHeader('Content-Type', req.contentType)
+        // setHeader
+        Object.keys(req.header).forEach(key => {
+            r.setRequestHeader(key, req.header[key])
+        })
         r.onreadystatechange = function() {
             if (r.readyState === 4) {
                 res = r.response
-                req.func(res)
+                req.callback(res)
             }
         }
         if (req.method === 'GET') {
