@@ -2,7 +2,7 @@ const log = console.log.bind(console)
 const config = require('../data/config')
 // 引入 express 并且创建一个 express 实例赋值给 app
 const fs = require('fs')
-const mongo = require('./mongooes.js')
+const mongo = require('./mongo.js')
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('cookie-session')
@@ -13,12 +13,12 @@ const app = express()
 // 设置 bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
 // 设置 session
 app.use(session({ secret: config.key, }))
 
 // 公共 文件
 app.use(express.static('public'))
-
 
 // 引入 sms API
 const Alidayu = require('super-alidayu')
