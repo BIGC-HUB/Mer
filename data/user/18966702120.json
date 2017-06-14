@@ -368,7 +368,7 @@
     "编程": {
       "美化代码": {
         "color": "",
-        "url": "bigc.cc/tools/jsbeautifier/index.html"
+        "url": "bigc.cc/tools/js-beautifier/index.html"
       },
       "虚拟主机": {
         "color": "#004F87",
@@ -385,6 +385,10 @@
       "作业": {
         "color": "",
         "url": "vip.cocode.cc/classroom/"
+      },
+      "flex": {
+        "color": "",
+        "url": "www.ruanyifeng.com/blog/2015/07/flex-examples.html"
       }
     },
     "新闻": {
@@ -407,7 +411,7 @@
         "url": "www.teambition.com"
       },
       "小程序文档": {
-        "color": "",
+        "color": "#1AAD19",
         "url": "mp.weixin.qq.com/debug/wxadoc/dev/component/"
       },
       "高德地图": {
@@ -424,7 +428,7 @@
       }
     }
   },
-  "note": "🍉 大海 - 探索舰队\n\n- 军体拳\n\n和不断前进的同伴一起\n\nNext Day 滑动设计\n\n范围API",
+  "note": "🍉 大海 - 探索舰队\n\n- 军体拳\n\n和不断前进的同伴一起\n\nHasaki\n",
   "def": {
     "order": {
       "engine": [

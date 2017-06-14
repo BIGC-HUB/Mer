@@ -1,0 +1,86 @@
+const log = console.log.bind(console)
+// config.url 数据库的地址 + 默认端口
+// config.dbname 数据库的名称
+const config = require('../data/config')
+// 引入 mongoose
+const mongoose = require('mongoose')
+// 用一个 promise 来赋值为 mongoose.Promise
+mongoose.Promise = global.Promise
+mongoose.connect(config.url + config.dbname)
+const startdb = () => {
+    /* 定义一个 Schema */
+    const schema = mongoose.Schema({
+        mer:  { type: Object },
+        name: { type: String },
+        phone:{ type: String },
+        key:  { type: String },
+        mark: { type: String, default: '' }
+    }, {
+        versionKey: false
+    })
+    // 用 Schema 的形式来写, 可以在 methods 上面添加一个方法
+    // 所有 new 出来的实例都可以调用这个方法
+    // 相当于 Func.prototype.method = function() {}
+    // 需要注意的是, 这个添加方法的操作一定要在 mongoose.model 之前完成
+    schema.methods.speak = function() {
+        let name = ""
+        if (this.name) {
+            name = "Meow name is" + this.name
+        } else {
+            name = "I don't have a name"
+        }
+        log(name)
+    }
+    // 数据库的 collection 的名称是 model 后面的那个值决定的
+    // 比如 Kitten -> kittens
+    // config.documents 数据库的 类
+    return mongoose.model("bigsea", schema, config.documents)
+}
+const e = startdb()
+
+// 条件查询参考 http://www.jianshu.com/p/d8406b1cb028
+const mongo = {
+    load: async (query) => {
+        return await e.findOne(query)
+    },
+    save: async (data) => {
+        let send = {
+            message: '',
+            ok: false
+        }
+        if (data) {
+            let query = {
+                $or: [
+                    {name: data.name},
+                    {phone: data.phone}
+                ]
+            }
+            let arr = await e.find(query)
+            if (arr.length === 0) {
+                let err = await new e(data).save()
+                send.message = '注册成功！'
+                send.ok = true
+            } else if (arr.length === 1) {
+                let err = await e.findOneAndUpdate(query, data)
+                send.message = '写入成功！'
+                send.ok = true
+            } else {
+                send.message = '存在多个！'
+            }
+        } else {
+            send.message = '数据有误！'
+        }
+        return send
+    },
+    find: async (query) => {
+        return await e.find(query)
+    }
+}
+
+// 监听
+const db = mongoose.connection
+db.on('error', () => {
+    console.error('mongo connection error:')
+})
+
+module.exports = mongo

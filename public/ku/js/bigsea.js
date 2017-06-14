@@ -12,6 +12,9 @@ class c {
             func()
         }, 0)
     }
+    static find(select) {
+        return Array.from(document.querySelectorAll(select))
+    }
     static Ajax(request) {
         var req = {
             url: request.url,

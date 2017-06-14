@@ -1,11 +1,11 @@
+const log = console.log.bind(console)
+const config = require('../data/config')
 // 引入 express 并且创建一个 express 实例赋值给 app
 const fs = require('fs')
+const mongo = require('./mongooes.js')
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('cookie-session')
-
-const log = console.log.bind(console)
-const config = require('../data/config')
 
 // 先初始化一个 express 实例
 const app = express()
@@ -356,6 +356,30 @@ app.use((err, req, res, next) => {
     res.status(500)
     res.send('<h1>出现错误 Status:500</h1>')
 })
+
+
+// let _init = async () => {
+//     console.time('初始化')
+//     const arr = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
+//     for (let i of Object.keys(arr)) {
+//         let e = arr[i]
+//         const obj = JSON.parse(fs.readFileSync(`data/user/${i}.json`, 'utf8'))
+//         const data = {
+//             mer: obj,
+//             name: e.name,
+//             phone: i,
+//             key: e.key,
+//             mark: e.mark || ''
+//         }
+//         let err = await mongo.save(data)
+//         log(err)
+//     }
+//     console.timeEnd('初始化')
+// }
+// _init()
+// mongo.find({}).then((data) => {
+//     log(data)
+// })
 
 // listen 函数监听端口
 var server = app.listen(1207, function () {
