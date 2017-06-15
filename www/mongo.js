@@ -1,3 +1,4 @@
+const fs = require('fs')
 const log = console.log.bind(console)
 // config.db.url 数据库的地址 + 默认端口
 // config.db.name 数据库的名称
@@ -77,10 +78,21 @@ const mongo = {
     }
 }
 
+// 备份
+const backup = async () => {
+    let db = await mongo.find({})
+    let data = JSON.stringify(db)
+    let time = (new Date).toJSON().replace(/:/g,"-")
+    fs.writeFileSync(`data/db/backup/User-${time}`, data, 'base64')
+}
+
 // 监听
 const db = mongoose.connection
 db.on('error', () => {
     console.error('mongo connection error:')
+})
+db.once('open', () => {
+    backup()
 })
 
 module.exports = mongo
