@@ -23,8 +23,8 @@ app.use(express.static('public'))
 // 引入 sms API
 const Alidayu = require('super-alidayu')
 const client = new Alidayu({
-    app_key: '23658012',
-    secret: '774c4d0876b01d83b58470809d1e8947'
+    app_key: config.alidayu.app_key,
+    secret:  config.alidayu.secret
 })
 
 // 摘要 算法
@@ -54,52 +54,43 @@ const deAes256 = (str, salt='') => {
 }
 
 // User 保存注册未完成信息
-var User = {}
+let User = {}
 const Mer = {
     SMS: function() {
         return String(parseInt(Math.random()*(10000-1000)+1000))
     },
     cookie: function(req) {
         // Cookie
-        var arr = req.headers.cookie.split('; ')
-        var cookie = {}
-        for (var i of arr) {
-            var e = i.split('=')
+        let arr = req.headers.cookie.split('; ')
+        let cookie = {}
+        for (let i of arr) {
+            let e = i.split('=')
             cookie[e[0]] = decodeURIComponent(e[1])
         }
         return cookie
     },
-    data: function(cookie) {
-        var i = new Object
-        if (cookie.name) {
-            name = cookie.name
-        } else {
-            return i
+    login: async function(cookie) {
+        let i = {
+            login: false,
+            text: ""
         }
-        var Obj = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
-        // Phone Number
-        if (!isNaN(name) && name.length === 11) {
-            if (Obj[name] === undefined) {
-                return i
+        let data = await mongo.load({
+            $or: [
+                {name: cookie.name},
+                {phone: cookie.name}
+            ]
+        })
+        if (data) {
+            if (data.key === cookie.key) {
+                i.data = data
+                i.login = true
+                i.text = "欢迎回来"
             } else {
-                i.phone = name
+                i.text = "密码错误！"
             }
         } else {
-            for (var phone in Obj) {
-                // 忽略大小写
-                if (Obj[phone].name.toLowerCase() === name.toLowerCase()) {
-                    i.phone = phone
-                    break
-                }
-            }
-            if (i.phone === undefined) {
-                return i
-            }
+            i.text = "名字错误！"
         }
-        // Key
-        i.key =  Obj[i.phone].key
-        // Name
-        i.name = Obj[i.phone].name
         return i
     }
 }
@@ -117,51 +108,49 @@ app.get('/', (req, res) => {
 })
 // 任意门
 app.post('/door', function (req, res) {
-    var random = function(obj) {
-        var arr = Object.keys(obj)
-        var i = parseInt(Math.random() * arr.length)
+    let random = function(obj) {
+        let arr = Object.keys(obj)
+        let i = parseInt(Math.random() * arr.length)
         return arr[i]
     }
-    var data = JSON.parse(fs.readFileSync('data/user/13509185504.json', 'utf8'))
-    var kind = 'books'
-    var cls = random(data[kind])
-    var url = ''
+    let data = JSON.parse(fs.readFileSync('data/user/13509185504.json', 'utf8'))
+    let kind = 'books'
+    let cls = random(data[kind])
+    let url = ''
     if (Object.keys(data[kind][cls]).length) {
-        var key = random(data[kind][cls])
+        let key = random(data[kind][cls])
         url = 'http://'+ data[kind][cls][key].url
     }
     res.send(url)
 })
 
 // 加载
-app.post('/user/load', function (req, res) {
-    var notLogin = function() {
-        var data = JSON.parse(fs.readFileSync('data/user/18966702120.json', 'utf8'))
+app.post('/user/load', async function (req, res) {
+    let notLogin = async function() {
+        let data = await mongo.load({
+            phone: "18966702120"
+        })
         data.note = ''
         res.send({
-            "user": data,
+            "user": data.mer,
             "text": '请输入名字',
             "login": false
         })
     }
     if (req.headers.cookie) {
-        var cookie = Mer.cookie(req)
-        var i = Mer.data(cookie)
-        if (i.phone) {
-            if (i.key === cookie.key){ // 登录成功
-                var url = 'data/user/' + i.phone + '.json'
-                var data = JSON.parse(fs.readFileSync(url, 'utf8'))
-                res.send({
-                    "user": data,
-                    "text": "欢迎回来",
-                    "login": true,
-                    "name": i.name,
-                    "phone": i.phone,
-                    "key": i.key
-                })
-            } else {
-                notLogin()
-            }
+        let cookie = Mer.cookie(req)
+        let i = await Mer.login(cookie)
+        if (i.login) {
+            // 登录成功
+            let data = i.data
+            res.send({
+                "user": data.mer,
+                "text": "欢迎回来",
+                "login": true,
+                "name": data.name,
+                "phone": data.phone,
+                "key": data.key
+            })
         } else {
             notLogin()
         }
@@ -170,65 +159,61 @@ app.post('/user/load', function (req, res) {
     }
 })
 // 存储
-app.post('/user/save', function (req, res) {
+app.post('/user/save', async function (req, res) {
     if (req.headers.cookie) {
-        var cookie = Mer.cookie(req)
-        var i = Mer.data(cookie)
-        if (i.phone) {
-            if (i.key === cookie.key){
-                var data = JSON.stringify(req.body, null, 2)
-                var err = fs.writeFileSync('data/user/' + i.phone +'.json', data, 'utf8')
-                res.send('写入成功！')
+        let cookie = Mer.cookie(req)
+        let i = await Mer.login(cookie)
+        if (i.login) {
+            let data = i.data
+            data.mer = req.body
+            let err = await mongo.save(data)
+            // 写入成功！
+            if (err.ok) {
+                res.send(err.message)
             }
         }
     }
 })
 // 登录
-app.post('/user/login', function (req, res) {
-    var cookie = Mer.cookie(req)
-    var i = Mer.data(cookie)
-    if (i.phone) {
-        if (i.key === cookie.key){
-            var url = 'data/user/' + i.phone + '.json'
-            var data = JSON.parse(fs.readFileSync(url, 'utf8'))
-            res.send({
-                "user": data,
-                "text": '欢迎回来',
-                "login": true,
-                "name": i.name,
-                "phone": i.phone,
-                "key": i.key
-            })
-        } else {
-            res.send({
-                "text": '密码错误！',
-                "login": false
-            })
-        }
+app.post('/user/login', async function (req, res) {
+    let cookie = Mer.cookie(req)
+    let i = await Mer.login(cookie)
+    if (i.login) {
+        let data = i.data
+        res.send({
+            "user": data.mer,
+            "text": '欢迎回来',
+            "login": true,
+            "name": data.name,
+            "phone": data.phone,
+            "key": data.key
+        })
     } else {
         res.send({
-            "text": '名字错误！',
+            "text": i.text,
             "login": false
         })
     }
 })
 // 注册
-app.post('/user/join-sms', function (req, res) {
-    var phone = req.body.phone
-    var Obj = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
-    if (Obj[phone]) {
+app.post('/user/join-sms', async function (req, res) {
+    let phone = req.body.phone
+    let data = await mongo.load({
+        phone: phone
+    },["phone"])
+    if (data) {
         res.send({send:false, text:'已注册，请登录'})
     } else {
         User[phone] = {}
         User[phone].sms = Mer.SMS()
         // 发送短信 promise 方式调用
-        var options = {
-            sms_free_sign_name: '大海',
+        let options = {
+            sms_free_sign_name: config.alidayu.sms_free_sign_name,
             sms_param: {
                 "number": User[phone].sms
             },
             "rec_num": phone,
-            sms_template_code: 'SMS_51075001',
+            sms_template_code: config.alidayu.sms_template_code
         }
         // 花钱的地方来了 take money this
         client.sms(options)
@@ -240,8 +225,8 @@ app.post('/user/join-sms', function (req, res) {
     }
 })
 app.post('/user/join', function (req, res) {
-    var phone = req.body.phone
-    var sms = req.body.sms
+    let phone = req.body.phone
+    let sms = req.body.sms
     if (User[phone]) {
         if (sms === User[phone].sms) {
             res.send({
@@ -261,13 +246,15 @@ app.post('/user/join', function (req, res) {
         })
     }
 })
-app.post('/user/join-name', function (req, res) {
-    var name = JSON.parse(fs.readFileSync('data/user/name.json', 'utf8'))
+
+app.post('/user/join-name', async function (req, res) {
+    // 读取
+    let name = await mongo.find({},["name"])
     // 检查名字
-    var bool = false
-    for (var i of name) {
+    let bool = false
+    for (let i of name) {
         // 忽略大小写
-        if (i.toLowerCase() === req.body.name.toLowerCase()) {
+        if (i.name.toLowerCase() === req.body.name.toLowerCase()) {
             bool = true
             break
         }
@@ -278,34 +265,27 @@ app.post('/user/join-name', function (req, res) {
             "text": (req.body.name + ' 已被占用')
         })
     } else {
-        // name
-        name.push(req.body.name)
-
         // 读取
-        var data = JSON.parse(fs.readFileSync('data/user/18966702120.json', 'utf8'))
-        data.note = '🍓' + req.body.name + '\n'
-        data = JSON.stringify(data, null, 2)
-        var phone = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
-
-        // phone
-        phone[req.body.phone] = {}
-        phone[req.body.phone].name = req.body.name
-        phone[req.body.phone].key  = req.body.phone.slice(-4)
-
+        let sea = await mongo.load({phone: "18966702120"}, ["mer"])
+        let data = {
+            mer: sea.mer,
+            name: req.body.name,
+            key: req.body.phone.slice(-4),
+            phone: req.body.phone
+        }
+        data.mer.note = '🍓' + req.body.name + '\n'
         // 写入
-        var errData  = fs.writeFileSync('data/user/' + req.body.phone +'.json', data,  'utf8')
-        var errName  = fs.writeFileSync('data/user/name.json',  JSON.stringify(name, null, 2),  'utf8')
-        var errPhone = fs.writeFileSync('data/user/phone.json', JSON.stringify(phone, null, 2), 'utf8')
-        if (errData || errName || errPhone) {
-            res.send({
-                "add": false,
-                "text": '写入失败！'
-            })
-        } else {
+        let err = await mongo.save(data)
+        if (err.ok) {
             delete User[req.body.phone]
             res.send({
                 "add": true,
                 "text": '注册成功！'
+            })
+        } else {
+            res.send({
+                "add": false,
+                "text": '写入失败！'
             })
         }
     }
@@ -382,8 +362,8 @@ app.use((err, req, res, next) => {
 // })
 
 // listen 函数监听端口
-var server = app.listen(1207, function () {
-  var host = server.address().address
-  var port = server.address().port
+let server = app.listen(1207, function () {
+  let host = server.address().address
+  let port = server.address().port
   console.log("应用实例，访问地址为 http://%s:%s", host, port)
 })

@@ -256,7 +256,7 @@ $('#login-phone-11').on('click', '.sms', function() {
     var time = $('#login-sms-60')
     c.Ajax({
         url: 'user/join-sms',
-        data: {phone: input.val()},
+        data: { phone: input.val() },
         callback: (data) => {
             var data = JSON.parse(data)
             $('#login .text').text(data.text)

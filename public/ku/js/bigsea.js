@@ -18,7 +18,8 @@ class c {
     static Ajax(request) {
         var req = {
             url: request.url,
-            data: request.data || null,
+            // 传对象 自动转JSON
+            data: JSON.stringify(request.data) || null,
             // 若不设置 则为异步 设置则为同步
             sync: (request.sync === undefined) ? true : false,
             method: request.method || 'POST',

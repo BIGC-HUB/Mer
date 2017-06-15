@@ -1,12 +1,12 @@
 const log = console.log.bind(console)
-// config.url 数据库的地址 + 默认端口
-// config.dbname 数据库的名称
+// config.db.url 数据库的地址 + 默认端口
+// config.db.name 数据库的名称
 const config = require('../data/config')
 // 引入 mongoose
 const mongoose = require('mongoose')
 // 用一个 promise 来赋值为 mongoose.Promise
 mongoose.Promise = global.Promise
-mongoose.connect(config.url + config.dbname)
+mongoose.connect(config.db.url + config.db.name)
 const startdb = () => {
     /* 定义一个 Schema */
     const schema = mongoose.Schema({
@@ -33,15 +33,15 @@ const startdb = () => {
     }
     // 数据库的 collection 的名称是 model 后面的那个值决定的
     // 比如 Kitten -> kittens
-    // config.documents 数据库的 类
-    return mongoose.model("bigsea", schema, config.documents)
+    // config.db.class 数据库的 类
+    return mongoose.model("bigsea", schema, config.db.class)
 }
 const e = startdb()
 
 // 条件查询参考 http://www.jianshu.com/p/d8406b1cb028
 const mongo = {
-    load: async (query) => {
-        return await e.findOne(query)
+    load: async (query, arr=[]) => {
+        return await e.findOne(query, arr)
     },
     save: async (data) => {
         let send = {
@@ -72,8 +72,8 @@ const mongo = {
         }
         return send
     },
-    find: async (query) => {
-        return await e.find(query)
+    find: async (query, arr=[]) => {
+        return await e.find(query, arr)
     }
 }
 
