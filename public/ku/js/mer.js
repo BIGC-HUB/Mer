@@ -284,7 +284,7 @@ Mer.door = {
         if (!Mer.door.open) {
             c.Ajax({
                 url: 'door',
-                callback: function() {
+                callback: function(url) {
                     Mer.door.url = url
                 }
             })

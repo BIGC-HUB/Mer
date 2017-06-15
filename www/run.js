@@ -107,19 +107,21 @@ app.get('/', (req, res) => {
     res.send(data)
 })
 // 任意门
-app.post('/door', function (req, res) {
+app.post('/door', async function (req, res) {
     let random = function(obj) {
         let arr = Object.keys(obj)
         let i = parseInt(Math.random() * arr.length)
         return arr[i]
     }
-    let data = JSON.parse(fs.readFileSync('data/user/13509185504.json', 'utf8'))
+    let obj = await mongo.load({phone: "13509185504"},["mer"])
+    let data = obj.mer
+    // 随机书签
     let kind = 'books'
     let cls = random(data[kind])
-    let url = ''
+    let url = 'http://'
     if (Object.keys(data[kind][cls]).length) {
         let key = random(data[kind][cls])
-        url = 'http://'+ data[kind][cls][key].url
+        url = url + data[kind][cls][key].url
     }
     res.send(url)
 })
@@ -334,9 +336,8 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
     console.error('出现错误', err.stack)
     res.status(500)
-    res.send('<h1>出现错误 Status:500</h1>')
+    res.send('出现错误 状态码: 500')
 })
-
 
 // let _init = async () => {
 //     console.time('初始化')
