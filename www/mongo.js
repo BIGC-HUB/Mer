@@ -15,7 +15,8 @@ const startdb = () => {
         name: { type: String },
         phone:{ type: String },
         key:  { type: String },
-        mark: { type: String, default: '' }
+        mark: { type: String, default: '' },
+        notes:{ type: Object, default: {} }
     }, {
         versionKey: false
     })
@@ -44,25 +45,24 @@ const mongo = {
     load: async (query, arr=[]) => {
         return await e.findOne(query, arr)
     },
-    save: async (data) => {
+    save: async (query, data) => {
         let send = {
             message: '',
             ok: false
         }
         if (data) {
-            let query = {
-                $or: [
-                    {name: data.name},
-                    {phone: data.phone}
-                ]
-            }
             let arr = await e.find(query)
             if (arr.length === 0) {
                 let err = await new e(data).save()
                 send.message = '注册成功！'
                 send.ok = true
             } else if (arr.length === 1) {
-                let err = await e.findOneAndUpdate(query, data)
+                // 很皮
+                let setData = { $set:{ } }
+                for (let key of Object.keys(data)) {
+                    setData.$set[key] = data[key]
+                }
+                let err = await e.findOneAndUpdate(query, setData)
                 send.message = '写入成功！'
                 send.ok = true
             } else {
@@ -79,10 +79,11 @@ const mongo = {
 }
 
 // 备份
+// mongodump -h 0.0.0.0 -o data/db/backup/
 const backup = async () => {
     let db = await mongo.find({})
     let data = JSON.stringify(db)
-    let time = (new Date).toJSON().replace(/:/g,"-")
+    let time = (new Date).toJSON().replace(/:/g, "-")
     fs.writeFileSync(`data/db/backup/User-${time}`, data, 'base64')
 }
 

@@ -69,7 +69,7 @@ const Mer = {
         }
         return cookie
     },
-    login: async function(cookie) {
+    login: async function(cookie, arr=[]) {
         let i = {
             login: false,
             text: ""
@@ -79,10 +79,12 @@ const Mer = {
                 {name: cookie.name},
                 {phone: cookie.name}
             ]
-        })
+        }, arr)
         if (data) {
             if (data.key === cookie.key) {
-                i.data = data
+                for (let key of arr) {
+                    i[key] = data[key]
+                }
                 i.login = true
                 i.text = "欢迎回来"
             } else {
@@ -141,17 +143,15 @@ app.post('/user/load', async function (req, res) {
     }
     if (req.headers.cookie) {
         let cookie = Mer.cookie(req)
-        let i = await Mer.login(cookie)
+        let i = await Mer.login(cookie, ["name","phone","mer","key"])
         if (i.login) {
-            // 登录成功
-            let data = i.data
             res.send({
-                "user": data.mer,
+                "user": i.mer,
                 "text": "欢迎回来",
                 "login": true,
-                "name": data.name,
-                "phone": data.phone,
-                "key": data.key
+                "name": i.name,
+                "phone": i.phone,
+                "key": i.key
             })
         } else {
             notLogin()
@@ -164,11 +164,15 @@ app.post('/user/load', async function (req, res) {
 app.post('/user/save', async function (req, res) {
     if (req.headers.cookie) {
         let cookie = Mer.cookie(req)
-        let i = await Mer.login(cookie)
+        let i = await Mer.login(cookie, ["phone", "key", "name", "mark"])
         if (i.login) {
-            let data = i.data
-            data.mer = req.body
-            let err = await mongo.save(data)
+            let query = {
+                phone: i.phone
+            }
+            let data = {
+                mer: req.body
+            }
+            let err = await mongo.save(query, data)
             // 写入成功！
             if (err.ok) {
                 res.send(err.message)
@@ -179,16 +183,15 @@ app.post('/user/save', async function (req, res) {
 // 登录
 app.post('/user/login', async function (req, res) {
     let cookie = Mer.cookie(req)
-    let i = await Mer.login(cookie)
+    let i = await Mer.login(cookie, ["phone", "key", "name", "mark", "mer"])
     if (i.login) {
-        let data = i.data
         res.send({
-            "user": data.mer,
+            "user": i.mer,
             "text": '欢迎回来',
             "login": true,
-            "name": data.name,
-            "phone": data.phone,
-            "key": data.key
+            "name": i.name,
+            "phone": i.phone,
+            "key": i.key
         })
     } else {
         res.send({
@@ -277,7 +280,10 @@ app.post('/user/join-name', async function (req, res) {
         }
         data.mer.note = '🍓' + req.body.name + '\n'
         // 写入
-        let err = await mongo.save(data)
+        let query = {
+            phone: req.body.phone
+        }
+        let err = await mongo.save(query, data)
         if (err.ok) {
             delete User[req.body.phone]
             res.send({
@@ -299,32 +305,34 @@ app.get( '/md/:id?', function(req, res) {
     res.send(data)
 })
 // 加载
-app.post('/md/load/:id?', function(req, res) {
+app.post('/md/load/:id?', async function(req, res) {
     let id = req.params.id
-    let path = 'data/note/' + id + '.json'
-    let data
-    if (fs.existsSync(path)) {
-        data = fs.readFileSync(path, 'utf8')
-    } else {
-        data = fs.readFileSync('data/note/default.json', 'utf8')
+    let query = {
+        phone: "18966702120"
     }
-    res.send(data)
+    let data = await mongo.load(query, ["notes"])
+    let note = data.notes[id]
+    if (!note) {
+        note = data.notes["default"]
+    }
+    res.send(note.text)
 })
 // 存储
-app.post('/md/save', function(req, res) {
-    let id = req.body.id || ''
-    let path = 'data/note/' + id + '.json'
-    // 如果路径无效则存储到默认
-    if (fs.existsSync(path) === false) {
-        path = 'data/note/default.json'
+app.post('/md/save', async function(req, res) {
+    let id = req.params.id || ''
+    let query = {
+        phone: "18966702120"
     }
-    let data = JSON.stringify(req.body.json, null, 2)
-    if (fs.existsSync(path)) {
-        fs.writeFileSync(path, data, 'utf8')
-        res.send('写入成功！')
-    } else {
-        res.send('写入失败！')
+    let data = await mongo.load(query, ["notes"])
+    let note = data.notes[id]
+    if (!note) {
+        note = data.notes["default"]
     }
+    note.text = req.body.json
+    let err = await mongo.save(query, {
+        notes: data.notes
+    })
+    res.send(err.message)
 })
 
 // 404
@@ -336,31 +344,8 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
     console.error('出现错误', err.stack)
     res.status(500)
-    res.send('出现错误 状态码: 500')
+    res.send('出现错误 500')
 })
-
-// let _init = async () => {
-//     console.time('初始化')
-//     const arr = JSON.parse(fs.readFileSync('data/user/phone.json', 'utf8'))
-//     for (let i of Object.keys(arr)) {
-//         let e = arr[i]
-//         const obj = JSON.parse(fs.readFileSync(`data/user/${i}.json`, 'utf8'))
-//         const data = {
-//             mer: obj,
-//             name: e.name,
-//             phone: i,
-//             key: e.key,
-//             mark: e.mark || ''
-//         }
-//         let err = await mongo.save(data)
-//         log(err)
-//     }
-//     console.timeEnd('初始化')
-// }
-// _init()
-// mongo.find({}).then((data) => {
-//     log(data)
-// })
 
 // listen 函数监听端口
 let server = app.listen(1207, function () {
