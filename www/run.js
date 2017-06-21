@@ -319,7 +319,7 @@ app.post('/md/load/:id?', async function(req, res) {
 })
 // 存储
 app.post('/md/save', async function(req, res) {
-    let id = req.params.id || ''
+    let id = req.body.id || ''
     let query = {
         phone: "18966702120"
     }

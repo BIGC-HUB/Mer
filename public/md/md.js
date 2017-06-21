@@ -2,34 +2,6 @@
 window.log = function() {
     console.log.apply(console, arguments)
 }
-window.Ajax = (url, data, func, sync, Method) => {
-    // true 异步
-    sync = sync || true
-    // 注册 响应函数
-    func = func || function(e) {
-        console.log(e)
-    }
-    Method = Method || 'POST'
-    // 创建 AJAX 对象
-    var r = new XMLHttpRequest()
-    r.open(Method, url, sync)
-    r.setRequestHeader('Content-Type', 'application/json')
-    r.onreadystatechange = function() {
-        // 完成
-        if (r.readyState === 4) {
-            func(r.response)
-        }
-    }
-    // POST
-    if (data) {
-        data = JSON.stringify(data)
-        r.send(data)
-        // GET
-    } else {
-        // 发送 请求
-        r.send()
-    }
-}
 window.md = new Remarkable({
     html: true,
     breaks: true,
@@ -213,17 +185,24 @@ let bindEvent = function() {
         let id = location.pathname.split('/').reverse()[0]
         let ok = confirm('是否发布')
         if (ok) {
-            Ajax('save', {id: id, json: JSON.parse(md.data)}, function(text) {
-                log(text)
-                // edit off
-                delete localStorage.edit
-                $('#edit').text('编辑 off')
-                // lock off
-                if (!localStorage.edit) {
-                    delete localStorage.lock
-                    $('#lock').text('▲')
-                    $('#zx').css('opacity','')
-                    $('#zx-button').animate({ height:'hide' })
+            c.Ajax({
+                url: "save",
+                data: {
+                    id: id,
+                    json: JSON.parse(md.data)
+                },
+                callback: function(text) {
+                    log(text)
+                    // edit off
+                    delete localStorage.edit
+                    $('#edit').text('编辑 off')
+                    // lock off
+                    if (!localStorage.edit) {
+                        delete localStorage.lock
+                        $('#lock').text('▲')
+                        $('#zx').css('opacity','')
+                        $('#zx-button').animate({ height:'hide' })
+                    }
                 }
             })
         }
@@ -278,19 +257,22 @@ let bindEvent = function() {
 }
 let initMarkdown = function() {
     let id = location.pathname.split('/').reverse()[0]
-    Ajax('load/' + id, null, function(data) {
-        let json = data || '["# new"]'
-        md.data = json
-        let arr = JSON.parse(json)
-        if (arr.length === 0) {
-            arr = ["# new"]
-        }
-        for (let i = 0; i < arr.length; i++) {
-            let html = '在此输入内容…'
-            if (!onlyNone(arr[i])) {
-                html = md.render(arr[i])
+    c.Ajax({
+        url: 'load/' + id,
+        callback: function(data) {
+            let json = data || '["# new"]'
+            md.data = json
+            let arr = JSON.parse(json)
+            if (arr.length === 0) {
+                arr = ["# new"]
             }
-            $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
+            for (let i = 0; i < arr.length; i++) {
+                let html = '在此输入内容…'
+                if (!onlyNone(arr[i])) {
+                    html = md.render(arr[i])
+                }
+                $('#md').append('<div name="c#' + i + '" class="c">' + html + '</div>')
+            }
         }
     })
 }

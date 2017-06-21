@@ -82,9 +82,9 @@ const mongo = {
 // mongodump -h 0.0.0.0 -o data/db/backup/
 const backup = async () => {
     let db = await mongo.find({})
-    let data = JSON.stringify(db)
-    let time = (new Date).toJSON().replace(/:/g, "-")
-    fs.writeFileSync(`data/db/backup/User-${time}`, data, 'base64')
+    let data = JSON.stringify(db, null, 2)
+    let time = (new Date).toJSON().replace(/[:.]/g, "-")
+    fs.writeFileSync(`data/db/backup/User-${time}`, data, 'utf8')
 }
 
 // 监听
