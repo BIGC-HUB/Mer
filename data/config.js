@@ -1,6 +1,6 @@
 module.exports = {
     db: {
-        url: 'mongodb://0.0.0.0:27017/',
+        url: 'mongodb://bigc.cc:27017/',
         name: 'mer',
         class: 'bigsea'
     },
