@@ -28,7 +28,7 @@ class c {
             }
         }
         let r = new XMLHttpRequest()
-        let promise = new Promise(function(resolve) {
+        let promise = new Promise(function(resolve, reject) {
             r.open(req.method, req.url, true)
             r.setRequestHeader('Content-Type', req.contentType)
             // setHeader
@@ -43,6 +43,9 @@ class c {
                     // Promise 成功
                     resolve(res)
                 }
+            }
+            r.onerror = function (err) {
+                reject(err)
             }
             if (req.method === 'GET') {
                 r.send()
