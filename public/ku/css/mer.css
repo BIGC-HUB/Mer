@@ -480,6 +480,20 @@ inputbox input {
 #login-btn .dengl {
     margin-left: 8px;
 }
+
+#copyright:hover {
+    color: #8F9BB2;
+}
+#copyright {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    color: transparent;
+    margin-bottom: .2rem;
+    font-size: .5rem;
+    cursor: default;
+}
+
 /* 媒体查询 >= 768px */
 @media (min-width: 768px) {
     .tan {

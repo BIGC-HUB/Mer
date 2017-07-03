@@ -16,12 +16,10 @@ class c {
         return Array.from(document.querySelectorAll(select))
     }
     static Ajax(request) {
-        var req = {
+        let req = {
             url: request.url,
             // 传对象 自动转JSON
             data: JSON.stringify(request.data) || null,
-            // 若不设置 则为异步 设置则为同步
-            sync: (request.sync === undefined) ? true : false,
             method: request.method || 'POST',
             header: request.header || {},
             contentType: request.contentType || 'application/json',
@@ -29,43 +27,47 @@ class c {
                 console.log('读取成功！')
             }
         }
-        var res = null
-        var r = new XMLHttpRequest()
-        r.open(req.method, req.url, req.sync)
-        r.setRequestHeader('Content-Type', req.contentType)
-        // setHeader
-        Object.keys(req.header).forEach(key => {
-            r.setRequestHeader(key, req.header[key])
-        })
-        r.onreadystatechange = function() {
-            if (r.readyState === 4) {
-                res = r.response
-                req.callback(res)
+        let r = new XMLHttpRequest()
+        let promise = new Promise(function(resolve) {
+            r.open(req.method, req.url, true)
+            r.setRequestHeader('Content-Type', req.contentType)
+            // setHeader
+            Object.keys(req.header).forEach(key => {
+                r.setRequestHeader(key, req.header[key])
+            })
+            r.onreadystatechange = function() {
+                if (r.readyState === 4) {
+                    let res = r.response
+                    // 回调函数
+                    req.callback(res)
+                    // Promise 成功
+                    resolve(res)
+                }
             }
-        }
-        if (req.method === 'GET') {
-            r.send()
-        } else {
-            // POST
-            r.send(req.data)
-        }
-        return res
+            if (req.method === 'GET') {
+                r.send()
+            } else {
+                // POST
+                r.send(req.data)
+            }
+        })
+        return promise
     }
     // ( name, [value, day] )
     static Cookie(name, value, day) {
         if (value === undefined) {
             // GET Cookie
-            var arr = document.cookie.split('; ')
-            for (var i of arr) {
-                var e = i.split('=')
+            let arr = document.cookie.split('; ')
+            for (let i of arr) {
+                let e = i.split('=')
                 if (e[0] === name) {
                     return e[1]
                 }
             }
         } else {
             // POST Cookie
-            var date = new Date()
-            var str = ''
+            let date = new Date()
+            let str = ''
             if (Number.isInteger(day)) {
                 date.setTime(date.getTime() + day * 24 * 3600 * 1000)
                 str = ";expires=" + date.toGMTString()

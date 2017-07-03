@@ -29,7 +29,7 @@ img {
 }
 /* code */
 code {
-    border: 0;
+    border-style: none;
     background-color: #D6DBDF;
     color: #1e2931;
     border-radius: 4px;
@@ -60,7 +60,7 @@ table {
     margin-bottom: 20px;
     max-width: 100%;
     border: 1px solid #ddd;
-    /*border-collapse: separate;*/
+    border-collapse: separate;
     border-radius: 4px;
 }
 table td {
@@ -130,7 +130,6 @@ ins {
     border: 1px solid #dadada;
     border-top: 10px solid #788396;
     padding: 5%;
-    /*box-sizing: border-box;*/
     box-shadow: 0 1px 3px #dadada;
     overflow: hidden;
     color: #262626;

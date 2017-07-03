@@ -76,21 +76,19 @@ var User = {}
 // data.json = engines | books | note
 
 // Top
-Mer.load = function() {
-    c.Ajax({
-        url: 'user/load',
-        callback: function(data) {
-            data = JSON.parse(data)
-            User = data.user
-            Mer.dengl = data.login
-            __init__(User)
-            $('body').click()
-            $('#login .text').text(data.text)
-            if (Mer.dengl) {
-                Mer.login.show(data)
-            }
-        }
+Mer.load = async function() {
+    let data = await c.Ajax({
+        url: 'user/load'
     })
+    data = JSON.parse(data)
+    User = data.user
+    Mer.dengl = data.login
+    __init__(User)
+    $('body').click()
+    $('#login .text').text(data.text)
+    if (Mer.dengl) {
+        Mer.login.show(data)
+    }
 }
 Mer.save = function() {
     if (Mer.dengl) {
