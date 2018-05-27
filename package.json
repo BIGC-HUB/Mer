@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "node www/run.js"
+  },
   "dependencies": {
     "body-parser": "^1.17.1",
     "cookie-session": "^2.0.0-beta.2",
